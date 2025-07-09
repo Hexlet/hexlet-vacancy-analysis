@@ -1,3 +1,57 @@
-from django.shortcuts import render
+from django.http import JsonResponse
+from .services import HHVacancyParser, SuperJobVacancyParser, VacancySaver
+from .models import Vacancy, SuperJob
 
-# Create your views here.
+
+def base_vacancy_parser(request, parser_class, model, search_params):
+    model.objects.all().delete()
+
+    try:
+        # Используем унифицированный метод parse_vacancies из парсера
+        vacancies = parser_class.parse_vacancies(search_params)
+
+        saved_count = 0
+        errors = []
+
+        for vacancy_data in vacancies:
+            try:
+                # Определяем источник для VacancySaver
+                source = 'hh' if parser_class == HHVacancyParser else 'superjob'
+                VacancySaver.save_vacancy(vacancy_data, source=source)
+                saved_count += 1
+            except Exception as e:
+                errors.append(f"Ошибка при сохранении: {str(e)}")
+                continue
+
+        return JsonResponse({
+            'status': 'success',
+            'saved_count': saved_count,
+            'errors': errors,
+            'message': f'Успешно сохранено {saved_count} вакансий'
+        }, status=200)
+
+    except Exception as e:
+        return JsonResponse({
+            'status': 'error',
+            'message': f'Ошибка при парсинге: {str(e)}'
+        }, status=500)
+
+
+def hh_vacancy_list(request):
+    """Обработчик для вакансий с HH"""
+    search_params = {
+        'text': request.GET.get('query', 'Python'),
+        'area': request.GET.get('area', 1),  # 1 - Москва
+        'per_page': request.GET.get('per_page', 4),
+    }
+    return base_vacancy_parser(request, HHVacancyParser, Vacancy, search_params)
+
+
+def superjob_list(request):
+    """Обработчик для вакансий с SuperJob"""
+    search_params = {
+        'keyword': request.GET.get('query', 'Python'),
+        'town': request.GET.get('town', 'Москва'),
+        'count': request.GET.get('count', 4),
+    }
+    return base_vacancy_parser(request, SuperJobVacancyParser, SuperJob, search_params)
