@@ -7,7 +7,7 @@ load_dotenv()
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 
-class SuperJobVacancyParser(BaseVacancyParser):
+class SuperjobVacancyParser(BaseVacancyParser):
     API_URL = 'https://api.superjob.ru/2.0/vacancies'
     HEADERS = {"X-Api-App-Id": SECRET_KEY}
 

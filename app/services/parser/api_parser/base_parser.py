@@ -1,16 +1,33 @@
 import requests
 from bs4 import BeautifulSoup
+import time
 
 
 class BaseVacancyParser:
     API_URL = None
     HEADERS = None
+    DEFAULT_DELAY = 0.3
 
     @classmethod
-    def fetch_vacancies(cls, search_params):
-        response = requests.get(cls.API_URL, params=search_params, headers=cls.HEADERS)
+    def fetch_data(cls, params=None, item_id=None):
+        url = cls.API_URL
+        if item_id:
+            url = f"{cls.API_URL}/{item_id}"
+            time.sleep(cls.DEFAULT_DELAY)  # Задержка для детальных запросов
+
+        response = requests.get(url, params=params, headers=cls.HEADERS)
         response.raise_for_status()
         return response.json()
+
+    @classmethod
+    def fetch_items_list(cls, search_params):
+        """Получаем список элементов (может быть список ID или сразу вакансий)"""
+        return cls.fetch_data(params=search_params)
+
+    @classmethod
+    def fetch_item_details(cls, item_id):
+        """Получаем детальную информацию по конкретному элементу"""
+        return cls.fetch_data(item_id=item_id)
 
     @staticmethod
     def parse_description(description):
@@ -32,8 +49,7 @@ class BaseVacancyParser:
 
     @staticmethod
     def parse_nested_field(data, field_name):
-        return data.get(field_name, {}).get('name', '') or data.get(field_name, {}).get('title', '')
-
-    @classmethod
-    def parse_vacancy(cls, item):
-        raise NotImplementedError("Subclasses must implement this method")
+        field_data = data.get(field_name, {})
+        if isinstance(field_data, dict):
+            return field_data.get('name', '') or field_data.get('title', '')
+        return str(field_data)
