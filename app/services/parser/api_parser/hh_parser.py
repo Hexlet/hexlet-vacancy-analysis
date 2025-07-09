@@ -1,7 +1,7 @@
 from .base_parser import BaseVacancyParser
 
 
-class HHVacancyParser(BaseVacancyParser):
+class HhVacancyParser(BaseVacancyParser):
     API_URL = 'https://api.hh.ru/vacancies'
     HEADERS = {"User-Agent": "HH-User-Agent"}
 
