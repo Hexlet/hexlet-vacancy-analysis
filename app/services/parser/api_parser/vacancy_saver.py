@@ -1,4 +1,4 @@
-from parser.models import HhVacancy, SuperjobVacancy
+from app.services.parser.models import HhVacancy, SuperjobVacancy
 
 
 class VacancySaver:

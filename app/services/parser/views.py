@@ -1,7 +1,9 @@
 from django.http import JsonResponse
 
-from .models import SuperJob, Vacancy
-from .services import HhVacancyParser, SuperjobVacancyParser, VacancySaver
+from .api_parser.hh_parser import HhVacancyParser
+from .api_parser.superjob_parser import SuperjobVacancyParser
+from .api_parser.vacancy_saver import VacancySaver
+from .models import HhVacancy, SuperjobVacancy
 
 
 def base_vacancy_parser(request, parser_class, model, search_params):
@@ -43,7 +45,7 @@ def hh_vacancy_list(request):
         'area': request.GET.get('area', 1),
         'per_page': request.GET.get('per_page', 4),
     }
-    return base_vacancy_parser(request, HhVacancyParser, Vacancy, search_params)
+    return base_vacancy_parser(request, HhVacancyParser, HhVacancy, search_params)
 
 
 def superjob_vacancy_list(request):
@@ -53,4 +55,6 @@ def superjob_vacancy_list(request):
         'town': request.GET.get('town', 'Москва'),
         'count': request.GET.get('count', 4),
     }
-    return base_vacancy_parser(request, SuperjobVacancyParser, SuperJob, search_params)
+    return base_vacancy_parser(
+        request, SuperjobVacancyParser, SuperjobVacancy, search_params
+    )
