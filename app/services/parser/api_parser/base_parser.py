@@ -1,6 +1,7 @@
+import time
+
 import requests
 from bs4 import BeautifulSoup
-import time
 
 
 class BaseVacancyParser:
@@ -21,12 +22,10 @@ class BaseVacancyParser:
 
     @classmethod
     def fetch_items_list(cls, search_params):
-        """Получаем список элементов (может быть список ID или сразу вакансий)"""
         return cls.fetch_data(params=search_params)
 
     @classmethod
     def fetch_item_details(cls, item_id):
-        """Получаем детальную информацию по конкретному элементу"""
         return cls.fetch_data(item_id=item_id)
 
     @staticmethod
