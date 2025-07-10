@@ -47,9 +47,11 @@ class HhVacancyParser(BaseVacancyParser):
             'employment': cls.parse_nested_field(item, 'employment'),
             'schedule': cls.parse_nested_field(item, 'schedule'),
             'work_format': cls.parse_nested_field(item, 'work_format'),
-            'work_schedule_by_days': cls.parse_nested_field(item, 'work_schedule_by_days'),
+            'work_schedule_by_days': cls.parse_nested_field(
+                item, 'work_schedule_by_days'),
             'working_hours': cls.parse_nested_field(item, 'working_hours'),
-            'key_skills': ', '.join([skill['name'] for skill in item.get('key_skills', [])]),
+            'key_skills': ', '.join([skill['name'] for skill in item.get(
+                'key_skills', [])]),
             'description': cls.parse_description(item.get('description')),
             'city': address.get('city', ''),
             'street': address.get('street', ''),
