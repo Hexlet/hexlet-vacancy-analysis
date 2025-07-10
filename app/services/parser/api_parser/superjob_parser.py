@@ -13,11 +13,16 @@ class SuperjobVacancyParser(BaseVacancyParser):
     HEADERS = {"X-Api-App-Id": SECRET_KEY}
 
     @classmethod
+    def parse_vacancies(cls, search_params):
+        data = cls.fetch_items_list(search_params)
+        return [cls.parse_vacancy(item) for item in data['objects']]
+
+    @classmethod
     def parse_vacancy(cls, item):
         company = item.get('client', {})
 
         return {
-            'source_id': item.get('id'),
+            'superjob_id': item.get('id'),
             'title': item.get('profession', ''),
             'company_name': company.get('title', ''),
             'company_id': company.get('id', ''),
@@ -32,7 +37,7 @@ class SuperjobVacancyParser(BaseVacancyParser):
             'experience': cls.parse_nested_field(item, 'experience'),
             'type_of_work': cls.parse_nested_field(item, 'type_of_work'),
             'place_of_work': cls.parse_nested_field(item, 'place_of_work'),
-            'educatiohn': cls.parse_nested_field(item, 'education'),
+            'education': cls.parse_nested_field(item, 'education'),
             'description': cls.parse_description(item.get('vacancyRichText')),
             'city': cls.parse_nested_field(item, 'city'),
             'address': item.get('address', ''),

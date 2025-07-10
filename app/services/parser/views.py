@@ -39,7 +39,6 @@ def base_vacancy_parser(request, parser_class, model, search_params):
 
 
 def hh_vacancy_list(request):
-    """Обработчик для вакансий с HH"""
     search_params = {
         'text': request.GET.get('query', 'Python'),
         'area': request.GET.get('area', 1),
@@ -49,7 +48,6 @@ def hh_vacancy_list(request):
 
 
 def superjob_vacancy_list(request):
-    """Обработчик для вакансий с SuperJob"""
     search_params = {
         'keyword': request.GET.get('query', 'Python'),
         'town': request.GET.get('town', 'Москва'),
