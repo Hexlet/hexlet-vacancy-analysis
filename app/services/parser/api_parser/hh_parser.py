@@ -7,13 +7,11 @@ class HhVacancyParser(BaseVacancyParser):
 
     @classmethod
     def fetch_vacancies_list(cls, search_params):
-        """Получаем список ID вакансий"""
         data = cls.fetch_items_list(search_params)
         return [item['id'] for item in data['items']]
 
     @classmethod
     def parse_vacancies(cls, search_params):
-        """Основной метод для получения и парсинга вакансий"""
         vacancy_ids = cls.fetch_vacancies_list(search_params)
         vacancies = []
 
@@ -29,12 +27,11 @@ class HhVacancyParser(BaseVacancyParser):
 
     @classmethod
     def parse_vacancy(cls, item):
-        """Парсим конкретную вакансию"""
         address = item.get('address', {})
         salary_data = item.get('salary', {})
 
         return {
-            'source_id': item.get('id'),
+            'hh_id': item.get('id'),
             'title': item.get('name', ''),
             'company_name': item.get('employer', {}).get('name', ''),
             'company_id': item.get('employer', {}).get('id', ''),
@@ -47,15 +44,15 @@ class HhVacancyParser(BaseVacancyParser):
             'published_at': item.get('published_at', ''),
             'url': item.get('alternate_url', ''),
             'experience': cls.parse_nested_field(item, 'experience'),
+            'employment': cls.parse_nested_field(item, 'employment'),
             'schedule': cls.parse_nested_field(item, 'schedule'),
-            'work_schedule': item.get("work_schedule_by_days", [{}])[0].get("name", ""),
-            'work_format': ', '.join(
-                [work['name'] for work in item.get('work_format', [])]),
-            'skills': ', '.join([skill['name'] for skill in item.get('key_skills', [])]),
+            'work_format': cls.parse_nested_field(item, 'work_format'),
+            'work_schedule_by_days': cls.parse_nested_field(item, 'work_schedule_by_days'),
+            'working_hours': cls.parse_nested_field(item, 'working_hours'),
+            'key_skills': ', '.join([skill['name'] for skill in item.get('key_skills', [])]),
             'description': cls.parse_description(item.get('description')),
             'city': address.get('city', ''),
             'street': address.get('street', ''),
             'building': address.get('building', ''),
-            'employment': cls.parse_nested_field(item, 'employment'),
             'contacts': item.get('contacts', {}),
         }

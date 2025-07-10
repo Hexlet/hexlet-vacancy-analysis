@@ -22,7 +22,6 @@ class HhVacancy(models.Model):
     street = models.CharField(max_length=100, null=True)
     building = models.CharField(max_length=15, null=True)
     contacts = models.CharField(max_length=250, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
     published_at = models.DateTimeField()
 
 
