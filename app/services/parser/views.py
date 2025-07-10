@@ -1,6 +1,7 @@
 from django.http import JsonResponse
+
+from .models import SuperJob, Vacancy
 from .services import HhVacancyParser, SuperjobVacancyParser, VacancySaver
-from .models import Vacancy, SuperJob
 
 
 def base_vacancy_parser(request, parser_class, model, search_params):
