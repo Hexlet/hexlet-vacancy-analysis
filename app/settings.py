@@ -20,6 +20,7 @@ load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
@@ -44,12 +45,11 @@ INSTALLED_APPS = [
     "django_vite",
     "inertia",
     "app.services.auth.users",
-    "app.services.hh.hh_parser",
     "app.services.telegram.telegram_parser",
     "app.services.telegram.telegram_channels",
-    "app.services.superjob.superjob_parser",
     "app.services.auth.tinkoff_id",
     "app.services.parser",
+
 ]
 
 AUTH_USER_MODEL = "users.User"
@@ -136,6 +136,7 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/

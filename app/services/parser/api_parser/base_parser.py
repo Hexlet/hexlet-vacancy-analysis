@@ -13,7 +13,7 @@ class BaseVacancyParser:
         url = cls.API_URL
         if item_id:
             url = f"{cls.API_URL}/{item_id}"
-            time.sleep(cls.DEFAULT_DELAY)  # Задержка для детальных запросов
+            time.sleep(cls.DEFAULT_DELAY)
 
         response = requests.get(url, params=params, headers=cls.HEADERS)
         response.raise_for_status()
