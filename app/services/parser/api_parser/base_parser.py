@@ -33,7 +33,15 @@ class BaseVacancyParser:
         return BeautifulSoup(description or '', 'html.parser').get_text()
 
     @staticmethod
-    def format_salary(salary_from, salary_to, currency):
+    def format_salary(salary_data=None, payment_from=None, payment_to=None, currency=None):
+        if salary_data and isinstance(salary_data, dict):
+            salary_from = salary_data.get('from')
+            salary_to = salary_data.get('to')
+            currency = salary_data.get('currency')
+        else:
+            salary_from = payment_from
+            salary_to = payment_to
+
         if not salary_from and not salary_to:
             return 'По договоренности'
 
@@ -51,4 +59,18 @@ class BaseVacancyParser:
         field_data = data.get(field_name, {})
         if isinstance(field_data, dict):
             return field_data.get('name', '') or field_data.get('title', '')
+        return str(field_data)
+
+    @staticmethod
+    def parse_nested_field_list(data, field_name):
+        field_data = data.get(field_name, [])
+        if isinstance(field_data, list):
+            return ''.join([item.get('name', '') for item in field_data])
+        return field_data
+
+    @staticmethod
+    def parse_nested_address(data, field_name, field='address'):
+        field_data = data.get(field, {})
+        if isinstance(field_data, dict):
+            return field_data.get(field_name, '')
         return str(field_data)

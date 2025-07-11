@@ -27,7 +27,6 @@ class HhVacancyParser(BaseVacancyParser):
 
     @classmethod
     def parse_vacancy(cls, item):
-        address = item.get('address', {})
         salary_data = item.get('salary', {})
 
         return {
@@ -36,25 +35,21 @@ class HhVacancyParser(BaseVacancyParser):
             'company_name': item.get('employer', {}).get('name', ''),
             'company_id': item.get('employer', {}).get('id', ''),
             'area': cls.parse_nested_field(item, 'area'),
-            'salary': cls.format_salary(
-                salary_data.get('from'),
-                salary_data.get('to'),
-                salary_data.get('currency')
-            ),
+            'salary': cls.format_salary(salary_data=salary_data),
             'published_at': item.get('published_at', ''),
             'url': item.get('alternate_url', ''),
             'experience': cls.parse_nested_field(item, 'experience'),
             'employment': cls.parse_nested_field(item, 'employment'),
             'schedule': cls.parse_nested_field(item, 'schedule'),
-            'work_format': cls.parse_nested_field(item, 'work_format'),
-            'work_schedule_by_days': cls.parse_nested_field(
+            'work_format': cls.parse_nested_field_list(item, 'work_format'),
+            'work_schedule_by_days': cls.parse_nested_field_list(
                 item, 'work_schedule_by_days'),
-            'working_hours': cls.parse_nested_field(item, 'working_hours'),
+            'working_hours': cls.parse_nested_field_list(item, 'working_hours'),
             'key_skills': ', '.join([skill['name'] for skill in item.get(
                 'key_skills', [])]),
             'description': cls.parse_description(item.get('description')),
-            'city': address.get('city', ''),
-            'street': address.get('street', ''),
-            'building': address.get('building', ''),
+            'city': cls.parse_nested_address(item, 'city'),
+            'street': cls.parse_nested_address(item, 'street'),
+            'building': cls.parse_nested_address(item, 'building'),
             'contacts': item.get('contacts', {}),
         }

@@ -28,9 +28,9 @@ class SuperjobVacancyParser(BaseVacancyParser):
             'company_id': company.get('id', ''),
             'company_city': cls.parse_nested_field(company, 'town'),
             'salary': cls.format_salary(
-                item.get('payment_from'),
-                item.get('payment_to'),
-                item.get('currency')
+                payment_from=item.get('payment_from'),
+                payment_to=item.get('payment_to'),
+                currency=item.get('currency')
             ),
             'published_at': item.get('date_published', ''),
             'url': item.get('link', ''),
@@ -39,7 +39,7 @@ class SuperjobVacancyParser(BaseVacancyParser):
             'place_of_work': cls.parse_nested_field(item, 'place_of_work'),
             'education': cls.parse_nested_field(item, 'education'),
             'description': cls.parse_description(item.get('vacancyRichText')),
-            'city': cls.parse_nested_field(item, 'city'),
+            'city': cls.parse_nested_field(item, 'town'),
             'address': item.get('address', ''),
             'contacts': item.get('phone', ''),
         }
