@@ -23,7 +23,6 @@ EMAIL_TIMEOUT=10
 
 DEBUG=True
 ```
-
 Create a PostgreSQL user (or reuse an existing one) and a database using the parameters from DATABASE_URL.
 
 ## Installation:
