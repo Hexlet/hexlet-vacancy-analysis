@@ -41,5 +41,3 @@ make create-superuser
 ## Local run:
 ```bash
 make run
-```
- 
