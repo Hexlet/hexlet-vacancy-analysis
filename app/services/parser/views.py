@@ -7,7 +7,6 @@ from .models import HhVacancy, SuperjobVacancy
 
 
 def base_vacancy_parser(request, parser_class, model, search_params):
-    model.objects.all().delete()
 
     try:
         vacancies = parser_class.parse_vacancies(search_params)
