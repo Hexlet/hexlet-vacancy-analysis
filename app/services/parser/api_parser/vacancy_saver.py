@@ -2,8 +2,7 @@ from app.services.parser.models import HhVacancy, SuperjobVacancy
 
 
 class VacancySaver:
-    @staticmethod
-    def save_vacancy(vacancy_data, source='hh'):
+    def save_vacancy(self, vacancy_data, source='hh'):
         if source == 'hh':
             model = HhVacancy
         else:

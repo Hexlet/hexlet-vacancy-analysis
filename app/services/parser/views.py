@@ -1,3 +1,4 @@
+from django.db import DataError
 from django.http import JsonResponse
 
 from .api_parser.hh_parser import HhVacancyParser
@@ -8,33 +9,32 @@ from .models import HhVacancy, SuperjobVacancy
 
 def base_vacancy_parser(request, parser_class, model, search_params):
 
-    try:
-        vacancies = parser_class.parse_vacancies(search_params)
+    parser = parser_class()
+    saver = VacancySaver()
+    vacancies = parser.parse_vacancies(search_params)
 
-        saved_count = 0
-        errors = []
+    saved_count = 0
+    errors = []
 
-        for vacancy_data in vacancies:
-            try:
-                source = 'hh' if parser_class == HhVacancyParser else 'superjob'
-                VacancySaver.save_vacancy(vacancy_data, source=source)
+    for vacancy_data in vacancies:
+        try:
+            source = 'hh' if isinstance(parser, HhVacancyParser) else 'superjob'
+            if saver.save_vacancy(vacancy_data, source=source):
                 saved_count += 1
-            except Exception as e:
-                errors.append(f"Ошибка при сохранении: {str(e)}")
-                continue
+   
+        except DataError as e:
+            errors.append(f"Некорректные данные в вакансии {str(e)}")
+        except KeyError as e:
+            errors.append(f"Отсутствует обязательное поле: {str(e)}")
+        except ValueError as e:
+            errors.append(f"Некорректное значение в данных вакансии: {str(e)}")
 
-        return JsonResponse({
-            'status': 'success',
-            'saved_count': saved_count,
-            'errors': errors,
-            'message': f'Успешно сохранено {saved_count} вакансий'
-        }, status=200)
-
-    except Exception as e:
-        return JsonResponse({
-            'status': 'error',
-            'message': f'Ошибка при парсинге: {str(e)}'
-        }, status=500)
+    return JsonResponse({
+        'status': 'success',
+        'saved_count': saved_count,
+        'errors': errors,
+        'message': f'Успешно сохранено {saved_count} вакансий'
+    }, status=200)
 
 
 def hh_vacancy_list(request):
