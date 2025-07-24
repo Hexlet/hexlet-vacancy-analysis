@@ -9,31 +9,30 @@ class BaseVacancyParser:
     HEADERS = None
     DEFAULT_DELAY = 0.3
 
-    @classmethod
-    def fetch_data(cls, params=None, item_id=None):
-        url = cls.API_URL
+    def fetch_data(self, params=None, item_id=None):
+        url = self.API_URL
         if item_id:
-            url = f"{cls.API_URL}/{item_id}"
-            time.sleep(cls.DEFAULT_DELAY)
+            url = f"{self.API_URL}/{item_id}"
+            time.sleep(self.DEFAULT_DELAY)
 
-        response = requests.get(url, params=params, headers=cls.HEADERS)
+        response = requests.get(url, params=params, headers=self.HEADERS)
         response.raise_for_status()
         return response.json()
 
-    @classmethod
-    def fetch_items_list(cls, search_params):
-        return cls.fetch_data(params=search_params)
+    def fetch_items_list(self, search_params):
+        return self.fetch_data(params=search_params)
 
-    @classmethod
-    def fetch_item_details(cls, item_id):
-        return cls.fetch_data(item_id=item_id)
+    def fetch_item_details(self, item_id):
+        return self.fetch_data(item_id=item_id)
 
-    @staticmethod
-    def parse_description(description):
+    def parse_description(self, description):
         return BeautifulSoup(description or '', 'html.parser').get_text()
 
-    @staticmethod
-    def format_salary(salary_data=None, payment_from=None, payment_to=None, currency=None):
+    def format_salary(self,
+                      salary_data=None,
+                      payment_from=None,
+                      payment_to=None,
+                      currency=None):
         if salary_data and isinstance(salary_data, dict):
             salary_from = salary_data.get('from')
             salary_to = salary_data.get('to')
@@ -54,22 +53,19 @@ class BaseVacancyParser:
             parts.append(currency)
         return ' '.join(parts)
 
-    @staticmethod
-    def parse_nested_field(data, field_name):
+    def parse_nested_field(self, data, field_name):
         field_data = data.get(field_name, {})
         if isinstance(field_data, dict):
             return field_data.get('name', '') or field_data.get('title', '')
         return str(field_data)
 
-    @staticmethod
-    def parse_nested_field_list(data, field_name):
+    def parse_nested_field_list(self, data, field_name):
         field_data = data.get(field_name, [])
         if isinstance(field_data, list):
             return ''.join([item.get('name', '') for item in field_data])
         return field_data
 
-    @staticmethod
-    def parse_nested_address(data, field_name, field='address'):
+    def parse_nested_address(self, data, field_name, field='address'):
         field_data = data.get(field, {})
         if isinstance(field_data, dict):
             return field_data.get(field_name, '')

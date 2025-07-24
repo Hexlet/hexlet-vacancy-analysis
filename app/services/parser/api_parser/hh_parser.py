@@ -5,28 +5,21 @@ class HhVacancyParser(BaseVacancyParser):
     API_URL = 'https://api.hh.ru/vacancies'
     HEADERS = {"User-Agent": "HH-User-Agent"}
 
-    @classmethod
-    def fetch_vacancies_list(cls, search_params):
-        data = cls.fetch_items_list(search_params)
+    def fetch_vacancies_list(self, search_params):
+        data = self.fetch_items_list(search_params)
         return [item['id'] for item in data['items']]
 
-    @classmethod
-    def parse_vacancies(cls, search_params):
-        vacancy_ids = cls.fetch_vacancies_list(search_params)
+    def parse_vacancies(self, search_params):
+        vacancy_ids = self.fetch_vacancies_list(search_params)
         vacancies = []
 
         for vacancy_id in vacancy_ids:
-            try:
-                item = cls.fetch_item_details(vacancy_id)
-                vacancies.append(cls.parse_vacancy(item))
-            except Exception as e:
-                print(f"Ошибка при обработке вакансии {vacancy_id}: {str(e)}")
-                continue
+            item = self.fetch_item_details(vacancy_id)
+            vacancies.append(self.parse_vacancy(item))
 
         return vacancies
 
-    @classmethod
-    def parse_vacancy(cls, item):
+    def parse_vacancy(self, item):
         salary_data = item.get('salary', {})
 
         return {
@@ -34,22 +27,22 @@ class HhVacancyParser(BaseVacancyParser):
             'title': item.get('name', ''),
             'company_name': item.get('employer', {}).get('name', ''),
             'company_id': item.get('employer', {}).get('id', ''),
-            'area': cls.parse_nested_field(item, 'area'),
-            'salary': cls.format_salary(salary_data=salary_data),
+            'area': self.parse_nested_field(item, 'area'),
+            'salary': self.format_salary(salary_data=salary_data),
             'published_at': item.get('published_at', ''),
             'url': item.get('alternate_url', ''),
-            'experience': cls.parse_nested_field(item, 'experience'),
-            'employment': cls.parse_nested_field(item, 'employment'),
-            'schedule': cls.parse_nested_field(item, 'schedule'),
-            'work_format': cls.parse_nested_field_list(item, 'work_format'),
-            'work_schedule_by_days': cls.parse_nested_field_list(
+            'experience': self.parse_nested_field(item, 'experience'),
+            'employment': self.parse_nested_field(item, 'employment'),
+            'schedule': self.parse_nested_field(item, 'schedule'),
+            'work_format': self.parse_nested_field_list(item, 'work_format'),
+            'work_schedule_by_days': self.parse_nested_field_list(
                 item, 'work_schedule_by_days'),
-            'working_hours': cls.parse_nested_field_list(item, 'working_hours'),
+            'working_hours': self.parse_nested_field_list(item, 'working_hours'),
             'key_skills': ', '.join([skill['name'] for skill in item.get(
                 'key_skills', [])]),
-            'description': cls.parse_description(item.get('description')),
-            'city': cls.parse_nested_address(item, 'city'),
-            'street': cls.parse_nested_address(item, 'street'),
-            'building': cls.parse_nested_address(item, 'building'),
+            'description': self.parse_description(item.get('description')),
+            'city': self.parse_nested_address(item, 'city'),
+            'street': self.parse_nested_address(item, 'street'),
+            'building': self.parse_nested_address(item, 'building'),
             'contacts': item.get('contacts', {}),
         }
