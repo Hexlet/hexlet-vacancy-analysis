@@ -35,6 +35,7 @@ ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
 
 INSTALLED_APPS = [
     'app.services.auth.users',
+    'app.services.auth.vk_id',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
