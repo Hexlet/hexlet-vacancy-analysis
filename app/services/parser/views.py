@@ -8,6 +8,7 @@ from .models import HhVacancy, SuperjobVacancy
 
 
 def base_vacancy_parser(request, parser_class, model, search_params):
+    model.objects.all().delete()
 
     parser = parser_class()
     saver = VacancySaver()
@@ -21,7 +22,7 @@ def base_vacancy_parser(request, parser_class, model, search_params):
             source = 'hh' if isinstance(parser, HhVacancyParser) else 'superjob'
             if saver.save_vacancy(vacancy_data, source=source):
                 saved_count += 1
-   
+
         except DataError as e:
             errors.append(f"Некорректные данные в вакансии {str(e)}")
         except KeyError as e:

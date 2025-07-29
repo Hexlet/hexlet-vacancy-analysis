@@ -23,7 +23,7 @@ class HhVacancy(models.Model):
     building = models.CharField(max_length=15, null=True)
     contacts = models.CharField(max_length=250, null=True)
     published_at = models.DateTimeField()
-    
+
     def __str__(self):
         return f'{self.title} в {self.company_name}'
 
