@@ -1,4 +1,4 @@
-from django.db import DataError
+from django.db import DataError, IntegrityError
 from django.http import JsonResponse
 
 from .api_parser.hh_parser import HhVacancyParser
@@ -19,8 +19,15 @@ def base_vacancy_parser(request, parser_class, model, search_params):
             source = 'hh' if isinstance(parser, HhVacancyParser) else 'superjob'
             saver.save_vacancy(vacancy_data, source=source)
             saved_count += 1
+
+        except IntegrityError:
+            errors.append("Конфликт уникальности данных")
+        except DataError as e:
+            errors.append(f"Проблемы с типа данных {str(e)}")
+        except (KeyError, ValueError) as e:
+            errors.append(f"Проблема с данными: {str(e)}")
         except Exception as e:
-            errors.append(f"ошибка сохранения вакансии  {str(e)}")
+            errors.append(f"Обнаружена непредвиденная ошибка  {str(e)}")
             continue
 
     return JsonResponse({
