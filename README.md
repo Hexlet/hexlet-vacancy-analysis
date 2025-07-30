@@ -1,12 +1,16 @@
 # hexlet-vacancy-analysis
 
+
+
 ## Requirements:
+
 To run this project, you need to have the following software installed:
 - Python >=3.12
 - Uv
 - PostgreSQL
 
 ## Preparation:
+
 Create .env file with code kind of:
 ```bash
 SECRET_KEY=your_secret_key
@@ -27,6 +31,7 @@ DEBUG=True
 Create a PostgreSQL user (or reuse an existing one) and a database using the parameters from DATABASE_URL.
 
 ## Installation:
+
 To set up the project, navigate to the project directory and run the following commands:
 ```bash
 make install
@@ -39,6 +44,7 @@ make create-superuser
 ```
 
 ## Local run:
+
 ```bash
 make run
 ```
