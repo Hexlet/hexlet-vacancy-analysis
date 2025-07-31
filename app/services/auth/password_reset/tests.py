@@ -101,7 +101,6 @@ class PasswordResetConfirmTests(PasswordResetTestCase):
     def test_post_invalid_token(self):
         url = reverse_lazy("password_reset_confirm")
         data = {"token": "invalid_token", "newPassword": "StrongPass123!"}
-
         response = self.client.post(url, data)
         assert response.status_code == 400
         assert "Недействительный токен" in response.json()["message"]
