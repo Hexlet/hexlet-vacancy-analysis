@@ -19,5 +19,8 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "pytest>=8.4.1",
+    "pytest-cov>=6.2.1",
+    "pytest-django>=4.11.1",
     "ruff>=0.12.1",
 ]

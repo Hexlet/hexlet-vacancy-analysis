@@ -35,6 +35,7 @@ ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
 
 INSTALLED_APPS = [
     'app.services.auth.users',
+    'app.services.auth.yandex_id',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -154,6 +155,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTHENTICATION_BACKENDS = [
     'app.services.auth.users.logic.authentication.EmailAuthBackend',
+    'app.services.auth.yandex_id.backend.YandexBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
 
@@ -168,3 +170,7 @@ EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "true").lower() in ("true", "1", "yes
 EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
 EMAIL_TIMEOUT = int(os.environ.get("EMAIL_TIMEOUT", 10))
+
+YANDEX_CLIENT_ID = os.getenv('YANDEX_CLIENT_ID', '')
+YANDEX_CLIENT_SECRET = os.getenv('YANDEX_CLIENT_SECRET', '')
+YANDEX_REDIRECT_URI = os.getenv('YANDEX_REDIRECT_URI', '')

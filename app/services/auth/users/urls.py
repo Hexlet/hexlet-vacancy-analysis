@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import include, path
 
 from . import views
 
@@ -12,4 +12,5 @@ urlpatterns = [
     path('login/', views.LoginUserView.as_view(), name='login'),
     path('logout/', views.LogoutUserView.as_view(), name='logout'),
     path('csrf/', views.get_csrf_token, name='csrf'),
+    path("yandex/", include("app.services.auth.yandex_id.urls")),
 ]

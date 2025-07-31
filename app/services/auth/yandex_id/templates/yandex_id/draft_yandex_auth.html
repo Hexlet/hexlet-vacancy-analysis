@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <header>
+        {% if yandex_user %}
+            {% if yandex_user.first_name or yandex_user.last_name %}
+                <p>Привет, {{ yandex_user.first_name }} {{ yandex_user.last_name }}!</p>
+            {% else %}
+                <p>Привет, noname!</p>
+            {% endif %}
+            <p>Email: {{ yandex_user.email }}</p>
+            <br>
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit">Выйти</button>
+            </form>
+        {% else %}
+            <a href="{% url 'yandex_auth' %}">Войти через Yandex ID</a> <br>
+        {% endif %}
+
+        <br>
+        <br>
+        <br>
+        <a href="/admin" target="_blank">admin</a>
+    </header>
+</body>
+</html>
