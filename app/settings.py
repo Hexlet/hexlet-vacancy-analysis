@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sitemaps',
     'app.services.hh.hh_parser',
     'app.services.telegram.telegram_parser',
     'app.services.telegram.telegram_channels',
