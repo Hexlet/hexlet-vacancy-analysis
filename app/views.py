@@ -17,11 +17,19 @@ def custom_not_found_error(request, exception):
 
 @require_GET
 def robots_txt(request):
+    public_pages = [
+        "/",
+    ]
+
+    private_pages = [
+        "/admin/",
+        "/auth/",
+    ]
+
     lines = [
-        "User-Agent: *",
-        "Allow: /",
-        "Disallow: /admin",
-        "Disallow: /auth",
+        "User-agent: *",
+        *[f"Allow: {page}" for page in public_pages],
+        *[f"Disallow: {page}" for page in private_pages],
         f"Sitemap: {request.build_absolute_uri('/sitemap.xml')}",
     ]
     return HttpResponse("\n".join(lines), content_type="text/plain")
