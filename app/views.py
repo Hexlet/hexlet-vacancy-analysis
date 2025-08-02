@@ -22,7 +22,6 @@ def robots_txt(request):
 
     private_pages = [
         "/admin/",
-        "/auth/",
     ]
 
     lines = [
