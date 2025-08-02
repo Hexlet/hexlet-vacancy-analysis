@@ -8,12 +8,11 @@ class StaticSitemap(Sitemap):
     Карта-сайта для статичных страниц
     """
 
-    priority = 0.5
-    changefreq = "weekly"
-
     def items(self):
         return [
             # статические страницы
+            "register_user",
+            "channels_list",
         ]
 
     def location(self, item):
