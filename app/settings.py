@@ -211,3 +211,6 @@ TINKOFF_ID_TOKEN_URL = "https://id.tinkoff.ru/auth/token"
 TINKOFF_ID_USERINFO_URL = "https://id.tinkoff.ru/userinfo/userinfo"
 TINKOFF_ID_INTROSPECT_URL = "https://id.tinkoff.ru/auth/introspect"
 TINKOFF_ID_SCOPE = ["profile", "email"]
+
+
+FIXTURE_PATH = 'app/fixtures'
