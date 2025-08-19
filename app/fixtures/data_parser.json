@@ -1,6 +1,6 @@
 {
   "hh_vacancy": {
-    "hh_id": "120877600",
+    "id": "120877600",
     "name": "Python Developer",
     "salary": {"from": 100000, "to": 200000, "currency": "RUR"},
     "employer": {"id": "456", "name": "Yandex"},
