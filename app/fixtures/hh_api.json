@@ -1,0 +1,32 @@
+[
+    {
+        "model": "services.parser.hhvacancy",
+        "pk": 1,
+        "fields": {
+            "hh_id": "120877600",
+            "name": "Python Developer",
+            "salary": {"from": 100000, "to": 200000, "currency": "RUR"},
+            "employer": {"id": "456", "name": "Yandex"},
+            "description": "<p>Test description</p>",
+            "alternate_url": "https://hh.ru/vacancy/120877600",
+            "key_skills": [{"name": "Python"}, {"name": "Django"}],
+            "experience": {"name": "1-3 years"},
+            "employment": {"name": "Full time"}
+        }
+    },
+    {
+        "model": "services.parser.hhvacancy",
+        "pk": 2,
+        "fields": {
+            "hh_id": "123486747",
+            "name": "Python Junior Developer",
+            "salary": {"from": 100000, "to": 200000, "currency": "RUR"},
+            "employer": {"id": "45316", "name": "Sber"},
+            "description": "<p>Test description</p>",
+            "alternate_url": "https://hh.ru/vacancy/1234867417",
+            "key_skills": [{"name": "Python"}, {"name": "Django"}],
+            "experience": {"name": "1-3 years"},
+            "employment": {"name": "Full time"}
+        }
+    }
+]
