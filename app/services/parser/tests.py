@@ -18,6 +18,8 @@ class VacancyTest(TestCase):
         self.sj_data = data.get('sj_vacancy')
         self.hh_list = data.get('hh_list_response')
         self.sj_list = data.get('sj_list_response')
+        self.hh_vacancy_saver = data.get('hh_vacancy_saver')
+        self.sj_vacancy_saver = data.get('sj_vacancy_saver')
 
         self.mock_request = MagicMock()
         self.mock_request.GET = {'query': 'Python'}
@@ -51,18 +53,51 @@ class VacancyTest(TestCase):
         self.assertEqual(result[0]['superjob_id'], 987654)
         self.assertEqual(result[0]['title'], "Python разработчик")
 
+    def test_parse_vacancy_empty_data(self):
+        parser = HhVacancyParser()
+        empty_data = {}
+        result = parser.parse_vacancy(empty_data)
+
+        self.assertEqual(result['hh_id'], None)
+        self.assertEqual(result['title'], '')
+        self.assertEqual(result['salary'], 'По договоренности')
+
     def test_vacancy_saver(self):
         saver = VacancySaver()
-        test_data = {
-            'hh_id': '999',
-            'title': 'Test Vacancy',
-            'company_name': 'Test Company',
-            'company_id': '111',
-            'url': 'http://test.com',
-            "published_at": "2023-05-15T12:00:00+0300",
-        }
-        saver.save_vacancy(test_data, source='hh')
+        invalid_data = {'title': 'Only title'}
+
+        saver.save_vacancy(self.hh_vacancy_saver, source='hh')
         self.assertTrue(HhVacancy.objects.filter(hh_id=999).exists())
+
+        saver.save_vacancy(self.sj_vacancy_saver, source='superjob')
+        self.assertTrue(SuperjobVacancy.objects.filter(superjob_id=999).exists())
+
+    def test_vacancy_saver_update_existing(self):
+        saver = VacancySaver()
+
+        initial_data = {
+            'hh_id': '100',
+            'title': 'Old Title',
+            'company_name': 'Test',
+            'company_id': '100',
+            'url': 'http://test.com',
+            'published_at': "2023-05-15T12:00:00+0300"
+        }
+        saver.save_vacancy(initial_data, source='hh')
+
+        # Обновляем
+        updated_data = {
+            'hh_id': '100',
+            'title': 'New Title',
+            'company_name': 'Test',
+            'company_id': '100',
+            'url': 'http://test.com',
+            'published_at': "2023-05-15T12:00:00+0300"
+        }
+        saver.save_vacancy(updated_data, source='hh')
+
+        vacancy = HhVacancy.objects.get(hh_id=100)
+        self.assertEqual(vacancy.title, 'New Title')
 
     @patch('app.services.parser.views.HhVacancyParser')
     def test_base_vacancy_parser_success(self, mock_parser):
@@ -71,7 +106,9 @@ class VacancyTest(TestCase):
             'hh_id': 111,
             'title': 'View Test',
             'company_name': 'Test Co',
-            'url': 'http://test.com'
+            'company_id': '100',
+            'url': 'http://test.com',
+            'published_at': "2023-05-15T12:00:00+0300"
         }]
 
         response = base_vacancy_parser(
