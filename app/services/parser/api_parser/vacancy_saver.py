@@ -9,7 +9,7 @@ class VacancySaver:
                 hh_id=vacancy_data.get('hh_id'),
                 defaults=vacancy_data
             )
-        else:
+        elif source == 'superjob':
             model = SuperjobVacancy
             model.objects.update_or_create(
                 superjob_id=vacancy_data.get('superjob_id'),
