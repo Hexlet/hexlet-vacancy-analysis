@@ -18,7 +18,6 @@
     "@mantine/hooks": "^8.2.4",
     "@mantine/notifications": "^8.2.5",
     "@reduxjs/toolkit": "^2.8.2",
-    "@tabler/icons-react": "^3.34.1",
     "@tailwindcss/vite": "^4.1.11",
     "axios": "^1.11.0",
     "class-variance-authority": "^0.7.1",

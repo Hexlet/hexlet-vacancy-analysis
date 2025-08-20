@@ -1,13 +1,5 @@
 import { useState, useEffect } from 'react'; 
 
-import {
-  IconBrandVk,
-  IconBrandYandex,
-  IconBrandGithub,
-} from '@tabler/icons-react';
-// import sberIdIcon from '../../assets/sber-id-icon.png';
-
-
 
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -31,11 +23,13 @@ import {
   Anchor,
   Group,
   Checkbox,
-  Divider,
-  Box
+  Image
 } from '@mantine/core';
-
-//import { SberbankidPrdIcon20 } from '@sberbusiness/icons';
+import vkIcon from '../../assets/VK_icon.png';
+import gitHubIcon from '../../assets/GitHub_icon.png';
+import yandexIcon from '../../assets/Yandex_icon.png';
+import tBankIcon from '../../assets/T-Bank_icon.png';
+import sberBankIcon from '../../assets/ SberBank_icon.png';
 
 
 const RegisterPage = () => {
@@ -166,22 +160,50 @@ const RegisterPage = () => {
 
         <Group align="center" gap="md" justify="center" mb= "lg">
           <Anchor href="#" target="_blank">
-            <IconBrandVk size={32} color="#4C75A3" />
+            {/*<IconBrandVk size={32} color="#4C75A3" />*/}
+            <Image 
+              src={vkIcon}
+              alt="VK"
+              radius="md"
+              style={{ width: 32, height: 32 }}
+            />
           </Anchor>
           <Anchor href="#" target="_blank">
-            <IconBrandYandex size={32} color="#FF0000" />
+            <Image 
+              src={yandexIcon}
+              alt="Yandex"
+              radius="md"
+              style={{ width: 32, height: 32 }}
+            />
+            {/*<IconBrandYandex size={32} color="#FF0000" />*/}
           </Anchor>
-          {/*<Anchor href="#" target="_blank">
-            <SberbankidPrdIcon20/> */}
+          <Anchor href="#" target="_blank">
+            <Image 
+              src={sberBankIcon}
+              alt="SberBank"
+              radius="md"
+              style={{ width: 32, height: 32 }}
+            />
+            {/*<SberbankidPrdIcon20/>*/}
             {/*<SberIDButton onClick={() => {}} size={32}/>*/}
-          {/*</Anchor>*/}
-          {/*
-          <Anchor href="#" target="_blank">
-            <IconBrandTinkoff size={32} color="#1E96C8" />
           </Anchor>
-          */}
           <Anchor href="#" target="_blank">
-            <IconBrandGithub size={32} color="#333333" />
+            <Image 
+              src={tBankIcon}
+              alt="T-Bank"
+              radius="md"
+              style={{ width: 32, height: 32 }}
+            />
+            {/*<IconBrandTinkoff size={32} color="#1E96C8" />*/}
+          </Anchor>
+          <Anchor href="#" target="_blank">
+            <Image 
+              src={gitHubIcon}
+              alt="GitHub"
+              radius="md"
+              style={{ width: 32, height: 32 }}
+            />
+            {/*<IconBrandGithub size={32} color="#333333" />*/}
           </Anchor>
         </Group>
 
