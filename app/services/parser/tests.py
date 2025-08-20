@@ -4,6 +4,7 @@ from .models import HhVacancy, SuperjobVacancy
 from .api_parser.hh_parser import HhVacancyParser
 from .api_parser.superjob_parser import SuperjobVacancyParser
 from .api_parser.vacancy_saver import VacancySaver
+from .api_parser.base_parser import BaseVacancyParser
 from .views import base_vacancy_parser
 from app.settings import FIXTURE_PATH
 from app.parser import get_fixture_data
@@ -26,7 +27,7 @@ class VacancyTest(TestCase):
     @patch('app.services.parser.api_parser.base_parser.BaseVacancyParser.fetch_data')
     def test_hh_parser_fetch_vacancies(self, mock_fetch):
         mock_fetch.return_value = self.hh_list
-        parser= HhVacancyParser()
+        parser = HhVacancyParser()
         result = parser.fetch_vacancies_list({})
 
         self.assertEqual(result, ["12345678", "87654321"])
@@ -83,3 +84,37 @@ class VacancyTest(TestCase):
         )
 
         self.assertEqual(response.status_code, HTTPStatus.OK.value)
+
+    def test_format_salary(self):
+        parser = BaseVacancyParser()
+        salary_data = {"from": 100000, "to": 200000, "currency": "RUB"}
+        result = parser.format_salary(salary_data=salary_data)
+        self.assertEqual(result, "от 100000 до 200000 RUB")
+
+        result = parser.format_salary(payment_from=150000, currency="USD")
+        self.assertEqual(result, "от 150000 USD")
+
+        result = parser.format_salary()
+        self.assertEqual(result, "По договоренности")
+
+    def test_parse_description(self):
+        parser = BaseVacancyParser()
+        html = "<p>Test <b>description</b> with <br>tags</p>"
+        result = parser.parse_description(html)
+        self.assertEqual(result, "Test description with tags")
+
+    def test_nested_fields(self):
+        parser = BaseVacancyParser()
+        test_data = {
+            "employer": {"name": "Google", "id": 123},
+            "address": {"city": "Moscow", "street": "Lenina"}
+        }
+        test_list_data = [{'name': 'Гибрид'}]
+        result = parser.parse_nested_field(test_data, "employer")
+        self.assertEqual(result, "Google")
+
+        result = parser.parse_nested_address(test_data, "city")
+        self.assertEqual(result, "Moscow")
+
+        result = parser.parse_nested_field_list(test_list_data)
+        self.assertEqual(result, "Гибрид")
