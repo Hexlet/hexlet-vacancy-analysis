@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'; 
 
-
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from '../../../store/hooks';
@@ -187,7 +186,11 @@ const RegisterPage = () => {
             {/*<SberbankidPrdIcon20/>*/}
             {/*<SberIDButton onClick={() => {}} size={32}/>*/}
           </Anchor>
-          <Anchor href="#" target="_blank">
+          <Anchor
+            href="http://localhost:8000/auth/tinkoff_id/"
+            target="_self"
+            aria-label="Войти через Тинькофф"
+          >
             <Image 
               src={tBankIcon}
               alt="T-Bank"
