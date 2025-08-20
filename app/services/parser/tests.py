@@ -12,8 +12,6 @@ from http import HTTPStatus
 import os
 
 class VacancyTest(TestCase):
-    # fixtures = ['hh_api.json', 'superjob_api.json']
-
     def setUp(self):
         data = get_fixture_data(os.path.join(FIXTURE_PATH, 'data_parser.json'))
         self.hh_data = data.get('hh_vacancy')
@@ -107,14 +105,14 @@ class VacancyTest(TestCase):
         parser = BaseVacancyParser()
         test_data = {
             "employer": {"name": "Google", "id": 123},
-            "address": {"city": "Moscow", "street": "Lenina"}
+            "address": {"city": "Moscow", "street": "Lenina"},
+            "work_format": [{'name': 'Гибрид'}]
         }
-        test_list_data = [{'name': 'Гибрид'}]
         result = parser.parse_nested_field(test_data, "employer")
         self.assertEqual(result, "Google")
 
         result = parser.parse_nested_address(test_data, "city")
         self.assertEqual(result, "Moscow")
 
-        result = parser.parse_nested_field_list(test_list_data)
+        result = parser.parse_nested_field_list(test_data, field_name='work_format')
         self.assertEqual(result, "Гибрид")
