@@ -88,6 +88,14 @@
       "url": "http://test.com",
       "published_at": "2023-05-15T12:00:00+0300"
   },
+  "hh_vacancy_saver_update": {
+      "hh_id": "999",
+      "title": "Test Vacancy Update",
+      "company_name": "Test Company",
+      "company_id": "111",
+      "url": "http://test.com",
+      "published_at": "2023-05-15T12:00:00+0300"
+  },
   "sj_vacancy_saver": {
       "superjob_id": 999,
       "title": "Test Vacancy",
