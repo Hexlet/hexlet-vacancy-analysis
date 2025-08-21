@@ -1,15 +1,19 @@
+import os
+from http import HTTPStatus
+from unittest.mock import MagicMock, patch
+
 from django.test import TestCase
-from unittest.mock import patch, MagicMock
-from .models import HhVacancy, SuperjobVacancy
+
+from app.parser import get_fixture_data
+from app.settings import FIXTURE_PATH
+
+from .api_parser.base_parser import BaseVacancyParser
 from .api_parser.hh_parser import HhVacancyParser
 from .api_parser.superjob_parser import SuperjobVacancyParser
 from .api_parser.vacancy_saver import VacancySaver
-from .api_parser.base_parser import BaseVacancyParser
+from .models import HhVacancy, SuperjobVacancy
 from .views import base_vacancy_parser
-from app.settings import FIXTURE_PATH
-from app.parser import get_fixture_data
-from http import HTTPStatus
-import os
+
 
 class VacancyTest(TestCase):
     def setUp(self):
@@ -19,10 +23,10 @@ class VacancyTest(TestCase):
         self.hh_list = data.get('hh_list_response')
         self.sj_list = data.get('sj_list_response')
         self.hh_vacancy_saver = data.get('hh_vacancy_saver')
+        self.hh_vacancy_saver_update = data.get('hh_vacancy_saver_update')
         self.sj_vacancy_saver = data.get('sj_vacancy_saver')
 
         self.mock_request = MagicMock()
-        self.mock_request.GET = {'query': 'Python'}
 
     @patch('app.services.parser.api_parser.base_parser.BaseVacancyParser.fetch_data')
     def test_hh_parser_fetch_vacancies(self, mock_fetch):
@@ -30,11 +34,10 @@ class VacancyTest(TestCase):
         parser = HhVacancyParser()
         result = parser.fetch_vacancies_list({})
 
+        self.assertEqual(len(result), 2)
         self.assertEqual(result, ["12345678", "87654321"])
 
-    @patch('app.services.parser.api_parser.base_parser.BaseVacancyParser.fetch_data')
-    def test_hh_parser_parse_vacancy(self, mock_fetch):
-        mock_fetch.return_value = self.hh_data
+    def test_hh_parser_parse_vacancy(self):
         parser = HhVacancyParser()
         result = parser.parse_vacancy(self.hh_data)
 
@@ -42,6 +45,23 @@ class VacancyTest(TestCase):
         self.assertEqual(result['title'], "Python Developer")
         self.assertEqual(result['salary'], "от 100000 до 200000 RUR")
         self.assertEqual(result['key_skills'], "Python, Django")
+
+    @patch('app.services.parser.api_parser.base_parser.BaseVacancyParser.fetch_data')
+    def test_hh_parser_parse_vacancies(self, mock_fetch):
+        mock_fetch.side_effect = [
+            self.hh_list,
+            self.hh_list['items'][0],
+            self.hh_list['items'][1]
+        ]
+        parser = HhVacancyParser()
+        result = parser.parse_vacancies({})
+
+        self.assertEqual(len(result), 2)
+        self.assertEqual(result[0]['hh_id'], "12345678")
+        self.assertEqual(result[0]['title'], "Python-разработчик")
+
+        self.assertEqual(result[1]['hh_id'], "87654321")
+        self.assertEqual(result[1]['title'], "Backend Developer (Python)")
 
     @patch('app.services.parser.api_parser.base_parser.BaseVacancyParser.fetch_data')
     def test_sj_parser_parse_vacancies(self, mock_fetch):
@@ -52,6 +72,18 @@ class VacancyTest(TestCase):
         self.assertEqual(len(result), 2)
         self.assertEqual(result[0]['superjob_id'], 987654)
         self.assertEqual(result[0]['title'], "Python разработчик")
+
+        self.assertEqual(result[1]['superjob_id'], 123456)
+        self.assertEqual(result[1]['title'], "Senior Python Developer")
+
+    def test_sj_parser_parse_vacancy(self):
+        parser = SuperjobVacancyParser()
+        result = parser.parse_vacancy(self.sj_data)
+
+        self.assertEqual(result['superjob_id'], 7812129)
+        self.assertEqual(result['title'], "Python Developer")
+        self.assertEqual(result['salary'], "от 150000 до 200000 rub")
+        self.assertEqual(result['experience'], "3-6 лет")
 
     def test_parse_vacancy_empty_data(self):
         parser = HhVacancyParser()
@@ -64,7 +96,6 @@ class VacancyTest(TestCase):
 
     def test_vacancy_saver(self):
         saver = VacancySaver()
-        invalid_data = {'title': 'Only title'}
 
         saver.save_vacancy(self.hh_vacancy_saver, source='hh')
         self.assertTrue(HhVacancy.objects.filter(hh_id=999).exists())
@@ -75,41 +106,17 @@ class VacancyTest(TestCase):
     def test_vacancy_saver_update_existing(self):
         saver = VacancySaver()
 
-        initial_data = {
-            'hh_id': '100',
-            'title': 'Old Title',
-            'company_name': 'Test',
-            'company_id': '100',
-            'url': 'http://test.com',
-            'published_at': "2023-05-15T12:00:00+0300"
-        }
-        saver.save_vacancy(initial_data, source='hh')
+        saver.save_vacancy(self.hh_vacancy_saver, source='hh')
 
-        # Обновляем
-        updated_data = {
-            'hh_id': '100',
-            'title': 'New Title',
-            'company_name': 'Test',
-            'company_id': '100',
-            'url': 'http://test.com',
-            'published_at': "2023-05-15T12:00:00+0300"
-        }
-        saver.save_vacancy(updated_data, source='hh')
+        saver.save_vacancy(self.hh_vacancy_saver_update, source='hh')
 
-        vacancy = HhVacancy.objects.get(hh_id=100)
-        self.assertEqual(vacancy.title, 'New Title')
+        vacancy = HhVacancy.objects.get(hh_id=999)
+        self.assertEqual(vacancy.title, 'Test Vacancy Update')
 
     @patch('app.services.parser.views.HhVacancyParser')
     def test_base_vacancy_parser_success(self, mock_parser):
         mock_instance = mock_parser.return_value
-        mock_instance.parse_vacancies.return_value = [{
-            'hh_id': 111,
-            'title': 'View Test',
-            'company_name': 'Test Co',
-            'company_id': '100',
-            'url': 'http://test.com',
-            'published_at': "2023-05-15T12:00:00+0300"
-        }]
+        mock_instance.parse_vacancies.return_value = [self.hh_vacancy_saver]
 
         response = base_vacancy_parser(
             self.mock_request,
