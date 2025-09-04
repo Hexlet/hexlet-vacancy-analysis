@@ -29,6 +29,9 @@ migrate:
 run:
 	uv run manage.py runserver
 
+run-bot:
+	uv run manage.py run_bot
+
 run-telegram:
 	uv run manage.py run_listener
 

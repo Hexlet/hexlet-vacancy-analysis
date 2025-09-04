@@ -47,3 +47,15 @@ make create-superuser
 ```bash
 make run
 ```
+
+## Run telegram bot
+
+```bash
+make run-bot
+```
+
+## Local run telegram bot
+
+```bash
+docker compose -f docker-compose-bot-sender.yml up
+```

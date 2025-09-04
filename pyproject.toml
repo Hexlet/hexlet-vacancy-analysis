@@ -15,6 +15,11 @@ dependencies = [
     "psycopg2-binary>=2.9.10",
     "requests>=2.32.3",
     "telethon>=1.40.0",
+    "celery>=5.5.3",
+    "django-celery-beat>=2.8.1",
+    "python-telegram-bot>=22.3",
+    "flower>=2.0.1",
+    "redis>=6.2.0",
 ]
 
 [dependency-groups]
