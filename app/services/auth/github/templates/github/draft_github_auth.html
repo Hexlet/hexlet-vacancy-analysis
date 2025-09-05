@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>GitHub OAuth (draft)</title>
+    </head>
+    <body>
+        <header>
+            <p>
+                Для авторизации через Гитхаб нужен <a href="http://localhost:8000/auth/github/">localhost</a> вместо 127.0.0.1
+            </p>
+
+            <p>В .env можно изменить DJANGO_EMAIL_BACKEND на django.core.mail.backends.console.EmailBackend</p>
+
+            {% if github_user %}
+                {% if github_user.first_name or github_user.last_name %}
+                    <p>Привет, {{ github_user.first_name }} {{ github_user.last_name }}!</p>
+                {% else %}
+                    <p>Привет, noname!</p>
+                {% endif %}
+                <p>Email: {{ github_user.email }}</p>
+                <br>
+                <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit">Выйти</button>
+                </form>
+            {% else %}
+                <a href="{% url 'github_auth' %}">Войти через GitHub</a>
+                <br>
+                <br>
+
+                {% comment %} Форма регистрации по электронной почте {% endcomment %}
+                <h2>Или зарегистрируйтесь по электронной&nbsp;почте</h2>
+                <form id="emailRegistrationForm"
+                      method="post"
+                      action="{% url 'github_email_register' %}">
+                    {% csrf_token %}
+                    <label for="email">Email:</label>
+                    <input type="email"
+                           id="email"
+                           name="email"
+                           required
+                           value="user@example.com">
+                    <br>
+                    <label for="password">Пароль (Password2025):</label>
+                    <input type="password"
+                           id="password"
+                           name="password"
+                           required
+                           value="Password2025"
+                           autocomplete="new-password">
+                    <br>
+                    <label for="passwordAgain">Повторите пароль:</label>
+                    <input type="password"
+                           id="passwordAgain"
+                           name="passwordAgain"
+                           required
+                           value="Password2025">
+                    <br>
+                    <label>
+                        <input type="checkbox" name="acceptTerms" required checked>
+                        Я принимаю условия
+                    </label>
+                    <br>
+                    <button type="submit">Зарегистрироваться</button>
+                </form>
+                <div id="registerMessage"></div>
+
+                {% comment %} Форма входа по электронной почте {% endcomment %}
+                <h2>Или войдите по электронной&nbsp;почте</h2>
+                <form id="emailLoginForm"
+                      method="post"
+                      action="{% url 'github_email_login' %}">
+                    {% csrf_token %}
+                    <label for="loginEmail">Email:</label>
+                    <input type="email"
+                           id="loginEmail"
+                           name="email"
+                           required
+                           value="user@example.com">
+                    <br>
+                    <label for="loginPassword">Пароль:</label>
+                    <input type="password"
+                           id="loginPassword"
+                           name="password"
+                           required
+                           autocomplete="new-password"
+                           value="Password2025">
+                    <br>
+                    <button type="submit">Войти</button>
+                </form>
+                <div id="loginMessage"></div>
+            {% endif %}
+            <br>
+            {% if messages %}
+                <ul>
+                    {% for message in messages %}<li>{{ message }}</li>{% endfor %}
+                </ul>
+            {% endif %}
+            <br>
+            <a href="/admin" target="_blank">admin</a>
+        </header>
+    </body>
+</html>

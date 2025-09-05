@@ -25,6 +25,10 @@ EMAIL_HOST_PASSWORD=secret123
 EMAIL_TIMEOUT=10
 
 DEBUG=True
+
+GITHUB_CLIENT_ID=key
+GITHUB_CLIENT_SECRET=key
+GITHUB_REDIRECT_URI=http://localhost:8000/auth/github/callback/
 ```
 
 Create a PostgreSQL user (or reuse an existing one) and a database using the parameters from DATABASE_URL.
