@@ -53,7 +53,6 @@ def insert_keyword(word, db_path="../../../../db.sqlite3"):
         print(f"Слово '{word}' записано в поле {field}.")
 
 
-# Пример ввода
 words = [
     "junior",
     "джун",
