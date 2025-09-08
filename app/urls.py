@@ -14,17 +14,19 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.contrib import admin
 from django.urls import include, path
 
 from app import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('hh/', include('app.services.hh.hh_parser.urls')),
-    path('superjob/', include('app.services.superjob.superjob_parser.urls')),
-    path('telegram/', include('app.services.telegram.telegram_channels.urls')),
-    path('auth/', include('app.services.auth.users.urls')),
+    path("admin/", admin.site.urls),
+    path("hh/", include("app.services.hh.hh_parser.urls")),
+    path("superjob/", include("app.services.superjob.superjob_parser.urls")),
+    path("telegram/", include("app.services.telegram.telegram_channels.urls")),
+    path("auth/", include("app.services.auth.users.urls")),
+    path("robots.txt", views.robots_txt, name="robots_txt"),
 ]
 
 handler500 = views.custom_server_error
