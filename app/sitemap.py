@@ -1,5 +1,6 @@
 from django.contrib.sitemaps import Sitemap
 from django.urls import reverse
+
 from .services.telegram.telegram_channels.models import Channel
 
 
@@ -7,6 +8,9 @@ class StaticSitemap(Sitemap):
     """
     Карта-сайта для статичных страниц
     """
+
+    priority = 0.5
+    changefreq = "weekly"
 
     def items(self):
         return [
@@ -28,7 +32,7 @@ class TelegramSitemap(Sitemap):
     changefreq = "weekly"
 
     def items(self):
-        return Channel.objects.all().order_by("username")
+        return Channel.objects.all()
 
-    def lastmod(self, obj):
-        return obj.time_update
+    def location(self, obj):
+        return f"telegram/{obj.id}/show/"
