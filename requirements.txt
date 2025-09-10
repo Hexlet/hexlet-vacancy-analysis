@@ -1,6 +1,6 @@
 Django==5.1.6
 django-bootstrap5==25.1
 django-filter==25.1
-docker==5.0.3
-docker-compose==1.29.2
+#docker==5.0.3
+#docker-compose==1.29.2
 load-dotenv==0.1.0
