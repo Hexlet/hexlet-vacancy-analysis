@@ -1,0 +1,28 @@
+{
+    "errors": {
+        "loginAuthErr": "Неверные имя пользователя или пароль",
+        "signupUserUnique": "Такой пользователь уже существует",
+        "validation": {
+            "required": "Обязательное поле",
+            "emailRequired": "Email обязателен",
+            "emailCorrect": "Введите корректный email",
+            "passwdMinLength": "Не менее 8 символов",
+            "passwdNumContain": "Пароль должен содержать цифру",
+            "passwdSpecCharContain": "Пароль должен содержать спецсимвол",
+            "confirmPasswdConfirm": "Пароли должны совпадать",
+            "unique": "Должно быть уникальным"
+        },
+        "error": "Ошибка",
+        "authErr": "Ошибка авторизации",
+        "signupErr": "Ошибка регистрации"
+    },
+    "login": {
+        "enter": "Войти",
+        "doYouHaveAccount": "Нет аккаунта?",
+        "signup": "Регистрация"
+    },
+    "signup": {
+        "signup": "Зарегистрироваться",
+        "input": "Войти"
+    }
+}
