@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'app.services.telegram.telegram_parser',
     'app.services.telegram.telegram_channels',
     'app.services.superjob.superjob_parser',
+    'app.services.regions',
 ]
 
 AUTH_USER_MODEL = 'users.User'
