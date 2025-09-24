@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
+    "@inertiajs/react": "^2.1.6",
     "@mantine/core": "^8.2.4",
     "@mantine/form": "^8.2.4",
     "@mantine/hooks": "^8.2.4",
