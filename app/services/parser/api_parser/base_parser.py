@@ -1,13 +1,17 @@
+import os
 import time
 
 import requests
 from bs4 import BeautifulSoup
+
+from app.parser import get_fixture_data, save_data
 
 
 class BaseVacancyParser:
     API_URL = None
     HEADERS = None
     DEFAULT_DELAY = 0.3
+    CACHE_FILE = 'app/services/parser/city_region_mapping.json'
 
     def fetch_data(self, params=None, item_id=None):
         url = self.API_URL
@@ -70,3 +74,40 @@ class BaseVacancyParser:
         if isinstance(field_data, dict):
             return field_data.get(field_name, '')
         return str(field_data)
+
+    def get_city_to_region_mapping(self, source='hh'):
+        if os.path.exists(self.CACHE_FILE):
+            get_fixture_data(self.CACHE_FILE)
+
+        if source == 'hh':
+            url = 'https://api.hh.ru/areas'
+        elif source == 'superjob':
+            url = 'https://api.superjob.ru/2.0/regions/combined/'
+        else:
+            raise ValueError('Unknown source')
+
+        response = requests.get(url)
+        if response.status_code != 200:
+            raise ValueError(f"Error fetching areas: {response.status_code}")
+
+        areas = response.json()
+        mapping = {}
+
+        if source == 'hh':
+            for country in areas:
+                for region in country['areas']:
+                    region_name = region['name']
+                    for city in region['areas']:
+                        mapping[city['name']] = region_name
+
+        elif source == 'superjob':
+            for country in areas:
+                for city in country['towns']:
+                    mapping[city['title']] = city['title']
+                for region in country['regions']:
+                    region_name = region['title']
+                    for city in region['towns']:
+                        mapping[city['title']] = region_name
+
+        save_data(self.CACHE_FILE, mapping)
+        return mapping
