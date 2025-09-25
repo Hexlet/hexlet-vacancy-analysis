@@ -6,6 +6,7 @@ def get_fixture_data(path):
         data = json.load(f)
         return data
 
+
 def save_data(path, data):
     with open(path, 'w') as f:
         json.dump(data, f)
