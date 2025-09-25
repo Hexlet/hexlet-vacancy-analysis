@@ -86,7 +86,7 @@ class BaseVacancyParser:
         else:
             raise ValueError('Unknown source')
 
-        response = requests.get(url)
+        response = requests.get(url, headers=self.HEADERS)
         if response.status_code != 200:
             raise ValueError(f"Error fetching areas: {response.status_code}")
 

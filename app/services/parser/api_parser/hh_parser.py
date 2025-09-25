@@ -5,6 +5,9 @@ class HhVacancyParser(BaseVacancyParser):
     API_URL = 'https://api.hh.ru/vacancies'
     HEADERS = {"User-Agent": "HH-User-Agent"}
 
+    def __init__(self):
+        self.mapping = self.get_city_to_region_mapping(source='hh')
+
     def fetch_vacancies_list(self, search_params):
         data = self.fetch_items_list(search_params)
         return [item['id'] for item in data['items']]
@@ -21,6 +24,7 @@ class HhVacancyParser(BaseVacancyParser):
 
     def parse_vacancy(self, item):
         salary_data = item.get('salary', {})
+        city = self.parse_nested_address(item, 'city'),
 
         return {
             'hh_id': item.get('id'),
@@ -41,7 +45,8 @@ class HhVacancyParser(BaseVacancyParser):
             'key_skills': ', '.join([skill['name'] for skill in item.get(
                 'key_skills', [])]),
             'description': self.parse_description(item.get('description')),
-            'city': self.parse_nested_address(item, 'city'),
+            'region': self.mapping.get(city, 'Unknown'),
+            'city': city,
             'street': self.parse_nested_address(item, 'street'),
             'building': self.parse_nested_address(item, 'building'),
             'contacts': item.get('contacts', {}),
