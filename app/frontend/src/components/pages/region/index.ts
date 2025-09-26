@@ -1,0 +1,1 @@
+export { RegionPage } from './ui/regionPage'
