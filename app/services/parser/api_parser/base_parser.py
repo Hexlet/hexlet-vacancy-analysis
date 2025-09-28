@@ -11,7 +11,7 @@ class BaseVacancyParser:
     API_URL = None
     HEADERS = None
     DEFAULT_DELAY = 0.3
-    CACHE_FILE = 'app/services/parser/city_region_mapping.json'
+    CACHE_FILE = os.path.join(os.path.dirname(__file__), 'city_region_mapping.json')
 
     def fetch_data(self, params=None, item_id=None):
         url = self.API_URL
@@ -77,7 +77,7 @@ class BaseVacancyParser:
 
     def get_city_to_region_mapping(self, source='hh'):
         if os.path.exists(self.CACHE_FILE):
-            get_fixture_data(self.CACHE_FILE)
+            return get_fixture_data(self.CACHE_FILE)
 
         if source == 'hh':
             url = 'https://api.hh.ru/areas'
@@ -99,6 +99,8 @@ class BaseVacancyParser:
                     region_name = region['name']
                     for city in region['areas']:
                         mapping[city['name']] = region_name
+                    if not region['areas']:
+                        mapping[region_name] = region_name
 
         elif source == 'superjob':
             for country in areas:
@@ -108,6 +110,8 @@ class BaseVacancyParser:
                     region_name = region['title']
                     for city in region['towns']:
                         mapping[city['title']] = region_name
+                    if not region['towns']:
+                        mapping[region_name] = region_name
 
         save_data(self.CACHE_FILE, mapping)
         return mapping
