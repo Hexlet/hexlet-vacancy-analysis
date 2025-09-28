@@ -7,7 +7,6 @@ class HhVacancy(models.Model):
     url = models.URLField(unique=True)
     company_name = models.CharField(max_length=255)
     company_id = models.IntegerField()
-    area = models.CharField(max_length=100)
     salary = models.CharField(max_length=120, null=True)
     experience = models.CharField(max_length=50)
     employment = models.CharField(max_length=40, null=True)

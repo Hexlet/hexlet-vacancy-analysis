@@ -24,14 +24,13 @@ class HhVacancyParser(BaseVacancyParser):
 
     def parse_vacancy(self, item):
         salary_data = item.get('salary', {})
-        city = self.parse_nested_address(item, 'city'),
+        city = self.parse_nested_field(item, 'area')
 
         return {
             'hh_id': item.get('id'),
             'title': item.get('name', ''),
             'company_name': item.get('employer', {}).get('name', ''),
             'company_id': item.get('employer', {}).get('id', ''),
-            'area': self.parse_nested_field(item, 'area'),
             'salary': self.format_salary(salary_data=salary_data),
             'published_at': item.get('published_at', ''),
             'url': item.get('alternate_url', ''),
