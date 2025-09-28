@@ -12,8 +12,8 @@ class SuperjobVacancyParser(BaseVacancyParser):
     API_URL = 'https://api.superjob.ru/2.0/vacancies'
     HEADERS = {"X-Api-App-Id": SUPERJOB_API_KEY}
 
-    def __init__(self):
-        self.mapping = self.get_city_to_region_mapping(source='superjob')
+    # def __init__(self):
+    #     self.mapping = self.get_city_to_region_mapping(source='superjob')
 
     def parse_vacancies(self, search_params):
         data = self.fetch_items_list(search_params)
@@ -21,7 +21,6 @@ class SuperjobVacancyParser(BaseVacancyParser):
 
     def parse_vacancy(self, item):
         company = item.get('client', {})
-        city = self.parse_nested_field(item, 'town')
 
         return {
             'superjob_id': item.get('id'),
@@ -41,8 +40,8 @@ class SuperjobVacancyParser(BaseVacancyParser):
             'place_of_work': self.parse_nested_field(item, 'place_of_work'),
             'education': self.parse_nested_field(item, 'education'),
             'description': self.parse_description(item.get('vacancyRichText')),
-            'region': self.mapping.get(city, 'Unknown'),
-            'city': city,
+            # 'region': self.mapping.get(city, 'Unknown'),
+            'city': self.parse_nested_field(item, 'town'),
             'address': item.get('address', ''),
             'contacts': item.get('phone', ''),
         }

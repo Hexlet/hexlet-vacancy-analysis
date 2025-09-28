@@ -11,7 +11,7 @@ class BaseVacancyParser:
     API_URL = None
     HEADERS = None
     DEFAULT_DELAY = 0.3
-    CACHE_FILE = os.path.join(os.path.dirname(__file__), 'city_region_mapping.json')
+    # CACHE_FILE = os.path.join(os.path.dirname(__file__), 'city_region_mapping.json')
 
     def fetch_data(self, params=None, item_id=None):
         url = self.API_URL
@@ -75,43 +75,43 @@ class BaseVacancyParser:
             return field_data.get(field_name, '')
         return str(field_data)
 
-    def get_city_to_region_mapping(self, source='hh'):
-        if os.path.exists(self.CACHE_FILE):
-            return get_fixture_data(self.CACHE_FILE)
-
-        if source == 'hh':
-            url = 'https://api.hh.ru/areas'
-        elif source == 'superjob':
-            url = 'https://api.superjob.ru/2.0/regions/combined/'
-        else:
-            raise ValueError('Unknown source')
-
-        response = requests.get(url, headers=self.HEADERS)
-        if response.status_code != 200:
-            raise ValueError(f"Error fetching areas: {response.status_code}")
-
-        areas = response.json()
-        mapping = {}
-
-        if source == 'hh':
-            for country in areas:
-                for region in country['areas']:
-                    region_name = region['name']
-                    for city in region['areas']:
-                        mapping[city['name']] = region_name
-                    if not region['areas']:
-                        mapping[region_name] = region_name
-
-        elif source == 'superjob':
-            for country in areas:
-                for city in country['towns']:
-                    mapping[city['title']] = city['title']
-                for region in country['regions']:
-                    region_name = region['title']
-                    for city in region['towns']:
-                        mapping[city['title']] = region_name
-                    if not region['towns']:
-                        mapping[region_name] = region_name
-
-        save_data(self.CACHE_FILE, mapping)
-        return mapping
+    # def get_city_to_region_mapping(self, source='hh'):
+    #     if os.path.exists(self.CACHE_FILE):
+    #         return get_fixture_data(self.CACHE_FILE)
+    #
+    #     if source == 'hh':
+    #         url = 'https://api.hh.ru/areas'
+    #     elif source == 'superjob':
+    #         url = 'https://api.superjob.ru/2.0/regions/combined/'
+    #     else:
+    #         raise ValueError('Unknown source')
+    #
+    #     response = requests.get(url)
+    #     if response.status_code != 200:
+    #         raise ValueError(f"Error fetching areas: {response.status_code} - {response.text}")
+    #
+    #     areas = response.json()
+    #     mapping = {}
+    #
+    #     if source == 'hh':
+    #         for country in areas:
+    #             for region in country['areas']:
+    #                 region_name = region['name']
+    #                 for city in region['areas']:
+    #                     mapping[city['name']] = region_name
+    #                 if not region['areas']:
+    #                     mapping[region_name] = region_name
+    #
+    #         elif source == 'superjob':
+    #             for country in areas:
+    #                 for city in country['towns']:
+    #                     mapping[city['title']] = city['title']
+    #                 for region in country['regions']:
+    #                     region_name = region['title']
+    #                     for city in region['towns']:
+    #                         mapping[city['title']] = region_name
+    #                     if not region['towns']:
+    #                         mapping[region_name] = region_name
+    #
+    #         save_data(self.CACHE_FILE, mapping)
+    #         return mapping

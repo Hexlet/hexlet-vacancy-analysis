@@ -1,4 +1,5 @@
 import os
+import requests
 from http import HTTPStatus
 from unittest.mock import MagicMock, patch
 
