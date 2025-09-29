@@ -185,7 +185,11 @@ class VacancyTest(TestCase):
     @patch('app.services.parser.api_parser.base_parser.os.path.exists')
     @patch('app.services.parser.api_parser.base_parser.get_fixture_data')
     @patch('app.services.parser.api_parser.base_parser.save_data')
-    def test_get_city_to_region_mapping_from_cache(self, mock_save, mock_get_fixture, mock_exists, mock_get):
+    def test_get_city_to_region_mapping_from_cache(self,
+                                                   mock_save,
+                                                   mock_get_fixture,
+                                                   mock_exists,
+                                                   mock_get):
         mock_exists.return_value = True
         mock_get_fixture.return_value = {'Москва': 'Москва'}
 
@@ -212,13 +216,21 @@ class VacancyTest(TestCase):
         mapping = parser.get_city_to_region_mapping(source='hh')
 
         mock_get.assert_called_once_with('https://api.hh.ru/areas')
-        mock_save.assert_called_once_with(parser.CACHE_FILE, {'Москва': 'Москва', 'Подмосковье': 'Московская область'})
-        self.assertEqual(mapping, {'Москва': 'Москва', 'Подмосковье': 'Московская область'})
+        mock_save.assert_called_once_with(parser.CACHE_FILE, {
+            'Москва': 'Москва',
+            'Подмосковье': 'Московская область'
+        })
+        self.assertEqual(mapping, {
+            'Москва': 'Москва',
+            'Подмосковье': 'Московская область'})
 
     @patch('app.services.parser.api_parser.base_parser.requests.get')
     @patch('app.services.parser.api_parser.base_parser.os.path.exists')
     @patch('app.services.parser.api_parser.base_parser.save_data')
-    def test_get_city_to_region_mapping_fetch_superjob(self, mock_save, mock_exists, mock_get):
+    def test_get_city_to_region_mapping_fetch_superjob(self,
+                                                       mock_save,
+                                                       mock_exists,
+                                                       mock_get):
         mock_exists.return_value = False
 
         mock_response = MagicMock()
@@ -230,10 +242,13 @@ class VacancyTest(TestCase):
         mapping = parser.get_city_to_region_mapping(source='superjob')
 
         mock_get.assert_called_once_with('https://api.superjob.ru/2.0/regions/combined/')
-        mock_save.assert_called_once_with(parser.CACHE_FILE,
-                                          {'Москва': 'Москва',
-                                           'Подмосковье': 'Московская область',
-                                           'Санкт-Петербург': 'Санкт-Петербург'})
-        self.assertEqual(mapping, {'Москва': 'Москва',
-                                   'Подмосковье': 'Московская область',
-                                   'Санкт-Петербург': 'Санкт-Петербург'})
+        mock_save.assert_called_once_with(
+            parser.CACHE_FILE, {
+                'Москва': 'Москва',
+                'Подмосковье': 'Московская область',
+                'Санкт-Петербург': 'Санкт-Петербург'})
+        self.assertEqual(
+            mapping, {
+                'Москва': 'Москва',
+                'Подмосковье': 'Московская область',
+                'Санкт-Петербург': 'Санкт-Петербург'})
