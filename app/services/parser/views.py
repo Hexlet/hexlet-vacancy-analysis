@@ -41,7 +41,7 @@ def base_vacancy_parser(request, parser_class, model, search_params):
 def hh_vacancy_list(request):
     search_params = {
         'text': request.GET.get('query', 'Python'),
-        'area': request.GET.get('area', 1),
+        'area': request.GET.get('area', 3),
         'per_page': request.GET.get('per_page', 4),
     }
     return base_vacancy_parser(request, HhVacancyParser, HhVacancy, search_params)
@@ -49,8 +49,8 @@ def hh_vacancy_list(request):
 
 def superjob_vacancy_list(request):
     search_params = {
-        'keyword': request.GET.get('query', 'Python'),
-        'town': request.GET.get('town', 'Москва'),
+        'keyword': request.GET.get('query', 'Java'),
+        'town': request.GET.get('town', 'Екатеринбург'),
         'count': request.GET.get('count', 4),
     }
     return base_vacancy_parser(
