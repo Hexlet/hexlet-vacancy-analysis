@@ -4,6 +4,7 @@
     "name": "Python Developer",
     "salary": {"from": 100000, "to": 200000, "currency": "RUR"},
     "employer": {"id": "456", "name": "Yandex"},
+    "area": {"id": "3", "name": "Екатеринбург"},
     "description": "<p>Test description</p>",
     "alternate_url": "https://hh.ru/vacancy/120877600",
     "key_skills": [{"name": "Python"}, {"name": "Django"}],
@@ -14,6 +15,7 @@
     "id": 7812129,
     "profession": "Python Developer",
     "client": {"id": 101, "title": "Mail.ru"},
+    "town": {"id": 4, "title": "Екатеринбург"},
     "payment_from": 150000,
     "payment_to": 200000,
     "currency": "rub",
@@ -103,5 +105,54 @@
       "company_id": "111",
       "url": "http://test.com",
       "published_at": 1753351260
-  }
+  },
+  "hh_areas":
+    [
+      {
+        "id": "113",
+        "name": "Россия",
+        "areas": [
+            {
+              "id": "1",
+              "name": "Москва",
+              "areas": []
+            },
+            {
+              "id": "2",
+              "name": "Московская область",
+              "areas": [
+                {
+                  "id": "3",
+                  "name": "Подмосковье"
+                }
+              ]
+            }
+        ]
+      }
+    ],
+  "sj_areas":
+    [
+      {
+        "title": "Россия",
+        "towns": [
+          {
+            "title": "Москва"
+          }
+        ],
+        "regions": [
+            {
+              "title": "Московская область",
+              "towns": [
+                {
+                  "title": "Подмосковье"
+                }
+              ]
+            },
+            {
+              "title": "Санкт-Петербург",
+              "towns": []
+            }
+        ]
+      }
+    ]
 }

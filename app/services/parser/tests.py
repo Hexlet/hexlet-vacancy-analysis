@@ -25,6 +25,8 @@ class VacancyTest(TestCase):
         self.hh_vacancy_saver = data.get('hh_vacancy_saver')
         self.hh_vacancy_saver_update = data.get('hh_vacancy_saver_update')
         self.sj_vacancy_saver = data.get('sj_vacancy_saver')
+        self.hh_areas = data.get('hh_areas')
+        self.sj_areas = data.get('sj_areas')
 
         self.mock_request = MagicMock()
 
@@ -45,6 +47,7 @@ class VacancyTest(TestCase):
         self.assertEqual(result['title'], "Python Developer")
         self.assertEqual(result['salary'], "от 100000 до 200000 RUR")
         self.assertEqual(result['key_skills'], "Python, Django")
+        self.assertEqual(result['region'], "Свердловская область")
 
     @patch('app.services.parser.api_parser.base_parser.BaseVacancyParser.fetch_data')
     def test_hh_parser_parse_vacancies(self, mock_fetch):
@@ -84,6 +87,7 @@ class VacancyTest(TestCase):
         self.assertEqual(result['title'], "Python Developer")
         self.assertEqual(result['salary'], "от 150000 до 200000 rub")
         self.assertEqual(result['experience'], "3-6 лет")
+        self.assertEqual(result['region'], "Свердловская область")
 
     def test_parse_vacancy_empty_data(self):
         parser = HhVacancyParser()
@@ -160,3 +164,76 @@ class VacancyTest(TestCase):
 
         result = parser.parse_nested_field_list(test_data, field_name='work_format')
         self.assertEqual(result, "Гибрид")
+
+    def test_parse_hh_areas(self):
+        parser = BaseVacancyParser()
+        mapping = parser.parse_hh_areas(self.hh_areas)
+        self.assertEqual(mapping, {
+            'Москва': 'Москва', 'Подмосковье': 'Московская область'
+        })
+
+    def test_parse_sj_areas(self):
+        parser = BaseVacancyParser()
+        mapping = parser.parse_superjob_areas(self.sj_areas)
+        self.assertEqual(mapping, {
+            'Москва': 'Москва',
+            'Подмосковье': 'Московская область',
+            'Санкт-Петербург': 'Санкт-Петербург'
+        })
+
+    @patch('app.services.parser.api_parser.base_parser.requests.get')
+    @patch('app.services.parser.api_parser.base_parser.os.path.exists')
+    @patch('app.services.parser.api_parser.base_parser.get_fixture_data')
+    @patch('app.services.parser.api_parser.base_parser.save_data')
+    def test_get_city_to_region_mapping_from_cache(self, mock_save, mock_get_fixture, mock_exists, mock_get):
+        mock_exists.return_value = True
+        mock_get_fixture.return_value = {'Москва': 'Москва'}
+
+        parser = BaseVacancyParser()
+        mapping = parser.get_city_to_region_mapping(source='hh')
+
+        mock_get_fixture.assert_called_once_with(parser.CACHE_FILE)
+        mock_get.assert_not_called()
+        mock_save.assert_not_called()
+        self.assertEqual(mapping, {'Москва': 'Москва'})
+
+    @patch('app.services.parser.api_parser.base_parser.requests.get')
+    @patch('app.services.parser.api_parser.base_parser.os.path.exists')
+    @patch('app.services.parser.api_parser.base_parser.save_data')
+    def test_get_city_to_region_mapping_fetch_hh(self, mock_save, mock_exists, mock_get):
+        mock_exists.return_value = False
+
+        mock_response = MagicMock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = self.hh_areas
+        mock_get.return_value = mock_response
+
+        parser = BaseVacancyParser()
+        mapping = parser.get_city_to_region_mapping(source='hh')
+
+        mock_get.assert_called_once_with('https://api.hh.ru/areas')
+        mock_save.assert_called_once_with(parser.CACHE_FILE, {'Москва': 'Москва', 'Подмосковье': 'Московская область'})
+        self.assertEqual(mapping, {'Москва': 'Москва', 'Подмосковье': 'Московская область'})
+
+    @patch('app.services.parser.api_parser.base_parser.requests.get')
+    @patch('app.services.parser.api_parser.base_parser.os.path.exists')
+    @patch('app.services.parser.api_parser.base_parser.save_data')
+    def test_get_city_to_region_mapping_fetch_superjob(self, mock_save, mock_exists, mock_get):
+        mock_exists.return_value = False
+
+        mock_response = MagicMock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = self.sj_areas
+        mock_get.return_value = mock_response
+
+        parser = BaseVacancyParser()
+        mapping = parser.get_city_to_region_mapping(source='superjob')
+
+        mock_get.assert_called_once_with('https://api.superjob.ru/2.0/regions/combined/')
+        mock_save.assert_called_once_with(parser.CACHE_FILE,
+                                          {'Москва': 'Москва',
+                                           'Подмосковье': 'Московская область',
+                                           'Санкт-Петербург': 'Санкт-Петербург'})
+        self.assertEqual(mapping, {'Москва': 'Москва',
+                                   'Подмосковье': 'Московская область',
+                                   'Санкт-Петербург': 'Санкт-Петербург'})
