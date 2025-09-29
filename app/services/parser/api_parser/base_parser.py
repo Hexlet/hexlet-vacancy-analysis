@@ -88,30 +88,40 @@ class BaseVacancyParser:
 
         response = requests.get(url)
         if response.status_code != 200:
-            raise ValueError(f"Error fetching areas: {response.status_code} - {response.text}")
+            raise ValueError(f"Error fetching areas: {response.status_code}")
 
         areas = response.json()
         mapping = {}
 
         if source == 'hh':
-            for country in areas:
-                for region in country['areas']:
-                    region_name = region['name']
-                    for city in region['areas']:
-                        mapping[city['name']] = region_name
-                    if not region['areas']:
-                        mapping[region_name] = region_name
+            mapping = self.parse_hh_areas(areas)
 
         elif source == 'superjob':
-                for country in areas:
-                    for city in country['towns']:
-                        mapping[city['title']] = city['title']
-                    for region in country['regions']:
-                        region_name = region['title']
-                        for city in region['towns']:
-                            mapping[city['title']] = region_name
-                        if not region['towns']:
-                            mapping[region_name] = region_name
+            mapping = self.parse_superjob_areas(areas)
 
         save_data(self.CACHE_FILE, mapping)
+        return mapping
+
+    def parse_hh_areas(self, areas):
+        mapping = {}
+        for country in areas:
+            for region in country['areas']:
+                region_name = region['name']
+                for city in region['areas']:
+                    mapping[city['name']] = region_name
+                if not region['areas']:
+                    mapping[region_name] = region_name
+        return mapping
+
+    def parse_superjob_areas(self, areas):
+        mapping = {}
+        for country in areas:
+            for city in country['towns']:
+                mapping[city['title']] = city['title']
+            for region in country['regions']:
+                region_name = region['title']
+                for city in region['towns']:
+                    mapping[city['title']] = region_name
+                if not region['towns']:
+                    mapping[region_name] = region_name
         return mapping
