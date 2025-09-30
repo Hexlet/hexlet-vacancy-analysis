@@ -3,5 +3,5 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('<int:pk>', views.ShowRegionView.as_view(), name='show_region'),
+    path('<str:region_id>', views.RegionView.as_view(), name='region_page'),
 ]
