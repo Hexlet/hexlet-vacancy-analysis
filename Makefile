@@ -37,3 +37,6 @@ shell:
 
 test:
 	uv run manage.py test
+
+pytest:
+	uv run pytest --cov=app

@@ -35,16 +35,20 @@ ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
 
 INSTALLED_APPS = [
     'app.services.auth.users',
+    'app.services.auth.github',
+    'app.services.auth.yandex_id',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'inertia',
     'app.services.hh.hh_parser',
     'app.services.telegram.telegram_parser',
     'app.services.telegram.telegram_channels',
     'app.services.superjob.superjob_parser',
+    'app.services.account',
 ]
 
 AUTH_USER_MODEL = 'users.User'
@@ -152,8 +156,12 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Inertia (temporarily disabled; frontend will handle this later)
+
 AUTHENTICATION_BACKENDS = [
     'app.services.auth.users.logic.authentication.EmailAuthBackend',
+    'app.services.auth.github.backend.GithubBackend',
+    'app.services.auth.yandex_id.backend.YandexBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
 
@@ -168,3 +176,11 @@ EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "true").lower() in ("true", "1", "yes
 EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
 EMAIL_TIMEOUT = int(os.environ.get("EMAIL_TIMEOUT", 10))
+
+YANDEX_CLIENT_ID = os.getenv('YANDEX_CLIENT_ID', '')
+YANDEX_CLIENT_SECRET = os.getenv('YANDEX_CLIENT_SECRET', '')
+YANDEX_REDIRECT_URI = os.getenv('YANDEX_REDIRECT_URI', '')
+
+GITHUB_CLIENT_ID = os.getenv('GITHUB_CLIENT_ID', '')
+GITHUB_CLIENT_SECRET = os.getenv('GITHUB_CLIENT_SECRET', '')
+GITHUB_REDIRECT_URI = os.getenv('GITHUB_REDIRECT_URI', '')
