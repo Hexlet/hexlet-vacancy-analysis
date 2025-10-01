@@ -15,7 +15,7 @@ help:
 	@echo "  make test               - Запустить тесты"
 
 install:
-	uv sync
+	uv sync && cd app/frontend && uv run npm install
 
 lint:
 	uv run ruff check
@@ -26,8 +26,11 @@ migrations:
 migrate:
 	uv run manage.py migrate
 
-run:
+start-backend:
 	uv run manage.py runserver
+
+start-frontend:
+	cd app/frontend && uv run npm run dev
 
 run-telegram:
 	uv run manage.py run_listener

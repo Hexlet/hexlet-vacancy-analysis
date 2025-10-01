@@ -44,7 +44,15 @@ make create-superuser
 
 ## Local run:
 
+Terminal 1:
+
 ```bash
-make run
+make start-backend
+```
+
+Terminal 2:
+
+```bash
+make start-frontend
 ```
 .
