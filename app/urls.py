@@ -18,9 +18,10 @@ Including another URLconf
 from django.contrib import admin
 from django.contrib.sitemaps.views import sitemap
 from django.urls import include, path
-from .sitemap import StaticSitemap, TelegramSitemap
 
 from app import views
+
+from .sitemap import StaticSitemap, TelegramSitemap
 
 sitemaps = {
     "static": StaticSitemap,
