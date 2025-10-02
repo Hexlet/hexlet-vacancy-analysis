@@ -1,0 +1,158 @@
+{
+  "hh_vacancy": {
+    "id": "120877600",
+    "name": "Python Developer",
+    "salary": {"from": 100000, "to": 200000, "currency": "RUR"},
+    "employer": {"id": "456", "name": "Yandex"},
+    "area": {"id": "3", "name": "Екатеринбург"},
+    "description": "<p>Test description</p>",
+    "alternate_url": "https://hh.ru/vacancy/120877600",
+    "key_skills": [{"name": "Python"}, {"name": "Django"}],
+    "experience": {"name": "1-3 years"},
+    "employment": {"name": "Full time"}
+  },
+  "sj_vacancy": {
+    "id": 7812129,
+    "profession": "Python Developer",
+    "client": {"id": 101, "title": "Mail.ru"},
+    "town": {"id": 4, "title": "Екатеринбург"},
+    "payment_from": 150000,
+    "payment_to": 200000,
+    "currency": "rub",
+    "link": "https://superjob.ru/vacancy/7812129",
+    "vacancyRichText": "Test description",
+    "experience": {"title": "3-6 лет"}
+  },
+  "hh_list_response": {
+     "items": [
+    {
+      "id": "12345678",
+      "name": "Python-разработчик",
+      "area": {"id": "1", "name": "Москва"},
+      "salary": {"from": 150000, "to": 250000, "currency": "RUB"},
+      "employer": {"id": "1234", "name": "Яндекс"},
+      "published_at": "2023-05-15T12:00:00+0300",
+      "alternate_url": "https://hh.ru/vacancy/12345678"
+    },
+    {
+      "id": "87654321",
+      "name": "Backend Developer (Python)",
+      "area": {"id": "2", "name": "Санкт-Петербург"},
+      "salary": {"from": 180000, "currency": "RUB"},
+      "employer": {"id": "5678", "name": "Тинькофф"},
+      "published_at": "2023-05-16T10:30:00+0300",
+      "alternate_url": "https://hh.ru/vacancy/87654321"
+    }
+   ]
+  },
+  "sj_list_response": {
+    "objects": [
+      {
+        "id": 987654,
+        "profession": "Python разработчик",
+        "town": {
+          "id": 4,
+          "title": "Москва"
+        },
+        "client": {
+          "id": 4321,
+          "title": "СберТех"
+        },
+        "payment_from": 160000,
+        "payment_to": 220000,
+        "currency": "rub",
+        "link": "https://www.superjob.ru/vacancy/987654.html",
+        "date_published": 1684231200
+      },
+      {
+        "id": 123456,
+        "profession": "Senior Python Developer",
+        "town": {
+          "id": 14,
+          "title": "Новосибирск"
+        },
+        "client": {
+          "id": 8765,
+          "title": "2ГИС"
+        },
+        "payment_from": 200000,
+        "currency": "rub",
+        "link": "https://www.superjob.ru/vacancy/123456.html",
+        "date_published": 1684317600
+      }
+    ]
+  },
+  "hh_vacancy_saver": {
+      "hh_id": "999",
+      "title": "Test Vacancy",
+      "company_name": "Test Company",
+      "company_id": "111",
+      "url": "http://test.com",
+      "published_at": "2023-05-15T12:00:00+0300"
+  },
+  "hh_vacancy_saver_update": {
+      "hh_id": "999",
+      "title": "Test Vacancy Update",
+      "company_name": "Test Company",
+      "company_id": "111",
+      "url": "http://test.com",
+      "published_at": "2023-05-15T12:00:00+0300"
+  },
+  "sj_vacancy_saver": {
+      "superjob_id": 999,
+      "title": "Test Vacancy",
+      "company_name": "Test Company",
+      "company_id": "111",
+      "url": "http://test.com",
+      "published_at": 1753351260
+  },
+  "hh_areas":
+    [
+      {
+        "id": "113",
+        "name": "Россия",
+        "areas": [
+            {
+              "id": "1",
+              "name": "Москва",
+              "areas": []
+            },
+            {
+              "id": "2",
+              "name": "Московская область",
+              "areas": [
+                {
+                  "id": "3",
+                  "name": "Подмосковье"
+                }
+              ]
+            }
+        ]
+      }
+    ],
+  "sj_areas":
+    [
+      {
+        "title": "Россия",
+        "towns": [
+          {
+            "title": "Москва"
+          }
+        ],
+        "regions": [
+            {
+              "title": "Московская область",
+              "towns": [
+                {
+                  "title": "Подмосковье"
+                }
+              ]
+            },
+            {
+              "title": "Санкт-Петербург",
+              "towns": []
+            }
+        ]
+      }
+    ]
+}
