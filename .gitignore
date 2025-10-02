@@ -10,11 +10,12 @@ coverage.xml
 .python-version
 .ruff_cache
 .pytest_cache
+*.log
 db.sqlite3
 PATH
 itlabormarket_project_plan.md
 postgres
 key_word
-
+*.rdb
 test_fixtures.sh
 error.html
