@@ -9,10 +9,10 @@ CONFIG = {
     'DEBUG': os.getenv("DEBUG", "False").lower() in ("true", "1", "yes"),
 
     'DATABASE_ENGINE': os.getenv('DATABASE_ENGINE', 'sqlite3'),
-    'DATABASE_NAME': os.getenv('DATABASE_NAME', 'postgres'),
-    'DATABASE_USERNAME': os.getenv('DATABASE_USERNAME', 'postgres'),
-    'POSTGRES_PASSWORD': os.getenv('POSTGRES_PASSWORD', 'password'),
-    'DATABASE_HOST': os.getenv('DATABASE_HOST', '127.0.0.1'),
+    'DATABASE_NAME': os.getenv('DATABASE_NAME', 'sqlite3'),
+    'DATABASE_USERNAME': os.getenv('DATABASE_USERNAME', 'sqlite3'),
+    'DATABASE_PASSWORD': os.getenv('DATABASE_PASSWORD', 'password'),
+    'DATABASE_HOST': os.getenv('DATABASE_HOST', 'sqlite3'),
     'DATABASE_PORT': os.getenv('DATABASE_PORT', '5432'),
 
     'EMAIL_BACKEND': os.environ.get(
