@@ -1,5 +1,5 @@
 # hexlet-vacancy-analysis   
-.
+Project idea: A service that automatically collects job postings from key platforms (hh.ru, SuperJob, Habr Career, Telegram channels) and generates analytics on the IT job market. It will be a unified tool where users can see which professions are in demand, how salaries are changing, which skills are most frequently required by employers, and how these indicators evolve over time.
 
 ## Requirements:
 
@@ -47,4 +47,3 @@ make create-superuser
 ```bash
 make run
 ```
-.
