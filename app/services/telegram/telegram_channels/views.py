@@ -64,11 +64,12 @@ class AddChannelView(View):
         })
 
     async def post(self, request, *args, **kwargs):
-        data = request.POST
+        data = request.POST.dict()
 
         client_wrapper = await TelegramChannelClient.create()
         client = client_wrapper.client
         username = data.get('username')
+
         exist = ExistsTelegramChannel()
         exists = await exist.check_channel_exists(client, username)
 
@@ -83,7 +84,7 @@ class AddChannelView(View):
 
         save_data = SaveDataChannel()
         result = await save_data.save_valid_form(data, channel_data)
-        return JsonResponse(result)
+        return JsonResponse(result['message'], status=result['status'])
 
 
 @method_decorator(csrf_exempt, name='dispatch')
