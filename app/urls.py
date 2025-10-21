@@ -20,6 +20,7 @@ from django.urls import include, path
 from app import views
 
 urlpatterns = [
+    path('', views.index, name='index'),
     path('admin/', admin.site.urls),
     path('telegram/', include('app.services.telegram.telegram_channels.urls')),
     path('auth/', include('app.services.auth.users.urls')),

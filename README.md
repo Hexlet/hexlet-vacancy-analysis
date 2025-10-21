@@ -1,4 +1,5 @@
-# hexlet-vacancy-analysis   
+# hexlet-vacancy-analysis
+
 .
 
 
@@ -6,6 +7,7 @@
 ## Requirements:
 
 To run this project, you need to have the following software installed:
+
 - Python >=3.12
 - Uv
 - PostgreSQL
@@ -13,6 +15,7 @@ To run this project, you need to have the following software installed:
 ## Preparation:
 
 Create .env file with code kind of:
+
 ```bash
 SECRET_KEY=your_secret_key
 DJANGO_EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
@@ -34,24 +37,54 @@ Create a PostgreSQL user (or reuse an existing one) and a database using the par
 ## Installation:
 
 To set up the project, navigate to the project directory and run the following commands:
+
 ```bash
 make install
 ```
+
 ```bash
 make migrate
 ```
+
 ```bash
 make create-superuser
 ```
 
 ## Local run:
 
+Terminal 1:
+
 ```bash
-make run
+make start-backend
 ```
+
+Terminal 2:
+
+```bash
+make start-frontend
+```
+
+## запуск через docker:
+
+### для работы проекта необходимы:
+
+- [Docker](https://docs.docker.com/get-started/get-docker/)
+
+---
+
+- запускаем проект
+
+```
+make docker-up
+```
+
+- проект становится доступен по ссылке - http://localhost:8000/
+
 .
 
 ## Paser:
 To parse hh.ru or superjob.ru you need to create a local database and go to /parser/hh 
 or /parser/superjob
 
+## Comments
+ 
