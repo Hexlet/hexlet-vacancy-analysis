@@ -26,6 +26,11 @@ class RegionView(View):
                 "title": vacancy.title,
                 "company": vacancy.company_name,
                 "url": vacancy.url,
+                "description": vacancy.description,
+                "salary": vacancy.salary,
+                "city": vacancy.city,
+                "key_skills": vacancy.key_skills,
+
             }
             for vacancy in page_obj.object_list
         ]
