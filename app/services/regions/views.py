@@ -30,7 +30,7 @@ class RegionView(View):
                 "salary": vacancy.salary,
                 "city": vacancy.city,
                 "key_skills": vacancy.key_skills,
-
+                "experience": vacancy.experience,
             }
             for vacancy in page_obj.object_list
         ]
