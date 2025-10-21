@@ -20,6 +20,7 @@ from django.urls import include, path
 from app import views
 
 urlpatterns = [
+    path('', views.index, name='index'),
     path('admin/', admin.site.urls),
     path('hh/', include('app.services.hh.hh_parser.urls')),
     path('superjob/', include('app.services.superjob.superjob_parser.urls')),
