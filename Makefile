@@ -1,46 +1,74 @@
-.PHONY: help run migrate migrations create-superuser shell test lint install 
+.PHONY: help migrate migrations create-superuser shell test lint install build collectstatic \
+        start-backend start-frontend run-telegram docker-up docker-down docker-logs docker-build render \
+        install-backend install-frontend lint-backend lint-frontend test-backend
 
-create-superuser:
-	uv run manage.py createsuperuser
-
+# Help
 help:
 	@echo "Команды make:"
-	@echo "  make create-superuser   - Создать суперпользователя"
-	@echo "  make install            - Установить зависимости"
-	@echo "  make lint               - Запустить линтер (ruff)"
+	@echo "  make install            - Установить все зависимости"
+	@echo "  make install-backend    - Установить только бэкенд зависимости"
+	@echo "  make install-frontend   - Установить только фронтенд зависимости"
+	@echo "  make lint               - Запустить все линтеры"
+	@echo "  make lint-backend       - Запустить линтеры бэкенда"
+	@echo "  make lint-frontend      - Запустить линтеры фронтенда"
+	@echo "  make test               - Запустить все тесты"
+	@echo "  make test-backend       - Запустить тесты бэкенда"
+	@echo "  make build              - Собрать проект"
+	@echo "  make collectstatic      - Собрать статические файлы"
 	@echo "  make migrations         - Создать миграции"
 	@echo "  make migrate            - Применить миграции"
-	@echo "  make run                - Запустить Django сервер"
 	@echo "  make shell              - Открыть Django shell"
-	@echo "  make test               - Запустить тесты"
+	@echo "  make create-superuser   - Создать суперпользователя"
 
-install:
-	uv sync && cd app/frontend && uv run npm install
+# Installation
+install: install-backend install-frontend
 
-lint:
-	uv run ruff check
+install-backend:
+	uv sync --frozen
 
+install-frontend:
+	cd app/frontend && npm ci
+
+# Build
+build:
+	cd app/frontend && npm run build
+
+collectstatic:
+	uv run python manage.py collectstatic --noinput --clear
+
+# Database
 migrations:
-	uv run manage.py makemigrations
+	uv run python manage.py makemigrations
 
 migrate:
-	uv run manage.py migrate
+	uv run python manage.py migrate
 
+# Development servers
 start-backend:
-	uv run manage.py runserver
+	uv run python manage.py runserver
 
 start-frontend:
-	cd app/frontend && uv run npm run dev
+	cd app/frontend && npm run dev
 
 run-telegram:
-	uv run manage.py run_listener
+	uv run python manage.py run_listener
 
-shell:
-	uv run manage.py shell
+# Code quality
+lint: lint-backend lint-frontend
 
-test:
-	uv run manage.py test
+lint-backend:
+	uv run ruff check .
 
+lint-frontend:
+	cd app/frontend && npm run lint
+
+# Testing
+test: test-backend
+
+test-backend:
+	uv run python manage.py test --parallel
+
+# Docker
 docker-up:
 	docker compose up -d
 
@@ -52,3 +80,14 @@ docker-logs:
 
 docker-build:
 	docker compose build
+
+# Production
+render:
+	uv run gunicorn app.wsgi:application
+
+# Development
+create-superuser:
+	uv run python manage.py createsuperuser
+
+shell:
+	uv run python manage.py shell

@@ -17,6 +17,8 @@ dependencies = [
     "telethon>=1.40.0",
     "django-vite>=3.1.0",
     "inertia-django>=1.2.0",
+    "whitenoise>=6.11.0",
+    "gunicorn>=23.0.0",
 ]
 
 [dependency-groups]

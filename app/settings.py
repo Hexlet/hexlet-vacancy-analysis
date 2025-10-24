@@ -35,7 +35,6 @@ ALLOWED_HOSTS = [host.strip() for host in raw_allowed_hosts.split(",")]
 # Application definition
 
 INSTALLED_APPS = [
-    'app.services.auth.users',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -49,12 +48,15 @@ INSTALLED_APPS = [
     'app.services.telegram.telegram_channels',
     'app.services.superjob.superjob_parser',
     'app.services.regions',
+    "app.services.auth.users",
+    "app.services.auth.tinkoff_id",
 ]
 
 AUTH_USER_MODEL = "users.User"
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -90,9 +92,7 @@ WSGI_APPLICATION = "app.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.{}".format(
-            os.getenv("DATABASE_ENGINE", "sqlite3")
-        ),
+        "ENGINE": "django.db.backends.{}".format(os.getenv("DATABASE_ENGINE", "sqlite3")),
         "NAME": os.getenv("DATABASE_NAME", "postgres"),
         "USER": os.getenv("DATABASE_USER", "postgres"),
         "PASSWORD": os.getenv("DATABASE_PASSWORD", "password"),
@@ -107,7 +107,7 @@ DATABASES = {
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
-
+#
 # DATABASE_URL = os.getenv('DATABASE_URL')
 # if DATABASE_URL:
 #     DATABASES['default'] = dj_database_url.config(
@@ -200,3 +200,13 @@ DJANGO_VITE_MANIFEST_PATH = os.path.join(STATIC_ROOT, "manifest.json")
 INERTIA_LAYOUT = BASE_DIR / "app" / "templates" / "index.html"
 CSRF_HEADER_NAME = "HTTP_X_XSRF_TOKEN"
 CSRF_COOKIE_NAME = "XSRF-TOKEN"
+
+# Tinkoff ID settings
+TINKOFF_ID_CLIENT_ID = os.getenv("TINKOFF_ID_CLIENT_ID", "")
+TINKOFF_ID_CLIENT_SECRET = os.getenv("TINKOFF_ID_CLIENT_SECRET", "")
+TINKOFF_ID_REDIRECT_URI = os.getenv("TINKOFF_ID_REDIRECT_URI", "")
+TINKOFF_ID_AUTH_URL = "https://id.tinkoff.ru/auth/authorize"
+TINKOFF_ID_TOKEN_URL = "https://id.tinkoff.ru/auth/token"
+TINKOFF_ID_USERINFO_URL = "https://id.tinkoff.ru/userinfo/userinfo"
+TINKOFF_ID_INTROSPECT_URL = "https://id.tinkoff.ru/auth/introspect"
+TINKOFF_ID_SCOPE = ["profile", "email"]

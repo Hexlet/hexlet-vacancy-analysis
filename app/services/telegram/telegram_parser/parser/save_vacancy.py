@@ -1,6 +1,10 @@
+import logging
+
 from asgiref.sync import sync_to_async
 
 from ..models import Vacancy
+
+logger = logging.getLogger(__name__)
 
 
 class SaveDataVacancy:
@@ -16,4 +20,4 @@ class SaveDataVacancy:
             phone=parsed['phone'],
             busyness=parsed['busyness'],
         )
-        print("Запись в модель")
+        logger.info("Данные в модель успешно записаны")

@@ -3,12 +3,11 @@ name: Django CI Workflow
 on: [push, pull_request]
 
 jobs:
-  
   test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       
       - name: Set up UV 
         uses: astral-sh/setup-uv@v6
@@ -18,21 +17,71 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install dependencies
-        run: |
-          make install 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: app/frontend/package-lock.json
 
-      - name: Run linter
+      - name: Cache UV dependencies
+        id: uv-cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/uv
+            .venv
+          key: uv-deps-${{ hashFiles('uv.lock', 'pyproject.toml') }}
+          restore-keys: |
+            uv-deps-
+
+      - name: Install backend dependencies
+        if: steps.uv-cache.outputs.cache-hit != 'true'
         run: |
-          make lint
+          make install-backend
+
+      - name: Cache node modules
+        id: npm-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            npm-
+
+      - name: Install frontend dependencies
+        run: |
+          make install-frontend 
+
+      - name: Cache static files
+        id: static-cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            staticfiles/
+          key: static-${{ hashFiles('**/static/**', '**/settings.py') }}
+          restore-keys: |
+            static-
+
+      - name: Build frontend
+        run: |
+          make build
+
+      - name: Collect static files
+        if: steps.static-cache.outputs.cache-hit != 'true'
+        run: |
+          make collectstatic
+
+      - name: Run backend linter
+        run: |
+          make lint-backend
       
+      - name: Run frontend linter
+        run: |
+          make lint-frontend
+
       - name: Run tests
         env:
-          SECRET_KEY : secret
+          SECRET_KEY: ${{ secrets.SECRET_KEY || 'secret' }}
         run: |
-          make test
-
-
-
-
-
+          make test-backend
