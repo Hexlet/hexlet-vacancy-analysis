@@ -20,7 +20,6 @@ load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
@@ -92,7 +91,9 @@ WSGI_APPLICATION = "app.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.{}".format(os.getenv("DATABASE_ENGINE", "sqlite3")),
+        "ENGINE": "django.db.backends.{}".format(
+            os.getenv("DATABASE_ENGINE", "sqlite3")
+        ),
         "NAME": os.getenv("DATABASE_NAME", "postgres"),
         "USER": os.getenv("DATABASE_USER", "postgres"),
         "PASSWORD": os.getenv("DATABASE_PASSWORD", "password"),
@@ -107,7 +108,7 @@ DATABASES = {
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
-#
+
 # DATABASE_URL = os.getenv('DATABASE_URL')
 # if DATABASE_URL:
 #     DATABASES['default'] = dj_database_url.config(
@@ -136,7 +137,6 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
@@ -181,6 +181,8 @@ EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
 EMAIL_TIMEOUT = int(os.environ.get("EMAIL_TIMEOUT", 10))
 
+
+FIXTURE_PATH = 'app/fixtures'
 ## django-vite settings
 # use HMR or not.
 DJANGO_VITE_DEV_MODE = DEBUG
@@ -212,5 +214,3 @@ TINKOFF_ID_USERINFO_URL = "https://id.tinkoff.ru/userinfo/userinfo"
 TINKOFF_ID_INTROSPECT_URL = "https://id.tinkoff.ru/auth/introspect"
 TINKOFF_ID_SCOPE = ["profile", "email"]
 
-
-FIXTURE_PATH = 'app/fixtures'

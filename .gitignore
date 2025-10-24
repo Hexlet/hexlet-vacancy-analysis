@@ -22,5 +22,6 @@ error.html
 
 app/services/parser/api_parser/city_region_mapping.json
 sqlite3
+
 staticfiles/
 static/
