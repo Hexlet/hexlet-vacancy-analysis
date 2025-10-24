@@ -2,6 +2,8 @@
 
 .
 
+
+
 ## Requirements:
 
 To run this project, you need to have the following software installed:
@@ -82,5 +84,15 @@ make docker-up
 - проект становится доступен по ссылке - http://localhost:8000/
 
 .
+
+## Paser:
+To parse hh.ru or superjob.ru you need to create a local database and go to /parser/hh 
+or /parser/superjob
+
 ## Comments
  
+
+
+## Paser:
+To parse hh.ru or superjob.ru you need to create a local database and go to /parser/hh 
+or /parser/superjob

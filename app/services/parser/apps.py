@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class SuperjobParserConfig(AppConfig):
+class ParserConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'app.services.superjob.superjob_parser'
+    name = 'app.services.parser'
