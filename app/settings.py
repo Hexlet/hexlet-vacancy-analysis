@@ -35,19 +35,20 @@ ALLOWED_HOSTS = [host.strip() for host in raw_allowed_hosts.split(",")]
 # Application definition
 
 INSTALLED_APPS = [
-    "django.contrib.admin",
-    "django.contrib.auth",
-    "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.messages",
-    "django.contrib.staticfiles",
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
     "django_vite",
     "inertia",
+    'app.services.hh.hh_parser',
+    'app.services.telegram.telegram_parser',
+    'app.services.telegram.telegram_channels',
+    'app.services.superjob.superjob_parser',
+    'app.services.regions',
     "app.services.auth.users",
-    "app.services.hh.hh_parser",
-    "app.services.telegram.telegram_parser",
-    "app.services.telegram.telegram_channels",
-    "app.services.superjob.superjob_parser",
     "app.services.auth.tinkoff_id",
 ]
 
