@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "app.services.telegram.telegram_channels",
     "app.services.superjob.superjob_parser",
     "app.services.auth.tinkoff_id",
+    "app.services.parser",
 ]
 
 AUTH_USER_MODEL = "users.User"
