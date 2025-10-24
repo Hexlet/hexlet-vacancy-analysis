@@ -28,6 +28,10 @@ EMAIL_HOST_PASSWORD=secret123
 EMAIL_TIMEOUT=10
 
 DEBUG=True
+
+TINKOFF_ID_CLIENT_ID="clien_id"
+TINKOFF_ID_CLIENT_SECRET="secret_key"
+TINKOFF_ID_REDIRECT_URI="https://localhost/callback"
 ```
 Create a PostgreSQL user (or reuse an existing one) and a database using the parameters from DATABASE_URL.
 
