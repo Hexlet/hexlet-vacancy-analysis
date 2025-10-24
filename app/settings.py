@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "app.services.telegram.telegram_parser",
     "app.services.telegram.telegram_channels",
     "app.services.superjob.superjob_parser",
+    "app.services.auth.password_reset",
     "app.services.auth.tinkoff_id",
 ]
 
@@ -199,6 +200,13 @@ DJANGO_VITE_MANIFEST_PATH = os.path.join(STATIC_ROOT, "manifest.json")
 INERTIA_LAYOUT = BASE_DIR / "app" / "templates" / "index.html"
 CSRF_HEADER_NAME = "HTTP_X_XSRF_TOKEN"
 CSRF_COOKIE_NAME = "XSRF-TOKEN"
+
+# email for send mail
+DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "")
+
+# Celery settings
+CELERY_BROKER_URL = "redis://localhost:6379"
+CELERY_RESULT_BACKEND = "redis://localhost:6379"
 
 # Tinkoff ID settings
 TINKOFF_ID_CLIENT_ID = os.getenv("TINKOFF_ID_CLIENT_ID", "")
