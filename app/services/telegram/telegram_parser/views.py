@@ -1,5 +1,14 @@
+import logging
+
+from django.db import DataError, IntegrityError
 from dotenv import load_dotenv
 from telethon import events
+from telethon.errors import (
+    AuthKeyError,
+    PhoneNumberInvalidError,
+    RPCError,
+    SessionPasswordNeededError,
+)
 
 from app.services.telegram.telegram_client import TelegramChannelClient
 
@@ -8,6 +17,7 @@ from .parser.save_vacancy import SaveDataVacancy
 from .parser.vacancy_parser import VacancyParser
 
 load_dotenv()
+logger = logging.getLogger(__name__)
 
 
 class TelegramParserView:
@@ -27,20 +37,33 @@ class TelegramParserView:
     async def channel_listener(self, channel_username):
         @self.client.on(events.NewMessage(chats=channel_username))
         async def new_post_handler(event):
-            try:
-                message = event.message.message
-                parsed = await self.vacancy.parse_vacancy_from_text(message)
-                if parsed:
+
+            message = event.message.message
+            parsed = await self.vacancy.parse_vacancy_from_text(message)
+            if parsed:
+                try:
                     await self.save.save_vacancy(parsed, event.message.date)
-                    print("Сохранено в БД")
-            except Exception as e:
-                print(f"Ошибка при обработке сообщения: {e}")
+                except (IntegrityError, DataError) as e:
+                    logger.error(f"Ошибка целостности БД: {e}")
+                else:
+                    logger.info("Сохранено в БД")
 
         try:
             await self.client.start()
-            print(f"Слушатель запущен для канала: {channel_username}")
-            await self.client.run_until_disconnected()
-        except Exception as e:
-            print(f"Ошибка в работе клиента: {e}")
-        finally:
-            print("Слушатель остановлен")
+        except AuthKeyError as e:
+            logger.error(f"Ошибка авторизации ключа: {e}")
+            return
+        except PhoneNumberInvalidError as e:
+            logger.error(f"Неверный номер телефона: {e}")
+            return
+        except SessionPasswordNeededError as e:
+            logger.error(f"Необходимо ввести пароль для двухфакторной авторизации! {e}")
+            return
+        except RPCError as e:
+            logger.error(f"Ошибка RPC Telethon: {e}")
+            return
+        except (OSError, ConnectionError) as e:
+            logger.error(f"Проблема с соединением: {e}")
+            return
+        await self.client.run_until_disconnected()
+        logger.info("Слушатель остановлен")

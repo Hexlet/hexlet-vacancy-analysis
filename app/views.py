@@ -1,16 +1,27 @@
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.http import require_GET
+from inertia import render as inertia_render
+
+
+def index(request):
+    return inertia_render(
+        request,
+        "HomePage",
+        props={},
+    )
 
 
 def custom_server_error(request):
     return JsonResponse(
-        {"status": "error", "message": "Internal server error"}, status=500
+        {"status": "error", "message": "Internal server error"},
+        status=500,
     )
 
 
 def custom_not_found_error(request, exception):
     return JsonResponse(
-        {"status": "error", "message": "Internal server error"}, status=404
+        {"status": "error", "message": "Internal server error"},
+        status=404,
     )
 
 
@@ -46,16 +57,16 @@ def robots_txt(request):
 
     ```
     User-agent: *
-    Allow: /
+    Allow:
+    Disallow: /
     Disallow: /admin/
     Sitemap: http://example.com/sitemap.xml
     ```
     """
-    public_pages = [
-        "/",
-    ]
+    public_pages = []
 
     private_pages = [
+        "/",
         "/admin/",
     ]
 
