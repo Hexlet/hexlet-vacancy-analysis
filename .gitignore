@@ -1,4 +1,5 @@
 __pycache__/
+venv/
 .venv/
 lib/
 bin/
@@ -14,7 +15,9 @@ db.sqlite3
 PATH
 itlabormarket_project_plan.md
 postgres
-key_word
+key_word.py
 
 test_fixtures.sh
 error.html
+staticfiles/
+static/

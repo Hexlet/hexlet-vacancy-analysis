@@ -13,8 +13,9 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
-    "@inertiajs/progress": "^0.1.2",
-    "@inertiajs/react": "^2.1.3",
+    "@inertiajs/inertia": "^0.11.1",
+    "@inertiajs/progress": "^0.2.7",
+    "@inertiajs/react": "^2.1.5",
     "@mantine/core": "^8.2.4",
     "@mantine/form": "^8.2.4",
     "@mantine/hooks": "^8.2.4",
@@ -44,6 +45,6 @@
     "tw-animate-css": "^1.3.0",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.30.1",
-    "vite": "^6.3.5"
+    "vite": "^6.4.1"
   }
 }
