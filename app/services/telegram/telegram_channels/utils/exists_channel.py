@@ -17,9 +17,10 @@ class ExistsTelegramChannel:
             try:
                 result = await client(ResolveUsernameRequest(identifier))
             except (
-                    UsernameNotOccupiedError,
-                    UsernameInvalidError,
-                    ChannelInvalidError) as e:
+                UsernameNotOccupiedError,
+                UsernameInvalidError,
+                ChannelInvalidError,
+            ) as e:
                 logger.error(f"Ошибка валидации username: {e}")
                 return False
             logger.info("Успешная валидация по username")
@@ -32,7 +33,7 @@ class ExistsTelegramChannel:
                 logger.error(f"Ошибка валидации id: {e}")
                 return False
 
-            if hasattr(entity, 'megagroup') or hasattr(entity, 'broadcast'):
+            if hasattr(entity, "megagroup") or hasattr(entity, "broadcast"):
                 try:
                     await client(GetFullChannelRequest(entity))
                 except ChannelInvalidError as e:

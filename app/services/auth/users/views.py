@@ -28,10 +28,7 @@ class CreateUserView(View):
             data = read_data_from_request(request)
             data["domain"] = get_current_site(request).domain
             result = register_user(data)
-            return JsonResponse(
-                {"status": "ok", "data": {"userId": result}},
-                status=201
-            )
+            return JsonResponse({"status": "ok", "data": {"userId": result}}, status=201)
         except custom_ex.ValidationError as e:
             logger.error(f"Validation Error: {e.message}")
             return e.to_response()
@@ -60,17 +57,11 @@ class ActivateUser(View):
         if user and account_activation_token.check_token(user, token):
             user.is_active = True
             user.save()
-            logger.info(
-                f"User '{user.email}' registration completed successfully"
-            )
-            return JsonResponse(
-                {"status": "ok", "data": {"userId": uid}},
-                status=201
-            )
+            logger.info(f"User '{user.email}' registration completed successfully")
+            return JsonResponse({"status": "ok", "data": {"userId": uid}}, status=201)
         else:
             return JsonResponse(
-                {"status": "error", "message": "Activation link is invalid"},
-                status=400
+                {"status": "error", "message": "Activation link is invalid"}, status=400
             )
 
 
@@ -87,38 +78,29 @@ class LoginUserView(View):
 
         if not (email and password):
             return JsonResponse(
-                {
-                    "status": "error",
-                    "message": "Email and password required"
-                }, status=400
+                {"status": "error", "message": "Email and password required"}, status=400
             )
 
         user = authenticate(request, email=email, password=password)
 
         if user is None:
             return JsonResponse(
-                {"status": "error", "message": "Invalid credential"},
-                status=400
+                {"status": "error", "message": "Invalid credential"}, status=400
             )
 
         if not user.is_active:
             return JsonResponse(
-                {"status": "error", "message": "User in not active"},
-                status=400
+                {"status": "error", "message": "User in not active"}, status=400
             )
 
         login(request, user)
-        return JsonResponse(
-            {"status": "ok", "data": {"userId": user.id}}, status=200
-        )
+        return JsonResponse({"status": "ok", "data": {"userId": user.id}}, status=200)
 
 
 class LogoutUserView(View):
     def post(self, request):
         logout(request)
-        return JsonResponse(
-            {"status": "ok", "message": "User logged out"}, status=200
-        )
+        return JsonResponse({"status": "ok", "message": "User logged out"}, status=200)
 
 
 @ensure_csrf_cookie

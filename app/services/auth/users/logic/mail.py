@@ -25,12 +25,7 @@ SMTP_ERROR_MSG = SMTP_AUTHENTICATION_ERROR_MSG = "SMTP error"
 UNEXPECTED_ERROR_MSG = "An unexpected error occurred while sending the"
 
 
-def safe_send_mail(
-        message,
-        recipient,
-        max_retries=MAX_RETRIES,
-        retry_delay=RETRY_DELAY):
-
+def safe_send_mail(message, recipient, max_retries=MAX_RETRIES, retry_delay=RETRY_DELAY):
     attempt = 1
     while attempt <= max_retries:
         try:
@@ -39,7 +34,7 @@ def safe_send_mail(
                 message=message,
                 from_email=SENDER_MAIL,
                 recipient_list=recipient,
-                fail_silently=False
+                fail_silently=False,
             )
             status_message = SEND_SUCCESSFULLY_MSG
             logger.info(f"{status_message}, {attempt} attempt)")
@@ -53,14 +48,9 @@ def safe_send_mail(
             SMTPConnectError,
             SMTPServerDisconnected,
             socket.timeout,
-            socket.gaierror
+            socket.gaierror,
         ) as e:
-            logger.warning(
-                " (%s): %s (попытка %s)",
-                recipient,
-                str(e),
-                attempt
-            )
+            logger.warning(" (%s): %s (попытка %s)", recipient, str(e), attempt)
 
             if attempt == max_retries:
                 status_message = SEND_FAILED_MSG

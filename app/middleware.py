@@ -11,15 +11,9 @@ class InertiaMiddleware:
             request,
             auth={
                 "user": {
-                    "id": (
-                        request.user.id
-                        if request.user.is_authenticated
-                        else None
-                    ),
+                    "id": (request.user.id if request.user.is_authenticated else None),
                     "username": (
-                        request.user.username
-                        if request.user.is_authenticated
-                        else None
+                        request.user.username if request.user.is_authenticated else None
                     ),
                 },
                 "isAuthenticated": request.user.is_authenticated,

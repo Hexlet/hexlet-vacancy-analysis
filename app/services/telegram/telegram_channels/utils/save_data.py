@@ -18,22 +18,24 @@ class SaveDataChannel:
                 obj = form.save(commit=False)
             except (IntegrityError, OperationalError, DataError) as e:
                 logger.error("Канала с таким username или ID не существует")
-                return JsonResponse({
-                    'status': 'error',
-                    'error': 'The channel with such username or ID exists',
-                    'details': str(e)
-                }, status=400)
+                return JsonResponse(
+                    {
+                        "status": "error",
+                        "error": "The channel with such username or ID exists",
+                        "details": str(e),
+                    },
+                    status=400,
+                )
 
-            obj.channel_id = channel_data['channel_id']
-            obj.status = channel_data['status']
-            obj.last_message_id = channel_data['last_message_id']
+            obj.channel_id = channel_data["channel_id"]
+            obj.status = channel_data["status"]
+            obj.last_message_id = channel_data["last_message_id"]
             obj.save()
             logger.info("Данные успешно сохранены в БД")
-            return {'status': 'ok', 'details': 'The channel was created'}
+            return {"status": "ok", "details": "The channel was created"}
         logger.error("Ошибка валидации данных")
         return {
-            'status': 'error',
-            'errors': 'Form is not valid',
-            'details': 'form.errors'
+            "status": "error",
+            "errors": "Form is not valid",
+            "details": "form.errors",
         }
-

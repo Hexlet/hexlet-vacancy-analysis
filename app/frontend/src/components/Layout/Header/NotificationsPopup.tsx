@@ -43,8 +43,8 @@ const NotificationsPopup = () => {
         setIsLoading(false);
       });
   };
-  
-  
+
+
   return (
     <Popover width={300} position="bottom-end" shadow="md">
       <Popover.Target>
@@ -65,11 +65,11 @@ const NotificationsPopup = () => {
         <div className="flex justify-between items-center mb-2">
           <Text size="md" fw={500}>Уведомления</Text>
         </div>
-        
+
         {isLoading && <div className="flex justify-center p-4"><Loader size="sm" /></div>}
-        
+
         {error && <div className="text-red-500 p-4 text-center text-sm flex items-center gap-2"><AlertCircle size={16}/>{error}</div>}
-        
+
         {!isLoading && !error && (
             notifications.length > 0 ? (
                 <div className="flex flex-col gap-2">
@@ -83,7 +83,7 @@ const NotificationsPopup = () => {
                 <Text size="sm" c="dimmed" ta="center" p="md">Нет новых уведомлений</Text>
             )
         )}
-        
+
         <div className="border-t mt-2 pt-2">
           <Button component={Link} href="/notifications" variant="subtle" fullWidth>
             Все уведомления

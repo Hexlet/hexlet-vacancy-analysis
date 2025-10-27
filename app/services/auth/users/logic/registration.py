@@ -19,10 +19,7 @@ User = get_user_model()
 def generate_activation_link(user, domain):
     uid = urlsafe_base64_encode(force_bytes(user.pk))
     token = account_activation_token.make_token(user)
-    activation_link = reverse(
-        "activate",
-        kwargs={"uidb64": uid, "token": token}
-    )
+    activation_link = reverse("activate", kwargs={"uidb64": uid, "token": token})
     return f"http://{domain}{activation_link}"
 
 
@@ -30,10 +27,13 @@ def create_activation_mail(user, data):
     domain = data.get("domain")
     activate_url = generate_activation_link(user, domain)
 
-    message = render_to_string("activation_email.html", {
-        "user": user,
-        "activate_url": activate_url,
-    })
+    message = render_to_string(
+        "activation_email.html",
+        {
+            "user": user,
+            "activate_url": activate_url,
+        },
+    )
     return message
 
 

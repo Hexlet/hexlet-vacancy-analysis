@@ -9,7 +9,7 @@ import type { PageProps as InertiaPageProps } from '@inertiajs/core';
 
 interface PageProps extends InertiaPageProps {
   auth: {
-    user: User; 
+    user: User;
   };
 }
 
@@ -30,7 +30,7 @@ const Header = () => {
           <div className="flex items-center gap-2 sm:gap-4">
             {isMobile && <button><Search size={22} /></button>}
             <NotificationsPopup />
-            <ProfileDropdown user={user} /> 
+            <ProfileDropdown user={user} />
           </div>
         </div>
       </div>

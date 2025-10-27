@@ -16,10 +16,10 @@ class TelegramChannelClient:
     async def create(cls):
         async with lock:
             client = TelegramClient(
-                os.getenv('TELEGRAM_SESSION'),
-                int(os.getenv('TELEGRAM_API_ID')),
-                os.getenv('TELEGRAM_API_HASH'),
-                system_version="4.10.5 beta x64"
+                os.getenv("TELEGRAM_SESSION"),
+                int(os.getenv("TELEGRAM_API_ID")),
+                os.getenv("TELEGRAM_API_HASH"),
+                system_version="4.10.5 beta x64",
             )
             await client.start()
             return cls(client)
