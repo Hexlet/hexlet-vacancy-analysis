@@ -19,6 +19,8 @@ key_word.py
 
 test_fixtures.sh
 error.html
+
+sqlite3
 **/.DS_Store
 **/node_modules/
 staticfiles/
