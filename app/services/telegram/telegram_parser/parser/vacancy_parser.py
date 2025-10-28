@@ -1,3 +1,5 @@
+from app.services.hh.hh_parser.models import Vacancy
+
 from .keyword_extractor import KeywordExtractor
 from .line_parser import LineParser
 
@@ -12,32 +14,69 @@ class VacancyParser(KeywordExtractor):
         lines = text.strip().splitlines()
         parser = LineParser()
 
-        data = dict.fromkeys([
-            'post',
-            'company',
-            'city',
-            'salary',
-            'link',
-            'busyness',
-            'phone'])
-        data['post'] = next(
-            (line.strip() for line in lines if line.strip()), None)
+        all_fields = Vacancy._meta.get_fields()
+        field_names = [field.name for field in all_fields]
+
+        data = dict.fromkeys(field_names)
+        data["title"] = next((line.strip() for line in lines if line.strip()), None)
 
         actions = [
-            ('company',
-             lambda line: parser.extract_value(line)
-             if self.matches(line, 'company') else None),
-            ('salary',
-             lambda line: parser.extract_salary(line, self.keywords['salary'])
-             if self.matches(line, 'salary') else None),
-            ('city',
-             lambda line: parser.extract_value(line)
-             if self.matches(line, 'city') else None),
-            ('busyness',
-             lambda line: parser.extract_value(line)
-             if self.matches(line, 'busyness') else None),
-            ('phone', parser.extract_phone),
-            ('link', parser.extract_link)
+            (
+                "company",
+                lambda line: parser.extract_value(line)
+                if self.matches(line, "company")
+                else None,
+            ),
+            (
+                "salary",
+                lambda line: parser.extract_salary(line, self.keywords["salary"])
+                if self.matches(line, "salary")
+                else None,
+            ),
+            (
+                "city",
+                lambda line: parser.extract_value(line)
+                if self.matches(line, "city")
+                else None,
+            ),
+            (
+                "schedule",
+                lambda line: parser.extract_value(line)
+                if self.matches(line, "schedule")
+                else None,
+            ),
+            (
+                "work_format",
+                lambda line: parser.extract_value(line)
+                if self.matches(line, "work_format")
+                else None,
+            ),
+            (
+                "skills",
+                lambda line: parser.extract_value(line)
+                if self.matches(line, "skills")
+                else None,
+            ),
+            (
+                "description",
+                lambda line: parser.extract_value(line)
+                if self.matches(line, "description")
+                else None,
+            ),
+            (
+                "address",
+                lambda line: parser.extract_value(line)
+                if self.matches(line, "address")
+                else None,
+            ),
+            (
+                "experience",
+                lambda line: parser.extract_value(line)
+                if self.matches(line, "experience")
+                else None,
+            ),
+            ("contacts", parser.extract_phone),
+            ("url", parser.extract_link),
         ]
 
         for line in lines:

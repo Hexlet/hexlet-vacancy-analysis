@@ -48,12 +48,13 @@ def insert_keyword(word, db_path="../../../../db.sqlite3"):
         cursor = conn.cursor()
         cursor.execute(
             f"""INSERT INTO telegram_parser_keyword ({field}) VALUES (?)
-""", (word,))
+""",
+            (word,),
+        )
         conn.commit()
         print(f"Слово '{word}' записано в поле {field}.")
 
 
-# Пример ввода
 words = [
     "junior",
     "джун",
@@ -78,6 +79,7 @@ words = [
     "москва",
     "тула",
     "екатеринбург",
-    "новосибирск"]
+    "новосибирск",
+]
 for word in words:
     insert_keyword(word)
