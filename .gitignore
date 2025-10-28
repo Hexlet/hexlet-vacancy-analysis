@@ -19,5 +19,7 @@ key_word.py
 
 test_fixtures.sh
 error.html
+**/.DS_Store
+**/node_modules/
 staticfiles/
 static/

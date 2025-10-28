@@ -27,6 +27,7 @@ urlpatterns = [
     path("superjob/", include("app.services.superjob.superjob_parser.urls")),
     path("telegram/", include("app.services.telegram.telegram_channels.urls")),
     path("auth/", include("app.services.auth.users.urls")),
+    path("account/", include("app.services.account.urls")),
     path("robots.txt", views.robots_txt, name="robots_txt"),
 ]
 

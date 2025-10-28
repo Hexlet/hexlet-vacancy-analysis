@@ -7,7 +7,7 @@ from django.http import JsonResponse
 from .models import City, Company, Platform, Vacancy
 
 
-def vacancy_list(request):
+def vacancy_list(request): # noqa
     query = "Python"
     area = 1
     per_page = 4
