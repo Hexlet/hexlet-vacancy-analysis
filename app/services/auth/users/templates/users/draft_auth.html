@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Auth (draft)</title>
+    <style>
+            body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 24px; }
+            form { margin: 12px 0; }
+            label { display: block; margin: 6px 0; }
+            input[type="email"], input[type="password"] { width: 320px; }
+            .msg { margin-top: 8px; color: #444; }
+            .msg.error { color: #b00020; }
+            .msg.success { color: #006400; }
+    </style>
+  </head>
+  <body>
+    <header>
+      {% if user_info %}
+        <a href="{% url 'account_profile_edit' %}">Редактировать аккаунт</a>
+        {% if user_info.first_name or user_info.last_name %}
+          <p>Привет, {{ user_info.first_name }} {{ user_info.last_name }}!</p>
+        {% else %}
+          <p>Привет, noname!</p>
+        {% endif %}
+        <p>Email: {{ user_info.email }}</p>
+        <div style="margin-top: 8px;">
+          {% if linked.yandex %}
+            <a href="{% url 'yandex_auth' %}?apply=1">Обновить данные из Yandex ID</a>
+            <br />
+          {% endif %}
+          {% if linked.github %}
+            <a href="{% url 'github_auth' %}?apply=1">Обновить данные из GitHub</a>
+          {% endif %}
+        </div>
+
+        <br />
+        <h3>Подключённые провайдеры</h3>
+        <div>
+          <div>
+            GitHub: {{ linked.github|yesno:"подключён,не подключён" }}
+            {% if linked.github %}
+              <form method="post"
+                    action="{% url 'unlink_github' %}"
+                    style="display:inline;
+                           margin-left: 8px">
+                {% csrf_token %}
+                <button type="submit">Отключить</button>
+              </form>
+            {% endif %}
+          </div>
+          <div>
+            Yandex: {{ linked.yandex|yesno:"подключён,не подключён" }}
+            {% if linked.yandex %}
+              <form method="post"
+                    action="{% url 'unlink_yandex' %}"
+                    style="display:inline;
+                           margin-left: 8px">
+                {% csrf_token %}
+                <button type="submit">Отключить</button>
+              </form>
+            {% endif %}
+          </div>
+        </div>
+
+        <div style="margin-top: 12px;">
+          <h3>Подключить провайдера</h3>
+          <a href="{% url 'github_auth' %}?link=1">Подключить GitHub</a>
+          <br />
+          <a href="{% url 'yandex_auth' %}?link=1">Подключить Yandex ID</a>
+        </div>
+
+        <form id="logoutForm" action="{% url 'logout' %}" method="post">
+          {% csrf_token %}
+          <button type="submit">Выйти</button>
+        </form>
+        <div id="logoutMessage" class="msg"></div>
+      {% else %}
+        <a href="{% url 'yandex_auth' %}">Войти через Yandex ID</a>
+        <a href="{% url 'github_auth' %}">Войти через GitHub</a>
+        <br />
+        <br />
+
+        <h2>Или зарегистрируйтесь по электронной&nbsp;почте</h2>
+        <form id="emailRegistrationForm">
+          <label for="phone">Телефон (Россия):</label>
+          <input type="tel" id="phone" name="phone" required value="+79991234567" />
+          <label for="email">Email:</label>
+          <input type="email"
+                 id="email"
+                 name="email"
+                 required
+                 value="user@example.com" />
+
+          <label for="password">Пароль (Password2025):</label>
+          <input type="password"
+                 id="password"
+                 name="password"
+                 required
+                 value="Password2025"
+                 autocomplete="new-password" />
+
+          <label for="passwordAgain">Повторите пароль:</label>
+          <input type="password"
+                 id="passwordAgain"
+                 name="passwordAgain"
+                 required
+                 value="Password2025" />
+
+          <label>
+            <input type="checkbox" name="acceptTerms" id="acceptTerms" required checked />
+            Я принимаю условия
+          </label>
+          <button type="submit">Зарегистрироваться</button>
+        </form>
+        <div id="registerMessage" class="msg"></div>
+
+        <h2>Или войдите по электронной&nbsp;почте</h2>
+        <form id="emailLoginForm">
+          <label for="loginEmail">Email:</label>
+          <input type="email"
+                 id="loginEmail"
+                 name="email"
+                 required
+                 value="user@example.com" />
+
+          <label for="loginPassword">Пароль:</label>
+          <input type="password"
+                 id="loginPassword"
+                 name="password"
+                 required
+                 autocomplete="new-password"
+                 value="Password2025" />
+          <br />
+          <br />
+          <button type="submit">Войти</button>
+        </form>
+        <div id="loginMessage" class="msg"></div>
+      {% endif %}
+
+      <br />
+      <a href="/admin" target="_blank">admin</a>
+      {% if messages %}
+        <ul>
+          {% for message in messages %}<li>{{ message }}</li>{% endfor %}
+        </ul>
+      {% endif %}
+    </header>
+
+    <script>
+      function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+      }
+
+      const csrftoken = getCookie('csrftoken');
+
+      const regForm = document.getElementById('emailRegistrationForm');
+      const regMsg = document.getElementById('registerMessage');
+      if (regForm) {
+        regForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          regMsg.textContent = '';
+          regMsg.className = 'msg';
+          const payload = {
+            phone: regForm.phone.value.trim(),
+            email: regForm.email.value.trim(),
+            password: regForm.password.value,
+            passwordAgain: regForm.passwordAgain.value,
+            acceptTerms: regForm.acceptTerms.checked,
+          };
+          try {
+            const resp = await fetch('{% url "register_user" %}', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken || ''
+              },
+              body: JSON.stringify(payload)
+            });
+            const data = await resp.json();
+            if (resp.ok && data.status === 'ok') {
+              regMsg.textContent = 'Регистрация прошла. Проверьте почту для активации.';
+              regMsg.className = 'msg success';
+            } else {
+              regMsg.textContent = data.message || 'Ошибка регистрации';
+              regMsg.className = 'msg error';
+            }
+          } catch (err) {
+            regMsg.textContent = 'Сетевая ошибка';
+            regMsg.className = 'msg error';
+          }
+        });
+      }
+
+      const loginForm = document.getElementById('emailLoginForm');
+      const loginMsg = document.getElementById('loginMessage');
+      if (loginForm) {
+        loginForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          loginMsg.textContent = '';
+          loginMsg.className = 'msg';
+          const payload = {
+            email: loginForm.email.value.trim(),
+            password: loginForm.password.value,
+          };
+          try {
+            const resp = await fetch('{% url "login" %}', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken || ''
+              },
+              body: JSON.stringify(payload)
+            });
+            const data = await resp.json();
+            if (resp.ok && data.status === 'ok') {
+              loginMsg.textContent = 'Вход выполнен.';
+              loginMsg.className = 'msg success';
+              // Обновляем страницу, чтобы увидеть состояние авторизованного пользователя
+              setTimeout(() => window.location.reload(), 400);
+            } else {
+              loginMsg.textContent = data.message || 'Ошибка входа';
+              loginMsg.className = 'msg error';
+            }
+          } catch (err) {
+            loginMsg.textContent = 'Сетевая ошибка';
+            loginMsg.className = 'msg error';
+          }
+        });
+      }
+
+      const logoutForm = document.getElementById('logoutForm');
+      const logoutMsg = document.getElementById('logoutMessage');
+      if (logoutForm) {
+        logoutForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          logoutMsg.textContent = '';
+          logoutMsg.className = 'msg';
+          try {
+            const resp = await fetch('{% url "logout" %}', {
+              method: 'POST',
+              headers: { 'X-CSRFToken': csrftoken || '' }
+            });
+            if (resp.ok) {
+              logoutMsg.textContent = 'Вы вышли из аккаунта';
+              logoutMsg.className = 'msg success';
+              setTimeout(() => window.location.reload(), 300);
+            } else {
+              logoutMsg.textContent = 'Ошибка выхода';
+              logoutMsg.className = 'msg error';
+            }
+          } catch (err) {
+            logoutMsg.textContent = 'Сетевая ошибка';
+            logoutMsg.className = 'msg error';
+          }
+        });
+      }
+
+      // Кнопки обновления теперь просто запускают OAuth с флагом apply=1 (без JS)
+    </script>
+  </body>
+</html>
