@@ -19,6 +19,7 @@ from django.contrib import admin
 from django.urls import include, path
 
 from app import views
+from app.services.auth.password_reset.views import redirect_mail_link
 
 urlpatterns = [
     path("", views.index, name="index"),
@@ -28,6 +29,7 @@ urlpatterns = [
     path("telegram/", include("app.services.telegram.telegram_channels.urls")),
     path("auth/", include("app.services.auth.users.urls")),
     path("account/", include("app.services.account.urls")),
+    path("reset-password", redirect_mail_link, name="link_in_mail"),
 ]
 
 handler500 = views.custom_server_error
