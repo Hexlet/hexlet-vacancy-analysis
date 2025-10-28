@@ -9,14 +9,14 @@ interface ProfileDropdownProps {
 
 const ProfileDropdown = ({ user }: ProfileDropdownProps) => {
   const handleLogout = () => {
-    router.post('/logout'); 
+    router.post('/logout');
   };
-  
+
   const goToProfile = () => router.get('/profile');
   const goToSettings = () => router.get('/settings');
 
   if (!user) {
-    return null; 
+    return null;
   }
 
   return (

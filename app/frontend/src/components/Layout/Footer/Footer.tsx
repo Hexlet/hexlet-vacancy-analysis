@@ -71,11 +71,11 @@ const SubscriptionForm = () => {
             onChange={(event) => setEmail(event.currentTarget.value)}
             disabled={status === 'loading'}
             rightSection={
-              <ActionIcon 
-                type="submit" 
-                size="lg" 
-                color="blue" 
-                variant="filled" 
+              <ActionIcon
+                type="submit"
+                size="lg"
+                color="blue"
+                variant="filled"
                 loading={status === 'loading'}
                 aria-label="Subscribe"
               >

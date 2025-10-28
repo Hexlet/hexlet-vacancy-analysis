@@ -37,7 +37,6 @@ class TelegramParserView:
     async def channel_listener(self, channel_username):
         @self.client.on(events.NewMessage(chats=channel_username))
         async def new_post_handler(event):
-
             message = event.message.message
             parsed = await self.vacancy.parse_vacancy_from_text(message)
             if parsed:

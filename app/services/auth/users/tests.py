@@ -1,175 +1,222 @@
-# import json
-# import re
+import json
+import re
 
-# from django.contrib.auth import get_user_model
-# from django.core import mail
-# from django.test import Client, TestCase
-# from django.test.utils import override_settings
-# from django.utils.encoding import force_bytes
-# from django.utils.http import urlsafe_base64_encode
+from django.conf import settings
+from django.contrib.auth import get_user_model
+from django.core import mail
+from django.test import Client, TestCase
+from django.test.utils import override_settings
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
 
-# from .logic.tokens import account_activation_token
+from .logic.tokens import account_activation_token
 
-# User = get_user_model()
-
-
-# DATA = {
-#         "email": "user123@example.com",
-#         "password": "Qwerty123",
-#         "passwordAgain": "Qwerty123",
-#         "acceptTerms": True
-# }
+User = get_user_model()
 
 
-# class BaseAuthTest(TestCase):
-#     def setUp(self):
-#         self.client = Client(enforce_csrf_checks=True)
-#         self.client.get('/auth/csrf/')
-#         self.csrf_token = self.client.cookies['csrftoken'].value
-
-#     def register_user(self, client, data):
-#         token = self.csrf_token
-#         response = client.post(
-#             '/auth/register/',
-#             data=json.dumps(data),
-#             content_type='application/json',
-#             HTTP_X_CSRFTOKEN=token
-#         )
-#         return response
-
-#     def activate_user(self, client, user):
-#         uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
-#         token = account_activation_token.make_token(user)
-#         response = client.get(f'/auth/activate/{uidb64}/{token}/')
-#         return response
+DATA = {
+    "email": "user123@example.com",
+    "password": "Qwerty123",
+    "passwordAgain": "Qwerty123",
+    "acceptTerms": True,
+    "phone": "+79991234567",
+}
 
 
-# class UsersTest(BaseAuthTest):
-#     def test_register_user_with_csrf(self):
-#         data = DATA
-#         response = self.register_user(self.client, data)
+class BaseAuthTest(TestCase):
+    def setUp(self):
+        self.client = Client(enforce_csrf_checks=True)
+        self.client.get("/auth/csrf/")
+        self.csrf_cookie_name = getattr(settings, "CSRF_COOKIE_NAME", "csrftoken")
+        self.csrf_header_name = getattr(settings, "CSRF_HEADER_NAME", "HTTP_X_CSRFTOKEN")
+        self.csrf_token = self.client.cookies[self.csrf_cookie_name].value
 
-#         self.assertEqual(
-#             response.content,
-#             b'{"status": "ok", "data": {"userId": 1}}'
-#         )
+    def csrf_headers(self, token=None):
+        return {self.csrf_header_name: token or self.csrf_token}
 
-#         self.assertNotEqual(
-#             response.status_code, 403,
-#             "CSRF check failed (403)"
-#         )
+    def register_user(self, client, data):
+        response = client.post(
+            "/auth/register/",
+            data=json.dumps(data),
+            content_type="application/json",
+            **self.csrf_headers(),
+        )
+        return response
 
-#         self.assertIn(
-#             response.status_code, [200, 201],
-#             f"Unexpected status: {response.status_code}"
-#         )
-#         self.assertTrue(User.objects.filter(email=DATA["email"]).exists())
+    def activate_user(self, client, user):
+        uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
+        token = account_activation_token.make_token(user)
+        response = client.get(f"/auth/activate/{uidb64}/{token}/")
+        return response
 
-#     @override_settings(
-#             EMAIL_BACKEND='django.core.mail.backends.locmem.EmailBackend'
-#     )
-#     def test_email_is_send(self):
-#         data = DATA
-#         response = self.register_user(self.client, data)
-#         self.assertEqual(response.status_code, 201)
-#         self.assertEqual(len(mail.outbox), 1)
-#         self.assertIn('Confirm registration', mail.outbox[0].subject)
-#         self.assertIn('To ensure registration', mail.outbox[0].body)
-#         self.assertIn('user123@example.com', mail.outbox[0].to)
 
-#     @override_settings(
-#             EMAIL_BACKEND='django.core.mail.backends.locmem.EmailBackend'
-#     )
-#     def test_user_activation_from_link_email(self):
-#         data = DATA
-#         response = self.register_user(self.client, data)
-#         self.assertEqual(response.status_code, 201)
-#         self.assertEqual(len(mail.outbox), 1)
+class UsersTest(BaseAuthTest):
+    def test_register_user_with_csrf(self):
+        data = DATA
+        response = self.register_user(self.client, data)
 
-#         body = mail.outbox[0].body
-#         match = re.search(r'/auth/activate/([\w-]+)/([\w\-]+)/', body)
-#         self.assertIsNotNone(match)
+        self.assertEqual(response.content, b'{"status": "ok", "data": {"userId": 1}}')
 
-#         uidb64, token = match.groups()
+        self.assertNotEqual(response.status_code, 403, "CSRF check failed (403)")
 
-#         activate_url = f'/auth/activate/{uidb64}/{token}/'
-#         activate_response = self.client.get(activate_url)
+        self.assertIn(
+            response.status_code,
+            [200, 201],
+            f"Unexpected status: {response.status_code}",
+        )
+        self.assertTrue(User.objects.filter(email=DATA["email"]).exists())
 
-#         self.assertIn(activate_response.status_code, [201, 302])
-#         user = User.objects.get(email=data["email"])
-#         self.assertTrue(user.is_active)
+    @override_settings(EMAIL_BACKEND="django.core.mail.backends.locmem.EmailBackend")
+    def test_email_is_send(self):
+        data = DATA
+        response = self.register_user(self.client, data)
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertIn("Confirm registration", mail.outbox[0].subject)
+        self.assertIn("To ensure registration", mail.outbox[0].body)
+        self.assertIn("user123@example.com", mail.outbox[0].to)
 
-#     def test_user_can_login_after_activation(self):
-#         data = DATA
-#         response = self.register_user(self.client, data)
+    @override_settings(EMAIL_BACKEND="django.core.mail.backends.locmem.EmailBackend")
+    def test_user_activation_from_link_email(self):
+        data = DATA
+        response = self.register_user(self.client, data)
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(len(mail.outbox), 1)
 
-#         self.assertEqual(response.status_code, 201)
+        body = mail.outbox[0].body
+        match = re.search(r"/auth/activate/([\w-]+)/([\w\-]+)/", body)
+        self.assertIsNotNone(match)
 
-#         user = User.objects.get(email=DATA["email"])
-#         uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
-#         token = account_activation_token.make_token(user)
-#         activation_response = self.client.get(
-#             f'/auth/activate/{uidb64}/{token}/'
-#         )
-#         self.assertIn(activation_response.status_code, [201, 302])
-#         user.refresh_from_db()
-#         self.assertTrue(user.is_active)
+        uidb64, token = match.groups()
 
-#         login_data = {
-#             "email": DATA["email"],
-#             "password": DATA["password"]
-#         }
+        activate_url = f"/auth/activate/{uidb64}/{token}/"
+        activate_response = self.client.get(activate_url)
 
-#         response = self.client.post(
-#             '/auth/login/',
-#             data=json.dumps(login_data),
-#             content_type='application/json',
-#             HTTP_X_CSRFTOKEN=self.csrf_token
-#         )
+        self.assertIn(activate_response.status_code, [201, 302])
+        user = User.objects.get(email=data["email"])
+        self.assertTrue(user.is_active)
 
-#         self.assertEqual(response.status_code, 200)
-#         self.assertEqual(
-#             response.content,
-#             b'{"status": "ok", "data": {"userId": 1}}'
-#         )
-#         self.assertIn("_auth_user_id", self.client.session)
+    def test_user_can_login_after_activation(self):
+        data = DATA
+        response = self.register_user(self.client, data)
 
-#     def test_user_can_logout_after_login(self):
-#         data = DATA
-#         response = self.register_user(self.client, data)
+        self.assertEqual(response.status_code, 201)
 
-#         self.assertEqual(response.status_code, 201)
+        user = User.objects.get(email=DATA["email"])
+        uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
+        token = account_activation_token.make_token(user)
+        activation_response = self.client.get(f"/auth/activate/{uidb64}/{token}/")
+        self.assertIn(activation_response.status_code, [201, 302])
+        user.refresh_from_db()
+        self.assertTrue(user.is_active)
 
-#         user = User.objects.get(email=DATA["email"])
-#         user.is_active = True
-#         user.save()
-#         user.refresh_from_db()
-#         self.assertTrue(user.is_active)
+        login_data = {"email": DATA["email"], "password": DATA["password"]}
 
-#         login_data = {
-#             "email": DATA["email"],
-#             "password": DATA["password"]
-#         }
+        response = self.client.post(
+            "/auth/login/",
+            data=json.dumps(login_data),
+            content_type="application/json",
+            **self.csrf_headers(),
+        )
 
-#         response = self.client.post(
-#             '/auth/login/',
-#             data=json.dumps(login_data),
-#             content_type='application/json',
-#             HTTP_X_CSRFTOKEN=self.csrf_token
-#         )
-#         self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.content, b'{"status": "ok", "data": {"userId": 1}}')
+        self.assertIn("_auth_user_id", self.client.session)
 
-#         self.client.get('/auth/csrf/')
-#         self.csrf_token = self.client.cookies['csrftoken'].value
+    def test_user_can_logout_after_login(self):
+        data = DATA
+        response = self.register_user(self.client, data)
 
-#         response = self.client.post(
-#             '/auth/logout/',
-#             content_type='application/json',
-#             HTTP_X_CSRFTOKEN=self.csrf_token
-#         )
+        self.assertEqual(response.status_code, 201)
 
-#         self.assertEqual(response.status_code, 200)
-#         self.assertEqual(
-#             response.content,
-#             b'{"status": "ok", "message": "User logged out"}'
-#         )
+        user = User.objects.get(email=DATA["email"])
+        user.is_active = True
+        user.save()
+        user.refresh_from_db()
+        self.assertTrue(user.is_active)
+
+        login_data = {"email": DATA["email"], "password": DATA["password"]}
+
+        response = self.client.post(
+            "/auth/login/",
+            data=json.dumps(login_data),
+            content_type="application/json",
+            **self.csrf_headers(),
+        )
+        self.assertEqual(response.status_code, 200)
+
+        self.client.get("/auth/csrf/")
+        self.csrf_token = self.client.cookies[self.csrf_cookie_name].value
+
+        response = self.client.post(
+            "/auth/logout/",
+            content_type="application/json",
+            **self.csrf_headers(),
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.content, b'{"status": "ok", "message": "User logged out"}'
+        )
+
+    def test_register_user_without_phone(self):
+        data = {
+            "email": "nopho@example.com",
+            "password": "Qwerty123",
+            "passwordAgain": "Qwerty123",
+            "acceptTerms": True,
+        }
+        resp = self.register_user(self.client, data)
+        self.assertEqual(resp.status_code, 400)
+        payload = json.loads(resp.content)
+        self.assertEqual(payload.get("status"), "error")
+
+    def test_register_user_with_invalid_phone(self):
+        data = {
+            "email": "badphone@example.com",
+            "password": "Qwerty123",
+            "passwordAgain": "Qwerty123",
+            "acceptTerms": True,
+            "phone": "123",
+        }
+        resp = self.register_user(self.client, data)
+        self.assertEqual(resp.status_code, 400)
+        payload = json.loads(resp.content)
+        self.assertEqual(payload.get("status"), "error")
+
+    def test_register_phone_normalization(self):
+        data = {
+            "email": "norm@example.com",
+            "password": "Qwerty123",
+            "passwordAgain": "Qwerty123",
+            "acceptTerms": True,
+            "phone": "8" + "9991234567",
+        }
+        resp = self.register_user(self.client, data)
+        self.assertIn(resp.status_code, [200, 201])
+        user = get_user_model().objects.get(email="norm@example.com")
+        self.assertEqual(user.phone, "+79991234567")
+
+    def test_register_phone_duplicate(self):
+        # first user
+        first = {
+            "email": "dupa@example.com",
+            "password": "Qwerty123",
+            "passwordAgain": "Qwerty123",
+            "acceptTerms": True,
+            "phone": "+79990001122",
+        }
+        self.register_user(self.client, first)
+
+        # second with same phone
+        second = {
+            "email": "dupb@example.com",
+            "password": "Qwerty123",
+            "passwordAgain": "Qwerty123",
+            "acceptTerms": True,
+            "phone": "+79990001122",
+        }
+        resp = self.register_user(self.client, second)
+        self.assertEqual(resp.status_code, 409)
+        payload = json.loads(resp.content)
+        self.assertEqual(payload.get("status"), "error")

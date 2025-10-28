@@ -115,9 +115,7 @@ class TinkoffCallback(View):
         headers = {
             "content_type": "application/x-www-form-urlencoded",
             "Authorization": (
-                f"{auth_type} {token}"
-                if token
-                else self._create_basic_auth_header()
+                f"{auth_type} {token}" if token else self._create_basic_auth_header()
             ),
         }
         response = requests.post(url, headers=headers, data=data)
@@ -205,9 +203,7 @@ class TinkoffCallback(View):
         else:
             logger.info(f"User account already exists for: [{email}]")
 
-        login(
-            request, user, backend="django.contrib.auth.backends.ModelBackend"
-        )
+        login(request, user, backend="django.contrib.auth.backends.ModelBackend")
         return redirect(previous_page)
 
     def _handle_error(self, message, status_code):
