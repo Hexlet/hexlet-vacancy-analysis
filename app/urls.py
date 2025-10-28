@@ -16,9 +16,17 @@ Including another URLconf
 """
 
 from django.contrib import admin
+from django.contrib.sitemaps.views import sitemap
 from django.urls import include, path
 
 from app import views
+
+from .sitemap import StaticSitemap, TelegramSitemap
+
+sitemaps = {
+    "static": StaticSitemap,
+    "telegram": TelegramSitemap,
+}
 
 urlpatterns = [
     path("", views.index, name="index"),
@@ -28,6 +36,12 @@ urlpatterns = [
     path("telegram/", include("app.services.telegram.telegram_channels.urls")),
     path("auth/", include("app.services.auth.users.urls")),
     path("account/", include("app.services.account.urls")),
+    path(
+        "sitemap.xml",
+        sitemap,
+        {"sitemaps": sitemaps},
+        name="django.contrib.sitemaps.views.sitemap",
+    ),
 ]
 
 handler500 = views.custom_server_error
