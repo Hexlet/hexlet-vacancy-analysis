@@ -35,17 +35,22 @@ ALLOWED_HOSTS = [host.strip() for host in raw_allowed_hosts.split(",")]
 # Application definition
 
 INSTALLED_APPS = [
+    "app.services.auth.users",
+    "app.services.auth.github",
+    "app.services.auth.yandex_id",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "django_vite",
     "inertia",
-    "app.services.auth.users",
+    "app.services.hh.hh_parser",
     "app.services.telegram.telegram_parser",
     "app.services.telegram.telegram_channels",
+    "app.services.superjob.superjob_parser",
+    "app.services.account",
+    "django_vite",
     "app.services.auth.tinkoff_id",
     "app.services.parser",
 
@@ -91,9 +96,7 @@ WSGI_APPLICATION = "app.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.{}".format(
-            os.getenv("DATABASE_ENGINE", "sqlite3")
-        ),
+        "ENGINE": "django.db.backends.{}".format(os.getenv("DATABASE_ENGINE", "sqlite3")),
         "NAME": os.getenv("DATABASE_NAME", "postgres"),
         "USER": os.getenv("DATABASE_USER", "postgres"),
         "PASSWORD": os.getenv("DATABASE_PASSWORD", "password"),
@@ -108,7 +111,7 @@ DATABASES = {
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
-
+#
 # DATABASE_URL = os.getenv('DATABASE_URL')
 # if DATABASE_URL:
 #     DATABASES['default'] = dj_database_url.config(
@@ -161,9 +164,13 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+# Inertia (temporarily disabled; frontend will handle this later)
+
 AUTHENTICATION_BACKENDS = [
-    "app.services.auth.users.logic.authentication.EmailAuthBackend",
-    "django.contrib.auth.backends.ModelBackend",
+    'app.services.auth.users.logic.authentication.EmailAuthBackend',
+    'app.services.auth.github.backend.GithubBackend',
+    'app.services.auth.yandex_id.backend.YandexBackend',
+    'django.contrib.auth.backends.ModelBackend',
 ]
 
 EMAIL_BACKEND = os.environ.get(
@@ -183,6 +190,14 @@ EMAIL_TIMEOUT = int(os.environ.get("EMAIL_TIMEOUT", 10))
 
 
 FIXTURE_PATH = 'app/fixtures'
+YANDEX_CLIENT_ID = os.getenv('YANDEX_CLIENT_ID', '')
+YANDEX_CLIENT_SECRET = os.getenv('YANDEX_CLIENT_SECRET', '')
+YANDEX_REDIRECT_URI = os.getenv('YANDEX_REDIRECT_URI', '')
+
+GITHUB_CLIENT_ID = os.getenv('GITHUB_CLIENT_ID', '')
+GITHUB_CLIENT_SECRET = os.getenv('GITHUB_CLIENT_SECRET', '')
+GITHUB_REDIRECT_URI = os.getenv('GITHUB_REDIRECT_URI', '')
+
 ## django-vite settings
 # use HMR or not.
 DJANGO_VITE_DEV_MODE = DEBUG
@@ -213,4 +228,3 @@ TINKOFF_ID_TOKEN_URL = "https://id.tinkoff.ru/auth/token"
 TINKOFF_ID_USERINFO_URL = "https://id.tinkoff.ru/userinfo/userinfo"
 TINKOFF_ID_INTROSPECT_URL = "https://id.tinkoff.ru/auth/introspect"
 TINKOFF_ID_SCOPE = ["profile", "email"]
-

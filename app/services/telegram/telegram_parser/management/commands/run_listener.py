@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
-    help = 'Запускает Telegram слушатель'
+    help = "Запускает Telegram слушатель"
 
     def handle(self, *args, **kwargs):
         asyncio.run(self.start_listener())
@@ -24,11 +24,13 @@ class Command(BaseCommand):
         listened_channels = set()
 
         while True:
-
             channels = await sync_to_async(
                 lambda: list(
-                    Channel.objects.filter(status='active').values_list(
-                        'username', flat=True)))()
+                    Channel.objects.filter(status="active").values_list(
+                        "username", flat=True
+                    )
+                )
+            )()
 
             new_channels = [c for c in channels if c not in listened_channels]
 

@@ -19,6 +19,8 @@ key_word.py
 
 test_fixtures.sh
 error.html
+**/.DS_Store
+**/node_modules/
 
 app/services/parser/api_parser/city_region_mapping.json
 sqlite3

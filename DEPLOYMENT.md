@@ -84,6 +84,7 @@ DATABASE_USER=your-db-username
 DATABASE_PASSWORD=your-db-password
 DATABASE_HOST=your-db-host
 DATABASE_PORT=your-db-port
+DATABASE_ENGINE=postgresql
 ```
 ## 4. Деплой
 

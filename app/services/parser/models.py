@@ -47,6 +47,7 @@ class SuperjobVacancy(models.Model):
     contacts = models.CharField(max_length=250, null=True)
     published_at = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
+    published_at = models.DateTimeField()
 
     def __str__(self):
         return f'{self.title} в {self.company_name}'

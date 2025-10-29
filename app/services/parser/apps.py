@@ -1,6 +1,5 @@
 from django.apps import AppConfig
 
 
-class ParserConfig(AppConfig):
-    default_auto_field = 'django.db.models.BigAutoField'
+class HhParserConfig(AppConfig):
     name = 'app.services.parser'

@@ -31,6 +31,14 @@ EMAIL_TIMEOUT=10
 
 DEBUG=True
 
+YANDEX_CLIENT_ID=key
+YANDEX_CLIENT_SECRET=key
+YANDEX_REDIRECT_URI=http://localhost:8000/auth/yandex/callback/
+
+GITHUB_CLIENT_ID=key
+GITHUB_CLIENT_SECRET=key
+GITHUB_REDIRECT_URI=http://localhost:8000/auth/github/callback/
+
 TINKOFF_ID_CLIENT_ID="clien_id"
 TINKOFF_ID_CLIENT_SECRET="secret_key"
 TINKOFF_ID_REDIRECT_URI="https://localhost/callback"
@@ -91,8 +99,3 @@ or /parser/superjob
 
 ## Comments
  
-
-
-## Paser:
-To parse hh.ru or superjob.ru you need to create a local database and go to /parser/hh 
-or /parser/superjob

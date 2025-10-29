@@ -7,6 +7,7 @@ from django.utils.http import urlsafe_base64_encode
 
 from .. import exceptions as custom_ex
 from .mail import safe_send_mail
+from .phone import PHONE_VALIDATION_ERROR, normalize_phone_number
 from .tokens import account_activation_token
 from .validators import (
     check_error_validation,
@@ -19,10 +20,7 @@ User = get_user_model()
 def generate_activation_link(user, domain):
     uid = urlsafe_base64_encode(force_bytes(user.pk))
     token = account_activation_token.make_token(user)
-    activation_link = reverse(
-        "activate",
-        kwargs={"uidb64": uid, "token": token}
-    )
+    activation_link = reverse("activate", kwargs={"uidb64": uid, "token": token})
     return f"http://{domain}{activation_link}"
 
 
@@ -30,19 +28,31 @@ def create_activation_mail(user, data):
     domain = data.get("domain")
     activate_url = generate_activation_link(user, domain)
 
-    message = render_to_string("activation_email.html", {
-        "user": user,
-        "activate_url": activate_url,
-    })
+    message = render_to_string(
+        "activation_email.html",
+        {
+            "user": user,
+            "activate_url": activate_url,
+        },
+    )
     return message
 
 
 def create_user(data):
     email = normalize_email(data.get("email"))
     password = data.get("password")
+    # для регистрации по электронной почте требуется телефонный номер
+    phone_raw = data.get("phone")
+    try:
+        normalized = normalize_phone_number(phone_raw)
+    except Exception:
+        # отображать как ошибку проверки
+        raise custom_ex.ValidationError(message=PHONE_VALIDATION_ERROR, code=400)
+
     user = User.objects.create_user(email=email)
     user.set_password(password)
     user.is_active = False
+    user.phone = normalized.number
     user.save()
     return user
 

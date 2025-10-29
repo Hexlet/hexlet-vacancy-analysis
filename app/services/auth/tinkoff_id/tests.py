@@ -31,12 +31,8 @@ class TinkoffLoginTest(TestCase):
         self.assertTrue(settings.TINKOFF_ID_AUTH_URL in response.url)
 
         # Проверяем параметры в URL
-        self.assertIn(
-            "client_id=" + settings.TINKOFF_ID_CLIENT_ID, response.url
-        )
-        self.assertIn(
-            "redirect_uri=" + settings.TINKOFF_ID_REDIRECT_URI, response.url
-        )
+        self.assertIn("client_id=" + settings.TINKOFF_ID_CLIENT_ID, response.url)
+        self.assertIn("redirect_uri=" + settings.TINKOFF_ID_REDIRECT_URI, response.url)
         self.assertIn("response_type=code", response.url)
 
         # Проверяем, что state сохранен в сессии

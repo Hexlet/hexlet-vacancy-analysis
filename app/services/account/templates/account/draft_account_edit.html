@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Account Edit</title>
+    </head>
+    <body>
+        <main>
+            <header>
+                <a href="http://localhost:8000/auth/draft/">Назад</a>
+            </header>
+            {% if messages %}
+                {% for message in messages %}<p>{{ message }}</p>{% endfor %}
+            {% endif %}
+            {% if not request.user.is_authenticated %}
+                <h1>Вход в аккаунт</h1>
+                {% comment %} <ul>
+                    <li>
+                        <a href="{% url 'yandex_auth' %}?next={{ request.path|urlencode }}">Войти через Yandex</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'github_auth' %}?next={{ request.path|urlencode }}">Войти через GitHub</a>
+                    </li>
+                </ul> {% endcomment %}
+            {% else %}
+                <h1>Редактирование профиля</h1>
+                {% if saved %}<p style="color: green;">Изменения сохранены</p>{% endif %}
+                <section>
+                    <p>Компонент: {{ component }}</p>
+                    <ul>
+                        <li>ID: {{ props.id }}</li>
+                        <li>Email: {{ props.email }}</li>
+                        <li>Создан: {{ props.created_at }}</li>
+                    </ul>
+                </section>
+                <section>
+                    <h2>Имя, фамилия и телефон</h2>
+                    <form method="post">
+                        {% csrf_token %}
+                        {% if next %}<input type="hidden" name="next" value="{{ next }}" />{% endif %}
+                        <div>
+                            <label for="first_name">Имя</label>
+                            <input id="first_name"
+                                   name="first_name"
+                                   type="text"
+                                   maxlength="150"
+                                   value="{{ props.first_name|default_if_none:'' }}" />
+                            {% if errors.first_name %}<div style="color: red;">{{ errors.first_name }}</div>{% endif %}
+                        </div>
+                        <div>
+                            <label for="last_name">Фамилия</label>
+                            <input id="last_name"
+                                   name="last_name"
+                                   type="text"
+                                   maxlength="150"
+                                   value="{{ props.last_name|default_if_none:'' }}" />
+                            {% if errors.last_name %}<div style="color: red;">{{ errors.last_name }}</div>{% endif %}
+                        </div>
+                        <div>
+                            <label for="phone">Телефон (Россия)</label>
+                            <input id="phone"
+                                   name="phone"
+                                   type="tel"
+                                   maxlength="32"
+                                   value="{{ props.phone|default_if_none:'' }}" />
+                            {% if errors.phone %}<div style="color: red;">{{ errors.phone }}</div>{% endif %}
+                        </div>
+                        <div>
+                            <button type="submit">Сохранить</button>
+                        </div>
+                    </form>
+                    <br>
+                    {% comment %} <form action="{% url 'logout' %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit">Выйти</button>
+                    </form> {% endcomment %}
+                </section>
+            {% endif %}
+        </main>
+        <br>
+        <footer>
+            <a href="/admin" target="_blank">admin</a>
+        </footer>
+    </body>
+</html>
