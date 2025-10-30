@@ -1,6 +1,8 @@
 import { createRoot } from "react-dom/client";
 import { createInertiaApp } from "@inertiajs/react";
 import { InertiaProgress } from '@inertiajs/progress';
+import { MantineProvider } from "@mantine/core";
+import '@mantine/core/styles.css';
 import axios from 'axios';
 import React from 'react';
 
@@ -15,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
         resolve: (name) => import(`./components/pages/${name}.tsx`),
         setup: ({ el, App, props }) => {
             const root = createRoot(el);
-            root.render(React.createElement(App, props));
+            root.render(React.createElement(MantineProvider, {}, React.createElement(App, props)));
         },
     });
 });
