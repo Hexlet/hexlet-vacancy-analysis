@@ -1,14 +1,21 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import './index.css'
-import App from './App.tsx'
-import { MantineProvider } from '@mantine/core';
-import '@mantine/core/styles.css';
+import { createRoot } from "react-dom/client";
+import { createInertiaApp } from "@inertiajs/react";
+import { InertiaProgress } from '@inertiajs/progress';
+import axios from 'axios';
+import React from 'react';
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <MantineProvider> 
-      <App />
-    </MantineProvider>
-  </React.StrictMode>,
-)
+document.addEventListener('DOMContentLoaded', () => {
+    const csrfMeta = document.querySelector('meta[name=csrf-token]');
+    const csrfToken = csrfMeta ? csrfMeta.getAttribute('content') : '';
+    axios.defaults.headers.common['X-CSRF-Token'] = csrfToken;
+
+    InertiaProgress.init({ color: '#4B5563' });
+
+    createInertiaApp({
+        resolve: (name) => import(`./components/pages/${name}.tsx`),
+        setup: ({ el, App, props }) => {
+            const root = createRoot(el);
+            root.render(React.createElement(App, props));
+        },
+    });
+});

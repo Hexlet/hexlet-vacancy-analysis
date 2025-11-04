@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from '@inertiajs/react';
 import { SocialIcon } from 'react-social-icons';
 import { Send } from 'lucide-react';
 import { useSubscriptionForm } from '../../../hooks/useSubscriptionForm';
@@ -38,7 +38,7 @@ const NavColumn = ({ title, links }: { title: string; links: { label: string; hr
     <ul className="mt-4 space-y-3">
       {links.map((link) => (
         <li key={link.label}>
-          <Link to={link.href} className="text-gray-500 hover:text-white transition-colors duration-200">
+          <Link href={link.href} className="text-gray-500 hover:text-white transition-colors duration-200">
             {link.label}
           </Link>
         </li>
@@ -71,11 +71,11 @@ const SubscriptionForm = () => {
             onChange={(event) => setEmail(event.currentTarget.value)}
             disabled={status === 'loading'}
             rightSection={
-              <ActionIcon 
-                type="submit" 
-                size="lg" 
-                color="blue" 
-                variant="filled" 
+              <ActionIcon
+                type="submit"
+                size="lg"
+                color="blue"
+                variant="filled"
                 loading={status === 'loading'}
                 aria-label="Subscribe"
               >
