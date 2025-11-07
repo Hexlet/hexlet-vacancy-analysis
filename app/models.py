@@ -1,8 +1,24 @@
-from django.core.exceptions import ValidationError
 from django.db import models
+
+from .validators import *  # noqa
 
 
 class HomePageBlock(models.Model):
+    """
+    Модель блока для главной страницы сайта.
+
+    Представляет собой гибкий компонент контента, который может иметь разные типы
+    и структуру в зависимости от назначения. Поддерживает валидацию содержимого
+    через динамически подключаемые функции-валидаторы, определённые в глобальном
+    пространстве имён.
+
+    Используется для построения главной страницы из независимых блоков,
+    таких как главный раздел, статистика и другие.
+
+    Атрибуты:
+        BLOCK_TYPES (tuple): Доступные типы блоков с их отображаемыми названиями.
+    """
+
     BLOCK_TYPES = (
         ("hero", "Главный раздел"),
         ("stats", "Статистика"),
@@ -26,26 +42,28 @@ class HomePageBlock(models.Model):
         return self.title
 
     def clean(self):
+        """
+        Выполняет валидацию модели перед сохранением.
+
+        Валидаторы ищутся в глобальном пространстве имён по шаблону: "*_block".
+        Например, функция `validator_hero_block()` будет вызвана для блока
+        с block_type='hero'.
+
+        Если подходящий валидатор найден, он вызывается с текущим объектом.
+        Поиск прерывается после первого совпадения.
+
+        Raises:
+            ValidationError: Если данные не проходят валидацию в вызванной функции.
+        """
         super().clean()
 
-        if self.block_type == "hero":
-            self._validate_hero_block()
-        elif self.block_type == "stats":
-            self._validate_stats_block()
-
-    def _validate_hero_block(self):
-        required_fields = ("heading", "subheading")
-        for field in required_fields:
-            if field not in self.content:
-                raise ValidationError(
-                    {"content": f"Hero  блок должен содержать поле: {field}"}
-                )
-
-    def _validate_stats_block(self):
-        if "metrics" not in self.content:
-            raise ValidationError(
-                {"content": "Stats блок должен содержать список metrics"}
-            )
-
-        if not isinstance(self.content["metrics"], list):
-            raise ValidationError({"content": "metrics должен быть списком"})
+        validators = {
+            name: validator
+            for name, validator in globals().items()
+            if name.endswith("_block")
+        }
+        for name, validator in validators.items():
+            block = name.split("_")[1]
+            if block == self.block_type:
+                validator(self)
+                break
