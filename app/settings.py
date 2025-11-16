@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django_filters",
     "inertia",
     "app.services.hh.hh_parser",
     "app.services.telegram.telegram_parser",
@@ -52,6 +53,7 @@ INSTALLED_APPS = [
     "app.services.account",
     "django_vite",
     "app.services.auth.tinkoff_id",
+    "app.services.blog",
 ]
 
 AUTH_USER_MODEL = "users.User"
