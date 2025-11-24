@@ -27,7 +27,6 @@ const PricingCard = ({
  features,
  highlighted,
 }: PricingCardProps) => {
-
  const cardBorderColor = highlighted ? "#4ECDC4" : "#808080";
 
  const buttonBackGroundColor = highlighted ? "#4ECDC4" : "#ede8e8";
@@ -50,7 +49,7 @@ const PricingCard = ({
   >
    {highlighted && (
     <Badge
-     color='#4ECDC4'
+     color="#4ECDC4"
      variant="filled"
      radius="xl"
      style={{
@@ -73,7 +72,7 @@ const PricingCard = ({
     </Text>
 
     <Text ta="center" size="20px" fw={700}>
-     <Text span c='#4ECDC4'size="35px" fw={700}>
+     <Text span c="#4ECDC4" size="35px" fw={700}>
       {price}
      </Text>
      {period}
@@ -87,7 +86,7 @@ const PricingCard = ({
     >
      {features.map((feature, index) => (
       <Group key={index} wrap="nowrap" align="flex-start" w="100%">
-       <ThemeIcon size="sm" radius="xl" color='#4ECDC4' variant="light">
+       <ThemeIcon size="sm" radius="xl" color="#4ECDC4" variant="light">
         <IconCircleCheck size={18} />
        </ThemeIcon>
        <Text size="sm" c="dark">
@@ -97,12 +96,18 @@ const PricingCard = ({
      ))}
     </Stack>
 
-    <Button fullWidth mt="auto" color={buttonBackGroundColor} radius="md" style={{color: buttonColor}}>
+    <Button
+     fullWidth
+     mt="auto"
+     color={buttonBackGroundColor}
+     radius="md"
+     style={{ color: buttonColor }}
+    >
      Выбрать план
     </Button>
    </Stack>
   </Paper>
  );
-}
+};
 
 export default PricingCard;

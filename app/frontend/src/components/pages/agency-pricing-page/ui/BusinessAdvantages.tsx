@@ -2,8 +2,6 @@ import { Title, Stack, Group, Text, ThemeIcon } from "@mantine/core";
 import { advantages } from "../api/data";
 
 const BusinessAdvantages = () => {
-
-
  return (
   <Stack>
    <Title order={2} c="white" mb="xl" ta="left">
