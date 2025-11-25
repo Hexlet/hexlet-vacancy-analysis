@@ -8,7 +8,7 @@ import {
  Button,
  Badge,
 } from "@mantine/core";
-import { IconCircleCheck } from "@tabler/icons-react";
+import { CheckCircleIcon } from "@heroicons/react/24/outline";
 
 interface PricingCardProps {
  title: string;
@@ -87,7 +87,7 @@ const PricingCard = ({
      {features.map((feature, index) => (
       <Group key={index} wrap="nowrap" align="flex-start" w="100%">
        <ThemeIcon size="sm" radius="xl" color="#4ECDC4" variant="light">
-        <IconCircleCheck size={18} />
+        <CheckCircleIcon />
        </ThemeIcon>
        <Text size="sm" c="dark">
         {feature}

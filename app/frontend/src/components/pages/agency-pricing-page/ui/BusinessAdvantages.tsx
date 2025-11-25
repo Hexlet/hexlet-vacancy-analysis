@@ -20,7 +20,7 @@ const BusinessAdvantages = () => {
         border: "1px solid #4ECDC4",
        }}
       >
-       <advantage.icon size={24} stroke={1.5} />
+       <advantage.icon/>
       </ThemeIcon>
       <Stack gap={4}>
        <Text fw={700} c="white">
