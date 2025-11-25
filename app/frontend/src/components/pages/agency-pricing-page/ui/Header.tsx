@@ -1,6 +1,7 @@
 import { Group, Text, Anchor, ThemeIcon, Flex, rem, Box } from "@mantine/core";
+import { ArrowTrendingUpIcon } from "@heroicons/react/16/solid";
+import { HomeIcon } from "@heroicons/react/24/outline";
 
-import { IconHome, IconTrendingUp } from "@tabler/icons-react";
 
 const Header = () => {
  return (
@@ -22,7 +23,7 @@ const Header = () => {
    >
     <Flex align="center" gap="10px">
      <ThemeIcon color="#0A192F">
-      <IconTrendingUp color="#4ECDC4" />
+      <ArrowTrendingUpIcon color="#4ECDC4" />
      </ThemeIcon>
      <Text fw={700} size="md" lh={1}>
       Skill Pulse
@@ -31,7 +32,7 @@ const Header = () => {
     <Anchor href="/" c="white" underline="never">
      <Flex align="center" ta="center" gap={rem(4)}>
       <ThemeIcon color="#0A192F">
-       <IconHome />
+       <HomeIcon />
       </ThemeIcon>
       <Text>На главную</Text>
      </Flex>

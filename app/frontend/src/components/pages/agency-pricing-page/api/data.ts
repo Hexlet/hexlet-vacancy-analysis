@@ -1,24 +1,23 @@
-// data.ts
-import { IconUsers, IconApi, IconShield, IconHeadphones } from "@tabler/icons-react";
+import { CircleStackIcon, ShieldCheckIcon, PhoneIcon, UserGroupIcon} from "@heroicons/react/16/solid";
 
 export const advantages = [
   {
-    icon: IconUsers,
+    icon: UserGroupIcon,
     title: "Командная работа",
     description: "Управление доступами и совместная работа",
   },
   {
-    icon: IconApi,
+    icon: CircleStackIcon,
     title: "API интеграция",
     description: "Подключение к вашим внутренним системам",
   },
   {
-    icon: IconShield,
+    icon: ShieldCheckIcon,
     title: "Безопасность",
     description: "Защита данных на уровне enterprise",
   },
   {
-    icon: IconHeadphones,
+    icon: PhoneIcon,
     title: "Поддержка 24/7",
     description: "Персональный менеджер и техподдержка",
   },
