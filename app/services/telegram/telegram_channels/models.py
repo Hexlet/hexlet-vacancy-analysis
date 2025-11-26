@@ -15,3 +15,6 @@ class Channel(models.Model):
 
     def __str__(self):
         return f"{self.username}"
+
+    class InertiaMeta:
+        fields = ('username', 'channel_id', 'status', 'last_message_id')

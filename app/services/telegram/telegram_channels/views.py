@@ -6,6 +6,7 @@ from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
+from inertia import render
 
 from ..telegram_client import TelegramChannelClient
 from .form import ChannelForm
@@ -32,51 +33,43 @@ class IndexChannelView(View):
             logger.info("Фильтрация по username")
 
         qs = qs.order_by("username")
-
-        try:
-            channels = qs.values(
-                "id", "username", "channel_id", "status", "last_message_id"
-            )
-        except IntegrityError as e:
-            logger.error(f"Ошибка целостности БД: {e}")
-        except DataError as e:
-            logger.error(f"Ошибка данных при получении: {e}")
         logger.info("Получение списка каналов")
-        return JsonResponse(list(channels), safe=False)
+
+        return render(request, "Channels/Index", props={
+            "channels": qs,
+        })
 
 
 class ShowChannelView(View):
     def get(self, request, *args, **kwargs):
         try:
             channel = get_object_or_404(Channel, id=kwargs["pk"])
-        except Http404 as e:
+        except Http404:
             logger.error("Статус 404, запрашиваемой страницы не существует")
-            return JsonResponse(
-                {"status": "error", "error": "Channel not found", "details": str(e)},
+            return render(request, "Errors/NotFound",
+                props={"message": "Channel not found"},
                 status=404,
             )
-        except IntegrityError as e:
-            logger.error(f"Ошибка целостности БД: {e}")
-        except DataError as e:
-            logger.error(f"Ошибка данных при получении: {e}")
+        except Exception as e:
+            logger.error(f"Неожиданная ошибка: {e}")
+            return render(request, "Errors/ServerError", props={
+                "message": "Internal server error",
+                "details": str(e),
+            }, status=500)
 
         logger.info("Статус 200, Получена страница канала")
-        return JsonResponse(
-            {
-                "id": channel.id,
-                "username": channel.username,
-                "channel_id": channel.channel_id,
-                "status": channel.status,
-                "last_message_id": channel.last_message_id,
-            }
-        )
+        return render(request, "Channels/Show", props={
+            "channel": channel,
+        })
 
 
 @method_decorator(csrf_exempt, name="dispatch")
 class AddChannelView(View):
     async def get(self, request, *args, **kwargs):
         form = ChannelForm()
-        return JsonResponse({"status": "ok", "form_fields": list(form.fields.keys())})
+        return JsonResponse(request, "Channels/Add", props={
+            "form_fields": list(form.fields.keys()),
+        })
 
     async def post(self, request, *args, **kwargs):
         data = request.POST.dict()
@@ -90,8 +83,7 @@ class AddChannelView(View):
 
         if not exists:
             logger.error("Канала не существует")
-            return JsonResponse(
-                {
+            return render(request, "Channels/Add", props={
                     "status": "error",
                     "errors": {"username": ["Канал не найден в Telegram"]},
                 }
@@ -104,7 +96,7 @@ class AddChannelView(View):
         save_data = SaveDataChannel()
         result = await save_data.save_valid_form(data, channel_data)
         logger.info("Канал успешно добавлен")
-        return JsonResponse(result)
+        return render(request, "Channels/Success", props=result)
 
 
 @method_decorator(csrf_exempt, name="dispatch")
@@ -112,8 +104,7 @@ class DeleteChannelView(View):
     def get(self, request, *args, **kwargs):
         channel_id = kwargs.get("pk")
         channel = get_object_or_404(Channel, id=channel_id)
-        return JsonResponse(
-            {
+        return render(request, "Channels/Delete", props={
                 "status": "confirm",
                 "message": f"""
             Are you sure you want to delete the channel {channel.username}?
@@ -126,8 +117,9 @@ class DeleteChannelView(View):
         confirm = request.POST.get("confirm")
         if confirm != "yes":
             logger.info("Отмена удаления канала пользователем")
-            return JsonResponse(
-                {"status": "cancelled", "details": "Deleting was calcelled by user"}
+            return render(request, "Channels/DeleteCancelled", props={
+                "status": "cancelled", "details": "Deleting was calcelled by user"
+                },
             )
         channel_id = kwargs.get("pk")
         channel = get_object_or_404(Channel, id=channel_id)
@@ -135,9 +127,12 @@ class DeleteChannelView(View):
             channel.delete()
         except (IntegrityError, DataError) as e:
             logger.error("Ошибка удаления канала")
-            return JsonResponse(
-                {"status": "error", "error": "Channel not found", "details": str(e)},
-                status=200,
+            return render(request, "Errors/ServerError", props={
+                "status": "error", "error": "Channel not found", "details": str(e)},
+                status=500,
             )
         logger.info("Канал успешно удален")
-        return JsonResponse({"status": "ok", "details": "The channel was deleted"})
+        return render(request, "Channels/Success", props={
+            "status": "ok", "details": "The channel was deleted"
+            },
+        )
