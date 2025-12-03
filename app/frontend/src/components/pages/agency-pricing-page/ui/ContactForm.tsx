@@ -4,7 +4,6 @@ import React from "react";
 const ContactForm = () => {
  const handleSubmit = (event: React.FormEvent) => {
   event.preventDefault();
-  console.log("Форма отправлена");
  };
 
  return (
