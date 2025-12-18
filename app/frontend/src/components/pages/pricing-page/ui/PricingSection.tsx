@@ -11,7 +11,7 @@ import {
 
 import { CheckCircleIcon } from "@heroicons/react/24/outline";
 import PricingCard from "./PricingCard";
-import { useGetPricingPlansQuery } from "../../../../store/api/planApi";
+import { useGetPricingPlansQuery } from "../../../../store/api/plansApi";
 
 const PricingSection = () => {
  const { data: plans, error, isLoading } = useGetPricingPlansQuery();
