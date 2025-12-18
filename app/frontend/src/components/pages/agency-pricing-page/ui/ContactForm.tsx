@@ -59,7 +59,7 @@ const ContactForm = () => {
   },
  });
 
- const onSubmit: SubmitHandler<ContactFormData> = (data) => {
+ const onSubmit: SubmitHandler<ContactFormData> = () => {
   reset();
  };
 
