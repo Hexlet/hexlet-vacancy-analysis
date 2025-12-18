@@ -24,7 +24,7 @@ export const advantages = [
 ];
 
 
-type Plan = {
+export type Plan = {
   id: string;
   title: string;
   subtitle: string;
