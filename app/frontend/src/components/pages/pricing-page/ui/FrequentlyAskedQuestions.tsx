@@ -14,7 +14,7 @@ interface FaqCardProps {
  answer: string;
 }
 
-export const FaqCard: React.FC<FaqCardProps> = ({ question, answer }) => {
+export const FaqCard: React.FC<FaqCardProps> = (props) => {
  return (
   <Card
    shadow="sm"
@@ -32,11 +32,11 @@ export const FaqCard: React.FC<FaqCardProps> = ({ question, answer }) => {
      <QuestionMarkCircleIcon color="#4ECDC4" />
     </ThemeIcon>
     <Text fw="700" size="md" c="dark">
-     {question}
+     {props.question}
     </Text>
    </Flex>
    <Text size="sm" c="dimmed" style={{ paddingLeft: "32px" }}>
-    {answer}
+    {props.answer}
    </Text>
   </Card>
  );

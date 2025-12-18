@@ -4,7 +4,7 @@ import { CurrencyDollarIcon, LightBulbIcon, CheckIcon } from "@heroicons/react/2
 
 
 
-type Plan = {
+export type Plan = {
     id: string;
     title: string;
     subtitle: string;

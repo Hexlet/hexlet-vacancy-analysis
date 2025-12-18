@@ -19,19 +19,12 @@ interface PricingCardProps {
  highlighted?: boolean;
 }
 
-const PricingCard = ({
- title,
- subtitle,
- price,
- period,
- features,
- highlighted,
-}: PricingCardProps) => {
- const cardBorder = highlighted ? "3px solid #4ECDC4" : "1px solid #dadce0";
+const PricingCard = (props: PricingCardProps) => {
+ const cardBorder = props.highlighted ? "3px solid #4ECDC4" : "1px solid #dadce0";
 
- const buttonBackGroundColor = highlighted ? "#4ECDC4" : "#ede8e8";
+ const buttonBackGroundColor = props.highlighted ? "#4ECDC4" : "#ede8e8";
 
- const buttonColor = highlighted ? "#FFFFFF" : "black";
+ const buttonColor = props.highlighted ? "#FFFFFF" : "black";
 
 
  return (
@@ -48,7 +41,7 @@ const PricingCard = ({
     backgroundColor: "white",
    }}
   >
-   {highlighted && (
+   {props.highlighted && (
     <Badge
      color="#4ECDC4"
      variant="filled"
@@ -66,17 +59,17 @@ const PricingCard = ({
    )}
    <Stack gap="md" h="100%" w="100%">
     <Title order={3} ta="center" c="dark">
-     {title}
+     {props.title}
     </Title>
     <Text ta="center" size="sm" c="dimmed">
-     {subtitle}
+     {props.subtitle}
     </Text>
 
     <Text ta="center" size="20px" fw={700}>
      <Text span c="#4ECDC4" size="35px" fw={700}>
-      {price}
+      {props.price}
      </Text>
-     {period}
+     {props.period}
     </Text>
 
     <Stack
@@ -85,7 +78,7 @@ const PricingCard = ({
      w="100%"
      style={{ flexGrow: 1, alignSelf: "stretch" }}
     >
-     {features.map((feature, index) => (
+     {props.features.map((feature, index) => (
       <Group key={index} wrap="nowrap" align="flex-start" w="100%">
        <ThemeIcon size="sm" radius="xl" color="#4ECDC4" variant="light">
         <CheckCircleIcon/>
