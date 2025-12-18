@@ -1,10 +1,46 @@
-import { Title, Text, Stack, Group, Flex, ThemeIcon } from "@mantine/core";
+import {
+ Title,
+ Text,
+ Stack,
+ Group,
+ Flex,
+ ThemeIcon,
+ Loader,
+ Alert,
+} from "@mantine/core";
 
 import { CheckCircleIcon } from "@heroicons/react/24/outline";
 import PricingCard from "./PricingCard";
-import { plans } from "../api/data";
+import { useGetPricingPlansQuery } from "../../../../store/api/planApi";
 
 const PricingSection = () => {
+ const { data: plans, error, isLoading } = useGetPricingPlansQuery();
+
+ if (isLoading) {
+  return (
+   <Stack align="center" ta="center" mt="70px" mb="xl">
+    <Loader size="xl" color="rgba(50, 65, 102, 1)" />
+    <Text>Загрузка тарифных планов...</Text>
+   </Stack>
+  );
+ }
+
+ if (error) {
+  let errorMessage = "Произошла неизвестная ошибка";
+  if ("status" in error && "data" in error) {
+   errorMessage = `Ошибка ${error.status}: ${JSON.stringify(error.data)}`;
+  } else if (error instanceof Error) {
+   errorMessage = error.message;
+  }
+  return (
+   <Stack align="center" ta="center" mt="70px" mb="xl">
+    <Alert title="Ошибка загрузки" color="red">
+     {errorMessage}
+    </Alert>
+   </Stack>
+  );
+ }
+
  return (
   <Stack align="center" ta="center" mt="70px" mb="xl">
    <Title order={1} c="dark">
@@ -17,7 +53,7 @@ const PricingSection = () => {
     <Flex
      direction={{ base: "column", md: "row" }}
      gap="10px"
-     align="flex-start" 
+     align="flex-start"
     >
      <Flex gap="5px" align="center" ta="center">
       <ThemeIcon size="sm" radius="xl" color="#4ECDC4" variant="light">
@@ -52,7 +88,7 @@ const PricingSection = () => {
     align="stretch"
     style={{ width: "100%" }}
    >
-    {plans.map((plan) => (
+    {plans?.map((plan) => (
      <PricingCard key={plan.id} {...plan} />
     ))}
    </Flex>

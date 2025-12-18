@@ -2,45 +2,44 @@ import { Title, Text, Stack, Flex, ThemeIcon, Card } from "@mantine/core";
 import { featuresData, type FeatureCardData } from "../api/data";
 
 interface FeatureCardProps {
-  icon: FeatureCardData['icon'];
-  title: FeatureCardData['title'];
-  description: FeatureCardData['description'];
+ icon: FeatureCardData["icon"];
+ title: FeatureCardData["title"];
+ description: FeatureCardData["description"];
 }
 
+const FeatureCard: React.FC<FeatureCardProps> = (props) => {
+ const Icon = props.icon;
 
-const FeatureCard: React.FC<FeatureCardProps> = ({ icon: Icon, title, description }) => {
-  return (
-    <Card
-      padding="lg"
-      radius="md"
-      shadow="sm"
-      bg="#0A192F" 
-      style={{
-        display: "flex",
-        flexDirection: "column", 
-        alignItems: "center", 
-        textAlign: "center", 
-        width: "300px",
-        margin: "10px", 
-      }}
-    >
-      <ThemeIcon
-        color="#1b5b6b" 
-        size="xl"
-        radius="xl"
-        mb="20px"
-        style={{ width: "40px", height: "40px", padding: "5px" }} 
-      >
-        <Icon color="#4ECDC4" />
-      </ThemeIcon>
-      <Text c="white" pb="10px" fz="xl">
-        {title}
-      </Text>
-      <Text c="dimmed">
-        {description}
-      </Text>
-    </Card>
-  );
+ return (
+  <Card
+   padding="lg"
+   radius="md"
+   shadow="sm"
+   bg="#0A192F"
+   style={{
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    textAlign: "center",
+    width: "300px",
+    margin: "10px",
+   }}
+  >
+   <ThemeIcon
+    color="#1b5b6b"
+    size="xl"
+    radius="xl"
+    mb="20px"
+    style={{ width: "40px", height: "40px", padding: "5px" }}
+   >
+    <Icon color="#4ECDC4" />
+   </ThemeIcon>
+   <Text c="white" pb="10px" fz="xl">
+    {props.title}
+   </Text>
+   <Text c="dimmed">{props.description}</Text>
+  </Card>
+ );
 };
 
 const WhatYouWillGet = () => {
@@ -58,9 +57,9 @@ const WhatYouWillGet = () => {
     Что вы получаете{" "}
    </Title>
    <Flex direction={{ base: "column", md: "row" }} align="center">
-   {featuresData.map((feature) => (
+    {featuresData.map((feature) => (
      <FeatureCard
-      key={feature.id} 
+      key={feature.id}
       icon={feature.icon}
       title={feature.title}
       description={feature.description}
@@ -70,6 +69,5 @@ const WhatYouWillGet = () => {
   </Stack>
  );
 };
-
 
 export default WhatYouWillGet;
