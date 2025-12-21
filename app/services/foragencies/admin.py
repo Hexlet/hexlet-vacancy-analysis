@@ -1,13 +1,30 @@
 from django.contrib import admin
+from phonenumber_field.formfields import PhoneNumberField
+from phonenumber_field.widgets import PhoneNumberPrefixWidget
 
 from .models import AgencyPlanFeature, AgencyPricingPlan, CompanyInquiry
 
 
 @admin.register(AgencyPricingPlan)
 class AgencyPricingPlanAdmin(admin.ModelAdmin):
-    list_display = ("name", "price", "currency", 'period', "is_active", "order")
-    list_editable = ("price", "is_active", "order")
+    list_display = (
+        "title",
+        "subtitle",
+        "price",
+        "is_active",
+        "block_type",
+        "highlighted",
+        "features_list",
+    )
+    search_fields = ("title", "subtitle")
+    list_filter = ("is_active", "block_type")
+    list_editable = ("price", "is_active", "highlighted")
     filter_horizontal = ("features",)
+
+    def features_list(self, obj):
+        if obj.features.exists():
+            return ", ".join([feature.name for feature in obj.features.all()])
+        return "No features"
 
 
 @admin.register(AgencyPlanFeature)
@@ -23,8 +40,11 @@ class CompanyInquiryAdmin(admin.ModelAdmin):
         "email",
         "phone",
         "created_at",
-        "is_processed"
+        "is_processed",
     )
     list_filter = ("is_processed", "created_at")
     list_editable = ("is_processed",)
     search_fields = ("company_name", "email")
+    formfield_overrides = {
+        PhoneNumberField: {"widget": PhoneNumberPrefixWidget},
+    }
