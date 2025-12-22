@@ -1,6 +1,6 @@
 # hexlet-vacancy-analysis
 
-.
+..
 
 ## Requirements:
 
@@ -91,3 +91,4 @@ make docker-up
 
 .
 ## Comments
+.
