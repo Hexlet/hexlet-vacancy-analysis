@@ -1,5 +1,5 @@
 """
-URL configuration for app project. 
+URL configuration for app project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/5.1/topics/http/urls/
@@ -21,7 +21,7 @@ from django.urls import include, path
 from app import views
 
 urlpatterns = [
-    path("", views.index, name="index"),
+    path("", views.HomePageView.as_view(), name="index"),
     path("admin/", admin.site.urls),
     path("hh/", include("app.services.hh.hh_parser.urls")),
     path("superjob/", include("app.services.superjob.superjob_parser.urls")),
