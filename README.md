@@ -9,6 +9,7 @@ To run this project, you need to have the following software installed:
 - Python >=3.12
 - Uv
 - PostgreSQL
+- Node.js >= ??
 
 ## Preparation:
 
