@@ -55,7 +55,7 @@ const ContactForm = () => {
    companyName: "",
    fullName: "",
    email: "",
-   phone: "",
+   phone: "+7",
   },
  });
 
