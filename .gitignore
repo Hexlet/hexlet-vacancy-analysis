@@ -11,6 +11,7 @@ coverage.xml
 .python-version
 .ruff_cache
 .pytest_cache
+*.log
 db.sqlite3
 PATH
 itlabormarket_project_plan.md
@@ -23,3 +24,5 @@ error.html
 **/node_modules/
 staticfiles/
 static/
+*.session
+.mypy_cache
