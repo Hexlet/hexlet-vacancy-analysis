@@ -19,12 +19,7 @@ class AgencyView(View):
                     "subtitle": plan.subtitle,
                     "price": plan.price,
                     "highlighted": plan.highlighted,
-                    "features": [
-                        {
-                            "name": feature.name,
-                        }
-                        for feature in plan.features.all()
-                    ],
+                    "features": [feature.name for feature in plan.features.all()],
                 }
                 for plan in plans
             ]
