@@ -6,12 +6,12 @@ from django.views import View
 from inertia import InertiaResponse  # type: ignore
 from inertia import render as inertia_render
 
-from .models import AgencyPricingPlan, CompanyInquiry
+from .models import CompanyInquiry, PricingPlan
 
 
 class AgencyView(View):
     def get(self, request: HttpRequest) -> InertiaResponse:
-        plans = AgencyPricingPlan.objects.filter(is_active=True, block_type="agencies")
+        plans = PricingPlan.objects.filter(is_active=True, block_type="agencies")
         props = {
             "plans": [
                 {

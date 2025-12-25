@@ -2,7 +2,7 @@ from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField  # type: ignore
 
 
-class AgencyPricingPlan(models.Model):
+class PricingPlan(models.Model):
     BLOCK_TYPE = (
         ("agencies", "Агентсва"),
         ("tariffs", "Тарифы"),
@@ -21,7 +21,7 @@ class AgencyPricingPlan(models.Model):
     highlighted = models.BooleanField(default=False, verbose_name="Выдиление")
 
     features: models.ManyToManyField = models.ManyToManyField(
-        "AgencyPlanFeature",
+        "PlanFeature",
         related_name="plans",
         blank=True,
         verbose_name="Характеристики",
@@ -35,7 +35,7 @@ class AgencyPricingPlan(models.Model):
         return self.title
 
 
-class AgencyPlanFeature(models.Model):
+class PlanFeature(models.Model):
     name = models.CharField(max_length=200, verbose_name="Характеристика")
 
     class Meta:
