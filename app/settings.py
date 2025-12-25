@@ -228,7 +228,7 @@ TINKOFF_ID_SCOPE = ["profile", "email"]
 # Logging
 LOGGING = {
     "version": 1,
-    "disable_existing_loggers": True,
+    "disable_existing_loggers": False,
     "formatters": {
         "default": {
             "format": "[{asctime}] #{levelname:8} {name}:{lineno}:{funcName} - {message}",
@@ -238,6 +238,7 @@ LOGGING = {
     "handlers": {
         "console": {
             "class": "logging.StreamHandler",
+            'stream': 'ext://sys.stdout',
             "formatter": "default",
         },
     },
