@@ -1,20 +1,21 @@
 import json
 
 from django.core.exceptions import ValidationError
-from django.http import JsonResponse
+from django.http import HttpRequest, JsonResponse
 from django.views import View
+from inertia import InertiaResponse  # type: ignore
 from inertia import render as inertia_render
 
 from .models import AgencyPricingPlan, CompanyInquiry
 
 
 class AgencyView(View):
-    def get(self, request):
+    def get(self, request: HttpRequest) -> InertiaResponse:
         plans = AgencyPricingPlan.objects.filter(is_active=True, block_type="agencies")
         props = {
             "plans": [
                 {
-                    "id": plan.id,
+                    "id": plan.pk,
                     "title": plan.title,
                     "subtitle": plan.subtitle,
                     "price": plan.price,
@@ -30,7 +31,7 @@ class AgencyView(View):
             props,
         )
 
-    def post(self, request):
+    def post(self, request: HttpRequest) -> JsonResponse:
         if request.content_type == "application/json":
             try:
                 data = json.loads(request.body.decode("utf-8"))

@@ -1,6 +1,6 @@
 from django.contrib import admin
-from phonenumber_field.formfields import PhoneNumberField
-from phonenumber_field.widgets import PhoneNumberPrefixWidget
+from phonenumber_field.formfields import PhoneNumberField  # type: ignore
+from phonenumber_field.widgets import PhoneNumberPrefixWidget  # type: ignore
 
 from .models import AgencyPlanFeature, AgencyPricingPlan, CompanyInquiry
 

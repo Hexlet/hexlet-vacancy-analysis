@@ -1,7 +1,7 @@
 from http import HTTPStatus
 
 from django.urls import reverse
-from inertia.test import InertiaTestCase
+from inertia.test import InertiaTestCase  # type: ignore
 
 from .models import AgencyPlanFeature, AgencyPricingPlan, CompanyInquiry
 

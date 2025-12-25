@@ -1,5 +1,5 @@
 from django.db import models
-from phonenumber_field.modelfields import PhoneNumberField
+from phonenumber_field.modelfields import PhoneNumberField  # type: ignore
 
 
 class AgencyPricingPlan(models.Model):
@@ -20,7 +20,7 @@ class AgencyPricingPlan(models.Model):
     )
     highlighted = models.BooleanField(default=False, verbose_name="Выдиление")
 
-    features = models.ManyToManyField(
+    features: models.ManyToManyField = models.ManyToManyField(
         "AgencyPlanFeature",
         related_name="plans",
         blank=True,
@@ -31,7 +31,7 @@ class AgencyPricingPlan(models.Model):
         verbose_name = "Блок тарифов и агенств"
         verbose_name_plural = "Блоки тарифов и агенств"
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.title
 
 
@@ -42,7 +42,7 @@ class AgencyPlanFeature(models.Model):
         verbose_name = "Характеристика"
         verbose_name_plural = "Характеристики"
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
 
@@ -58,5 +58,5 @@ class CompanyInquiry(models.Model):
         verbose_name = "Заявка от компании"
         verbose_name_plural = "Заявки от компаний"
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"Заявка от {self.company_name} ({self.email})"
