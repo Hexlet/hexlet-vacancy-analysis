@@ -1,141 +1,139 @@
 [
 {
-    "model": "foragencies.agencyplanfeature",
+    "model": "foragencies.planfeature",
     "pk": 1,
     "fields": {
         "name": "До 5 пользователей"
     }
 },
 {
-    "model": "foragencies.agencyplanfeature",
+    "model": "foragencies.planfeature",
     "pk": 2,
     "fields": {
         "name": "1000 запросов/месяц"
     }
 },
 {
-    "model": "foragencies.agencyplanfeature",
+    "model": "foragencies.planfeature",
     "pk": 3,
     "fields": {
         "name": "Базовая аналитика"
     }
 },
 {
-    "model": "foragencies.agencyplanfeature",
+    "model": "foragencies.planfeature",
     "pk": 4,
     "fields": {
         "name": "Email поддержка"
     }
 },
 {
-    "model": "foragencies.agencyplanfeature",
+    "model": "foragencies.planfeature",
     "pk": 5,
     "fields": {
         "name": "Еженедельные отчеты"
     }
 },
 {
-    "model": "foragencies.agencyplanfeature",
+    "model": "foragencies.planfeature",
     "pk": 6,
     "fields": {
         "name": "До 20 пользователей"
     }
 },
 {
-    "model": "foragencies.agencyplanfeature",
+    "model": "foragencies.planfeature",
     "pk": 7,
     "fields": {
         "name": "Безлимитные запросы"
     }
 },
 {
-    "model": "foragencies.agencyplanfeature",
+    "model": "foragencies.planfeature",
     "pk": 8,
     "fields": {
         "name": "Расширенная аналитика"
     }
 },
 {
-    "model": "foragencies.agencyplanfeature",
+    "model": "foragencies.planfeature",
     "pk": 9,
     "fields": {
         "name": "API доступ"
     }
 },
 {
-    "model": "foragencies.agencyplanfeature",
+    "model": "foragencies.planfeature",
     "pk": 10,
     "fields": {
         "name": "Приоритетная поддержка"
     }
 },
 {
-    "model": "foragencies.agencyplanfeature",
+    "model": "foragencies.planfeature",
     "pk": 11,
     "fields": {
         "name": "Кастомные отчеты"
     }
 },
 {
-    "model": "foragencies.agencyplanfeature",
+    "model": "foragencies.planfeature",
     "pk": 12,
     "fields": {
         "name": "Интеграции"
     }
 },
 {
-    "model": "foragencies.agencyplanfeature",
+    "model": "foragencies.planfeature",
     "pk": 13,
     "fields": {
         "name": "До 50 пользователей"
     }
 },
 {
-    "model": "foragencies.agencyplanfeature",
+    "model": "foragencies.planfeature",
     "pk": 14,
     "fields": {
         "name": "Полная аналитика + AI"
     }
 },
 {
-    "model": "foragencies.agencyplanfeature",
+    "model": "foragencies.planfeature",
     "pk": 15,
     "fields": {
         "name": "Персональный менеджер"
     }
 },
 {
-    "model": "foragencies.agencyplanfeature",
+    "model": "foragencies.planfeature",
     "pk": 16,
     "fields": {
         "name": "SLA 99.9%"
     }
 },
 {
-    "model": "foragencies.agencyplanfeature",
+    "model": "foragencies.planfeature",
     "pk": 17,
     "fields": {
         "name": "Кастомные интеграции"
     }
 },
 {
-    "model": "foragencies.agencyplanfeature",
+    "model": "foragencies.planfeature",
     "pk": 18,
     "fields": {
         "name": "Обучение команды"
     }
 },
 {
-    "model": "foragencies.agencypricingplan",
+    "model": "foragencies.pricingplan",
     "pk": 1,
     "fields": {
-        "name": "Стартовый",
-        "price": 14990,
-        "currency": "₽",
-        "period": "мес",
-        "description": "Для небольших HR-команд",
+        "title": "Стартовый",
+        "price": "₽14990 /мес",
+        "subtitle": "Для небольших HR-команд",
         "is_active": true,
-        "order": 1,
+        "highlighted": false,
         "features": [
             1,
             2,
@@ -146,16 +144,14 @@
     }
 },
 {
-    "model": "foragencies.agencypricingplan",
+    "model": "foragencies.pricingplan",
     "pk": 2,
     "fields": {
-        "name": "Профессиональный",
-        "price": 29990,
-        "currency": "₽",
-        "period": "мес",
-        "description": "Для агенств и средних компаний",
+        "title": "Профессиональный",
+        "price": "₽29990 /мес",
+        "subtitle": "Для агенств и средних компаний",
         "is_active": true,
-        "order": 2,
+        "highlighted": true,
         "features": [
             6,
             7,
@@ -168,16 +164,14 @@
     }
 },
 {
-    "model": "foragencies.agencypricingplan",
+    "model": "foragencies.pricingplan",
     "pk": 3,
     "fields": {
-        "name": "Корпоративный",
-        "price": 49990,
-        "currency": "₽",
-        "period": "мес",
-        "description": "Для крупных компаний",
+        "title": "Корпоративный",
+        "price": "₽49990 /мес",
+        "subtitle": "Для крупных компаний",
         "is_active": true,
-        "order": 3,
+        "highlighted": false,
         "features": [
             13,
             7,

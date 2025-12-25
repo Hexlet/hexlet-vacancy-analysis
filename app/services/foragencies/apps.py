@@ -2,5 +2,6 @@ from django.apps import AppConfig
 
 
 class ForagenciesConfig(AppConfig):
-    default_auto_field = 'django.db.models.BigAutoField'
-    name = 'app.services.foragencies'
+    default_auto_field = "django.db.models.BigAutoField"
+    name = "app.services.foragencies"
+    verbose_name = "Агенства и тарифы"
