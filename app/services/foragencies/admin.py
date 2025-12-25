@@ -2,10 +2,10 @@ from django.contrib import admin
 from phonenumber_field.formfields import PhoneNumberField  # type: ignore
 from phonenumber_field.widgets import PhoneNumberPrefixWidget  # type: ignore
 
-from .models import AgencyPlanFeature, AgencyPricingPlan, CompanyInquiry
+from .models import CompanyInquiry, PlanFeature, PricingPlan
 
 
-@admin.register(AgencyPricingPlan)
+@admin.register(PricingPlan)
 class AgencyPricingPlanAdmin(admin.ModelAdmin):
     list_display = (
         "title",
@@ -27,7 +27,7 @@ class AgencyPricingPlanAdmin(admin.ModelAdmin):
         return "No features"
 
 
-@admin.register(AgencyPlanFeature)
+@admin.register(PlanFeature)
 class AgencyPlanFeatureAdmin(admin.ModelAdmin):
     list_display = ("name",)
 
