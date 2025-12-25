@@ -3,16 +3,16 @@ from http import HTTPStatus
 from django.urls import reverse
 from inertia.test import InertiaTestCase  # type: ignore
 
-from .models import AgencyPlanFeature, AgencyPricingPlan, CompanyInquiry
+from .models import CompanyInquiry, PlanFeature, PricingPlan
 
 
 class ForAgenciesTest(InertiaTestCase):
     def setUp(self):
         super().setUp()
-        self.plan = AgencyPricingPlan.objects.create(
+        self.plan = PricingPlan.objects.create(
             title="Стартовый_test", price="14990", block_type="agencies"
         )
-        self.feature = AgencyPlanFeature.objects.create(name="До 5 пользователей_test")
+        self.feature = PlanFeature.objects.create(name="До 5 пользователей_test")
         self.plan.features.add(self.feature)
 
     def test_agency_view(self):
@@ -24,10 +24,10 @@ class ForAgenciesTest(InertiaTestCase):
         plan_props = props["plans"][0]
         self.assertEqual(plan_props["title"], "Стартовый_test")
         self.assertEqual(len(plan_props["features"]), 1)
-        self.assertEqual(plan_props["features"][0]["name"], "До 5 пользователей_test")
+        self.assertEqual(plan_props["features"][0], "До 5 пользователей_test")
 
     def test_agency_view_no_active_plans(self):
-        AgencyPricingPlan.objects.all().update(is_active=False)
+        PricingPlan.objects.all().update(is_active=False)
         self.client.get(reverse("foragencies_page"))
         self.assertComponentUsed("AgencyPricingPage")
         props = self.props()
