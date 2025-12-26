@@ -42,6 +42,7 @@ urlpatterns = [
         {"sitemaps": sitemaps},
         name="django.contrib.sitemaps.views.sitemap",
     ),
+    path("foragencies/", include("app.services.foragencies.urls")),
 ]
 
 handler500 = views.custom_server_error

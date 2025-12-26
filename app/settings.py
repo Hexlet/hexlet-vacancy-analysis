@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     "app.services.superjob.superjob_parser",
     "app.services.account",
     "app.services.auth.tinkoff_id",
+    "app.services.foragencies"
 ]
 
 AUTH_USER_MODEL = "users.User"
