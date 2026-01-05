@@ -44,3 +44,9 @@ def validate_stats_block(self):
 
     if not isinstance(self.content["metrics"], list):
         raise ValidationError({"content": "metrics должен быть списком"})
+
+
+VALIDATORS = {
+    "hero": validate_hero_block,
+    "stats": validate_stats_block,
+}

@@ -21,7 +21,7 @@ from django.urls import include, path
 from app import views
 
 urlpatterns = [
-    path("", views.HomePageView.as_view(), name="index"),
+    path("", include("app.homepage.urls")),
     path("admin/", admin.site.urls),
     path("hh/", include("app.services.hh.hh_parser.urls")),
     path("superjob/", include("app.services.superjob.superjob_parser.urls")),
