@@ -51,7 +51,7 @@ INSTALLED_APPS = [
     "app.services.superjob.superjob_parser",
     "app.services.account",
     "django_vite",
-    "app",
+    "app.homepage",
     "app.services.auth.tinkoff_id",
     "app.services.foragencies"
 ]
