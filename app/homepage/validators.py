@@ -1,29 +1,63 @@
+from typing import Any
+
 from django.core.exceptions import ValidationError
 
+# Константы для обязательных полей
+HERO_REQUIRED_FIELDS = ("heading", "subheading")
+STATS_REQUIRED_FIELDS = ("metrics",)
 
-def validate_hero_block(self):
+# Константы для сообщений об ошибках
+ERROR_MESSAGES = {
+    "hero_missing_field": "Hero блок должен содержать поле: {field}",
+    "stats_missing_metrics": "Stats блок должен содержать ключ 'metrics'",
+    "stats_metrics_not_list": "Поле 'metrics' должно быть списком",
+    "invalid_content_type": "Содержимое должно быть объектом JSON",
+}
+
+
+def validate_required_fields(
+    content: Any,
+    required_fields: tuple[str, ...],
+    error_key: str,
+) -> None:
+    """
+    Проверяет наличие обязательных полей в словаре.
+
+    Args:
+        content: Содержимое для проверки.
+        required_fields: Кортеж обязательных полей.
+        error_key: Ключ для получения сообщения об ошибке из ERROR_MESSAGES.
+
+    Raises:
+        ValidationError: Если содержимое не является словарём
+            или отсутствует обязательное поле.
+    """
+    if not isinstance(content, dict):
+        raise ValidationError({"content": ERROR_MESSAGES["invalid_content_type"]})
+
+    for field in required_fields:
+        if field not in content:
+            raise ValidationError(
+                {"content": ERROR_MESSAGES[error_key].format(field=field)}
+            )
+
+
+def validate_hero_block(self: Any) -> None:
     """
     Валидирует содержимое блока типа 'hero'.
 
-    Проверяет наличие обязательных полей в JSON-поле content.
+    Проверяет наличие обязательных полей (heading, subheading) в JSON-поле content.
 
     Args:
         self: Экземпляр модели HomePageBlock, для которого выполняется валидация.
 
     Raises:
         ValidationError: Если в content отсутствует одно из обязательных полей.
-                         Ошибка связывается с полем 'content' и содержит
-                         понятное сообщение о недостающем поле.
     """
-    required_fields = ("heading", "subheading")
-    for field in required_fields:
-        if field not in self.content:
-            raise ValidationError(
-                {"content": f"Hero  блок должен содержать поле: {field}"}
-            )
+    validate_required_fields(self.content, HERO_REQUIRED_FIELDS, "hero_missing_field")
 
 
-def validate_stats_block(self):
+def validate_stats_block(self: Any) -> None:
     """
     Валидирует содержимое блока типа 'stats'.
 
@@ -36,14 +70,16 @@ def validate_stats_block(self):
 
     Raises:
         ValidationError: Если:
-            - Отсутствует ключ 'metrics' в contt
+            - Содержимое не является словарём
+            - Отсутствует ключ 'metrics'
             - Значение 'metrics' не является списком
     """
-    if "metrics" not in self.content:
-        raise ValidationError({"content": "Stats блок должен содержать список metrics"})
+    validate_required_fields(
+        self.content, STATS_REQUIRED_FIELDS, "stats_missing_metrics"
+    )
 
     if not isinstance(self.content["metrics"], list):
-        raise ValidationError({"content": "metrics должен быть списком"})
+        raise ValidationError({"content": ERROR_MESSAGES["stats_metrics_not_list"]})
 
 
 VALIDATORS = {
