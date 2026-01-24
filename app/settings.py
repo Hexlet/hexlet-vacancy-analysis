@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     "django_vite",
     "app.services.auth.tinkoff_id",
     "app.services.pricing",
+    "phonenumber_field",
     "app.services.foragencies",
 ]
 

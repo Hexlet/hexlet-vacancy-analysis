@@ -1,76 +1,62 @@
 import json
 
 from django.core.exceptions import ValidationError
-from django.http import JsonResponse
+from django.http import HttpRequest, JsonResponse
 from django.views import View
+from inertia import InertiaResponse  # type: ignore
 from inertia import render as inertia_render
 
-from .models import AgencyPricingPlan, CompanyInquiry
+from .models import CompanyInquiry, PricingPlan
 
 
 class AgencyView(View):
-    def get(self, request):
-        plans = AgencyPricingPlan.objects.filter(is_active=True)
+    def get(self, request: HttpRequest) -> InertiaResponse:
+        plans = PricingPlan.objects.filter(
+            is_active=True, block_type="agencies"
+        ).prefetch_related("features")
         props = {
-            'plans': [
+            "plans": [
                 {
-                    'id': plan.id,
-                    'name': plan.name,
-                    'price': f"{plan.price:,}",
-                    'currency': plan.currency,
-                    'period': plan.period,
-                    'description': plan.description,
-                    'features': [
-                        {'name': feature.name}
-                        for feature in plan.features.all()
-                    ]
+                    "id": plan.pk,
+                    "title": plan.title,
+                    "subtitle": plan.subtitle,
+                    "price": plan.price,
+                    "highlighted": plan.highlighted,
+                    "features": list(plan.features.all().values_list("name", flat=True)),
                 }
                 for plan in plans
             ]
         }
-        return inertia_render(request, 'AgencyPricingPage', props)
+        return inertia_render(
+            request,
+            "AgencyPricingPage",
+            props,
+        )
 
-    def post(self, request):
-        if request.content_type == 'application/json':
+    def post(self, request: HttpRequest) -> JsonResponse:
+        if request.content_type == "application/json":
             try:
-                data = json.loads(request.body.decode('utf-8'))
+                data = json.loads(request.body.decode("utf-8"))
             except json.JSONDecodeError:
                 return JsonResponse(
-                    {'success': False, 'error': 'Invalid JSON'},
-                    status=400
+                    {"success": False, "error": "Invalid JSON format"}, status=400
                 )
         else:
             data = request.POST.dict()
 
-        if not all(key in data for key in ['company_name', 'email']):
-            return JsonResponse(
-                {
-                    'success': False,
-                    'error': 'Обязательные поля: Название компании и email'
-                },
-                status=400
-            )
-        if not data.get('email', '').count('@'):
-            return JsonResponse(
-                {'success': False, 'error': 'Некорректный email'},
-                status=400
-            )
         try:
-            CompanyInquiry.objects.create(
-                company_name=data.get('company_name'),
-                name=data.get('name'),
-                email=data.get('email'),
-                phone=data.get('phone', ''),
+            inquiry = CompanyInquiry(
+                company_name=data.get("company_name"),
+                name=data.get("name"),
+                email=data.get("email"),
+                phone=data.get("phone"),
             )
-            return JsonResponse({'success': True})
-
+            inquiry.full_clean()
+            inquiry.save()
+            return JsonResponse({"success": True}, status=201)
         except ValidationError as e:
-            return JsonResponse(
-                {'success': False, 'error': str(e)},
-                status=400
-            )
+            return JsonResponse({"success": False, "error": str(e)}, status=418)
         except Exception:
             return JsonResponse(
-                {'success': False, 'error': 'Internal error'},
-                status=500
+                {"success": False, "error": "Internal error"}, status=500
             )
