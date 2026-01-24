@@ -44,13 +44,14 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sitemaps",
+    "django_vite",
     "inertia",
     "app.services.hh.hh_parser",
     "app.services.telegram.telegram_parser",
     "app.services.telegram.telegram_channels",
     "app.services.superjob.superjob_parser",
     "app.services.account",
-    "django_vite",
     "app.services.auth.tinkoff_id",
     "app.services.pricing",
     "app.services.foragencies",
@@ -167,10 +168,10 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # Inertia (temporarily disabled; frontend will handle this later)
 
 AUTHENTICATION_BACKENDS = [
-    'app.services.auth.users.logic.authentication.EmailAuthBackend',
-    'app.services.auth.github.backend.GithubBackend',
-    'app.services.auth.yandex_id.backend.YandexBackend',
-    'django.contrib.auth.backends.ModelBackend',
+    "app.services.auth.users.logic.authentication.EmailAuthBackend",
+    "app.services.auth.github.backend.GithubBackend",
+    "app.services.auth.yandex_id.backend.YandexBackend",
+    "django.contrib.auth.backends.ModelBackend",
 ]
 
 EMAIL_BACKEND = os.environ.get(
@@ -188,13 +189,13 @@ EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
 EMAIL_TIMEOUT = int(os.environ.get("EMAIL_TIMEOUT", 10))
 
-YANDEX_CLIENT_ID = os.getenv('YANDEX_CLIENT_ID', '')
-YANDEX_CLIENT_SECRET = os.getenv('YANDEX_CLIENT_SECRET', '')
-YANDEX_REDIRECT_URI = os.getenv('YANDEX_REDIRECT_URI', '')
+YANDEX_CLIENT_ID = os.getenv("YANDEX_CLIENT_ID", "")
+YANDEX_CLIENT_SECRET = os.getenv("YANDEX_CLIENT_SECRET", "")
+YANDEX_REDIRECT_URI = os.getenv("YANDEX_REDIRECT_URI", "")
 
-GITHUB_CLIENT_ID = os.getenv('GITHUB_CLIENT_ID', '')
-GITHUB_CLIENT_SECRET = os.getenv('GITHUB_CLIENT_SECRET', '')
-GITHUB_REDIRECT_URI = os.getenv('GITHUB_REDIRECT_URI', '')
+GITHUB_CLIENT_ID = os.getenv("GITHUB_CLIENT_ID", "")
+GITHUB_CLIENT_SECRET = os.getenv("GITHUB_CLIENT_SECRET", "")
+GITHUB_REDIRECT_URI = os.getenv("GITHUB_REDIRECT_URI", "")
 
 ## django-vite settings
 # use HMR or not.
