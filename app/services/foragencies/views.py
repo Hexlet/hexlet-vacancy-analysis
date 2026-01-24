@@ -11,7 +11,9 @@ from .models import CompanyInquiry, PricingPlan
 
 class AgencyView(View):
     def get(self, request: HttpRequest) -> InertiaResponse:
-        plans = PricingPlan.objects.filter(is_active=True, block_type="agencies")
+        plans = PricingPlan.objects.filter(
+            is_active=True, block_type="agencies"
+        ).prefetch_related("features")
         props = {
             "plans": [
                 {
@@ -20,7 +22,7 @@ class AgencyView(View):
                     "subtitle": plan.subtitle,
                     "price": plan.price,
                     "highlighted": plan.highlighted,
-                    "features": [feature.name for feature in plan.features.all()],
+                    "features": list(plan.features.all().values_list("name", flat=True)),
                 }
                 for plan in plans
             ]
