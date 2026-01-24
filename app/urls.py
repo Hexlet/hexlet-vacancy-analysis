@@ -29,6 +29,8 @@ urlpatterns = [
     path("auth/", include("app.services.auth.users.urls")),
     path("account/", include("app.services.account.urls")),
     path("robots.txt", views.robots_txt, name="robots_txt"),
+    path("pricing/", include("app.services.pricing.urls")),
+    path("foragencies/", include("app.services.foragencies.urls")),
 ]
 
 handler500 = views.custom_server_error

@@ -1,0 +1,193 @@
+[
+{
+    "model": "foragencies.agencyplanfeature",
+    "pk": 1,
+    "fields": {
+        "name": "До 5 пользователей"
+    }
+},
+{
+    "model": "foragencies.agencyplanfeature",
+    "pk": 2,
+    "fields": {
+        "name": "1000 запросов/месяц"
+    }
+},
+{
+    "model": "foragencies.agencyplanfeature",
+    "pk": 3,
+    "fields": {
+        "name": "Базовая аналитика"
+    }
+},
+{
+    "model": "foragencies.agencyplanfeature",
+    "pk": 4,
+    "fields": {
+        "name": "Email поддержка"
+    }
+},
+{
+    "model": "foragencies.agencyplanfeature",
+    "pk": 5,
+    "fields": {
+        "name": "Еженедельные отчеты"
+    }
+},
+{
+    "model": "foragencies.agencyplanfeature",
+    "pk": 6,
+    "fields": {
+        "name": "До 20 пользователей"
+    }
+},
+{
+    "model": "foragencies.agencyplanfeature",
+    "pk": 7,
+    "fields": {
+        "name": "Безлимитные запросы"
+    }
+},
+{
+    "model": "foragencies.agencyplanfeature",
+    "pk": 8,
+    "fields": {
+        "name": "Расширенная аналитика"
+    }
+},
+{
+    "model": "foragencies.agencyplanfeature",
+    "pk": 9,
+    "fields": {
+        "name": "API доступ"
+    }
+},
+{
+    "model": "foragencies.agencyplanfeature",
+    "pk": 10,
+    "fields": {
+        "name": "Приоритетная поддержка"
+    }
+},
+{
+    "model": "foragencies.agencyplanfeature",
+    "pk": 11,
+    "fields": {
+        "name": "Кастомные отчеты"
+    }
+},
+{
+    "model": "foragencies.agencyplanfeature",
+    "pk": 12,
+    "fields": {
+        "name": "Интеграции"
+    }
+},
+{
+    "model": "foragencies.agencyplanfeature",
+    "pk": 13,
+    "fields": {
+        "name": "До 50 пользователей"
+    }
+},
+{
+    "model": "foragencies.agencyplanfeature",
+    "pk": 14,
+    "fields": {
+        "name": "Полная аналитика + AI"
+    }
+},
+{
+    "model": "foragencies.agencyplanfeature",
+    "pk": 15,
+    "fields": {
+        "name": "Персональный менеджер"
+    }
+},
+{
+    "model": "foragencies.agencyplanfeature",
+    "pk": 16,
+    "fields": {
+        "name": "SLA 99.9%"
+    }
+},
+{
+    "model": "foragencies.agencyplanfeature",
+    "pk": 17,
+    "fields": {
+        "name": "Кастомные интеграции"
+    }
+},
+{
+    "model": "foragencies.agencyplanfeature",
+    "pk": 18,
+    "fields": {
+        "name": "Обучение команды"
+    }
+},
+{
+    "model": "foragencies.agencypricingplan",
+    "pk": 1,
+    "fields": {
+        "name": "Стартовый",
+        "price": 14990,
+        "currency": "₽",
+        "period": "мес",
+        "description": "Для небольших HR-команд",
+        "is_active": true,
+        "order": 1,
+        "features": [
+            1,
+            2,
+            3,
+            4,
+            5
+        ]
+    }
+},
+{
+    "model": "foragencies.agencypricingplan",
+    "pk": 2,
+    "fields": {
+        "name": "Профессиональный",
+        "price": 29990,
+        "currency": "₽",
+        "period": "мес",
+        "description": "Для агенств и средних компаний",
+        "is_active": true,
+        "order": 2,
+        "features": [
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+        ]
+    }
+},
+{
+    "model": "foragencies.agencypricingplan",
+    "pk": 3,
+    "fields": {
+        "name": "Корпоративный",
+        "price": 49990,
+        "currency": "₽",
+        "period": "мес",
+        "description": "Для крупных компаний",
+        "is_active": true,
+        "order": 3,
+        "features": [
+            13,
+            7,
+            14,
+            9,
+            15,
+            16,
+            17,
+            18
+        ]
+    }
+}
+]
