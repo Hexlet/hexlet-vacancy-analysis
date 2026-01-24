@@ -1,5 +1,5 @@
 """
-URL configuration for app project. 
+URL configuration for app project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/5.1/topics/http/urls/
@@ -28,6 +28,7 @@ urlpatterns = [
     path("telegram/", include("app.services.telegram.telegram_channels.urls")),
     path("auth/", include("app.services.auth.users.urls")),
     path("account/", include("app.services.account.urls")),
+    path('pricing/', include('app.services.pricing.urls')),
     path("foragencies/", include("app.services.foragencies.urls")),
 ]
 
