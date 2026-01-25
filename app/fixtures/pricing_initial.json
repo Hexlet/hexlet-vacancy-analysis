@@ -1,0 +1,207 @@
+[
+{
+    "model": "pricing.pricingplan",
+    "pk": 1,
+    "fields": {
+        "name": "Базовый",
+        "price": 0,
+        "currency": "RUB",
+        "period": "навсегда",
+        "description": "Для начинающих специалистов",
+        "is_active": true,
+        "order": 1,
+        "features": [
+            1,
+            2,
+            3,
+            4,
+            5
+        ]
+    }
+},
+{
+    "model": "pricing.pricingplan",
+    "pk": 2,
+    "fields": {
+        "name": "Профи",
+        "price": 490,
+        "currency": "RUB",
+        "period": "мес",
+        "description": "Для активного поиска работы",
+        "is_active": true,
+        "order": 2,
+        "features": [
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12
+        ]
+    }
+},
+{
+    "model": "pricing.pricingplan",
+    "pk": 3,
+    "fields": {
+        "name": "Премиум",
+        "price": 990,
+        "currency": "RUB",
+        "period": "мес",
+        "description": "Для профессионалов",
+        "is_active": true,
+        "order": 3,
+        "features": [
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20
+        ]
+    }
+},
+{
+    "model": "pricing.planfeature",
+    "pk": 1,
+    "fields": {
+        "name": "Просмотр аналитики рынка"
+    }
+},
+{
+    "model": "pricing.planfeature",
+    "pk": 2,
+    "fields": {
+        "name": "Базовые отчеты"
+    }
+},
+{
+    "model": "pricing.planfeature",
+    "pk": 3,
+    "fields": {
+        "name": "50 запросов/месяц"
+    }
+},
+{
+    "model": "pricing.planfeature",
+    "pk": 4,
+    "fields": {
+        "name": "Доступ к вакансиям"
+    }
+},
+{
+    "model": "pricing.planfeature",
+    "pk": 5,
+    "fields": {
+        "name": "Email поддержка"
+    }
+},
+{
+    "model": "pricing.planfeature",
+    "pk": 6,
+    "fields": {
+        "name": "Все из Базового"
+    }
+},
+{
+    "model": "pricing.planfeature",
+    "pk": 7,
+    "fields": {
+        "name": "Безлимитные запросы"
+    }
+},
+{
+    "model": "pricing.planfeature",
+    "pk": 8,
+    "fields": {
+        "name": "Расширенная аналитика"
+    }
+},
+{
+    "model": "pricing.planfeature",
+    "pk": 9,
+    "fields": {
+        "name": "Персональные рекомендации"
+    }
+},
+{
+    "model": "pricing.planfeature",
+    "pk": 10,
+    "fields": {
+        "name": "Тота ИИ помощник"
+    }
+},
+{
+    "model": "pricing.planfeature",
+    "pk": 11,
+    "fields": {
+        "name": "Приоритетная поддержка"
+    }
+},
+{
+    "model": "pricing.planfeature",
+    "pk": 12,
+    "fields": {
+        "name": "Отчеты по карьерному росту"
+    }
+},
+{
+    "model": "pricing.planfeature",
+    "pk": 13,
+    "fields": {
+        "name": "Все из Профи"
+    }
+},
+{
+    "model": "pricing.planfeature",
+    "pk": 14,
+    "fields": {
+        "name": "AI карьерный консультант"
+    }
+},
+{
+    "model": "pricing.planfeature",
+    "pk": 15,
+    "fields": {
+        "name": "Индивидуальный план развития"
+    }
+},
+{
+    "model": "pricing.planfeature",
+    "pk": 16,
+    "fields": {
+        "name": "Прогноз зарплат"
+    }
+},
+{
+    "model": "pricing.planfeature",
+    "pk": 17,
+    "fields": {
+        "name": "Эксклюзивные вакансии"
+    }
+},
+{
+    "model": "pricing.planfeature",
+    "pk": 18,
+    "fields": {
+        "name": "Менторство от экспертов"
+    }
+},
+{
+    "model": "pricing.planfeature",
+    "pk": 19,
+    "fields": {
+        "name": "Приоритет в рекомендациях"
+    }
+},
+{
+    "model": "pricing.planfeature",
+    "pk": 20,
+    "fields": {
+        "name": "Персональный менеджер"
+    }
+}
+]

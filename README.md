@@ -1,6 +1,6 @@
 # hexlet-vacancy-analysis
 
-.
+..
 
 ## Requirements:
 
