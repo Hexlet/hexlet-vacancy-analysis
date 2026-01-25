@@ -1,7 +1,18 @@
 import React from "react";
-import { Card, Flex, Text, Stack, Badge, rem } from "@mantine/core";
+import {
+ Card,
+ Flex,
+ Text,
+ Stack,
+ Badge,
+ rem,
+ Loader,
+ Alert,
+} from "@mantine/core";
 import { ArrowTrendingUpIcon, MapPinIcon } from "@heroicons/react/24/outline";
-import { type VacancyCardProp, popularVacancies } from "../api/data";
+
+import { type VacancyCardProp } from "../api/data";
+import { useGetPopularVacanciesQuery } from "../../../../store/api/vacanciesApi";
 
 const VacancyItem = (props: VacancyCardProp) => {
  const isPositiveChange = props.change >= 0;
@@ -50,6 +61,37 @@ const VacancyItem = (props: VacancyCardProp) => {
 };
 
 const PopularVacanciesCard: React.FC = () => {
+ const {
+  data: popularVacancies,
+  error,
+  isLoading,
+ } = useGetPopularVacanciesQuery();
+
+ if (isLoading) {
+  return (
+   <Stack align="center" ta="center" mt="70px" mb="xl">
+    <Loader size="xl" color="rgba(50, 65, 102, 1)" />
+    <Text>Загрузка популярных вакансий...</Text>
+   </Stack>
+  );
+ }
+
+ if (error) {
+  let errorMessage = "Произошла неизвестная ошибка";
+  if ("status" in error && "data" in error) {
+   errorMessage = `Ошибка ${error.status}: ${JSON.stringify(error.data)}`;
+  } else if (error instanceof Error) {
+   errorMessage = error.message;
+  }
+  return (
+   <Stack align="center" ta="center" mt="70px" mb="xl">
+    <Alert title="Ошибка загрузки" color="red">
+     {errorMessage}
+    </Alert>
+   </Stack>
+  );
+ }
+
  return (
   <Card
    radius="lg"
@@ -73,7 +115,7 @@ const PopularVacanciesCard: React.FC = () => {
    </Flex>
 
    <Stack gap="md" maw="600px">
-    {popularVacancies.map((vacancy) => (
+    {popularVacancies?.map((vacancy) => (
      <VacancyItem key={vacancy.id} {...vacancy} />
     ))}
    </Stack>
