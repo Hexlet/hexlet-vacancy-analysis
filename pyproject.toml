@@ -19,6 +19,9 @@ dependencies = [
     "django-vite>=3.1.0",
     "whitenoise>=6.11.0",
     "gunicorn>=23.0.0",
+    "mypy>=1.19.1",
+    "django-stubs>=5.2.8",
+    "types-requests>=2.32.4.20260107",
     "pre-commit>=4.3.0",
 ]
 
