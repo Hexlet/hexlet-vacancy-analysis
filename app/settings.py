@@ -229,3 +229,26 @@ TINKOFF_ID_TOKEN_URL = "https://id.tinkoff.ru/auth/token"
 TINKOFF_ID_USERINFO_URL = "https://id.tinkoff.ru/userinfo/userinfo"
 TINKOFF_ID_INTROSPECT_URL = "https://id.tinkoff.ru/auth/introspect"
 TINKOFF_ID_SCOPE = ["profile", "email"]
+
+# Logging
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "default": {
+            "format": "[{asctime}] #{levelname:8} {name}:{lineno}:{funcName} - {message}",
+            "style": "{",
+        },
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            'stream': 'ext://sys.stdout',
+            "formatter": "default",
+        },
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "WARNING" if not DEBUG else "DEBUG",
+    },
+}
