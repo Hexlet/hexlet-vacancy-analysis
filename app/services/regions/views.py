@@ -1,10 +1,12 @@
-from django.shortcuts import get_object_or_404
 from django.core.paginator import Paginator
+from django.shortcuts import get_object_or_404
 from django.views import View
-
 from inertia import render as inertia_render
+
 from app.services.parser.models import HhVacancy, SuperjobVacancy
+
 from .models import Region
+
 
 class RegionView(View):
 

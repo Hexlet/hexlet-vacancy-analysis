@@ -21,13 +21,6 @@ from django.urls import include, path
 from app import views
 
 urlpatterns = [
-    path('', views.index, name='index'),
-    path('admin/', admin.site.urls),
-    path('hh/', include('app.services.hh.hh_parser.urls')),
-    path('superjob/', include('app.services.superjob.superjob_parser.urls')),
-    path('telegram/', include('app.services.telegram.telegram_channels.urls')),
-    path('auth/', include('app.services.auth.users.urls')),
-    path('regions/', include('app.services.regions.urls'), name='regions'),
     path("", views.index, name="index"),
     path("admin/", admin.site.urls),
     path("hh/", include("app.services.hh.hh_parser.urls")),
@@ -35,6 +28,9 @@ urlpatterns = [
     path("telegram/", include("app.services.telegram.telegram_channels.urls")),
     path("auth/", include("app.services.auth.users.urls")),
     path("account/", include("app.services.account.urls")),
+    path('pricing/', include('app.services.pricing.urls')),
+    path("foragencies/", include("app.services.foragencies.urls")),
+    path('parser/', include('app.services.parser.urls')),
     path('regions/', include('app.services.regions.urls'), name='regions'),
 ]
 
