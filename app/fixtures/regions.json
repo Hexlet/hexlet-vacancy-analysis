@@ -1,0 +1,714 @@
+[
+{
+    "model": "regions.region",
+    "pk": 1,
+    "fields": {
+        "code": "01",
+        "name": "Республика Адыгея"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 2,
+    "fields": {
+        "code": "02",
+        "name": "Республика Башкортостан"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 3,
+    "fields": {
+        "code": "03",
+        "name": "Республика Бурятия"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 4,
+    "fields": {
+        "code": "04",
+        "name": "Республика Алтай"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 5,
+    "fields": {
+        "code": "05",
+        "name": "Республика Дагестан"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 6,
+    "fields": {
+        "code": "06",
+        "name": "Республика Ингушетия"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 7,
+    "fields": {
+        "code": "07",
+        "name": "Кабардино-Балкарская Республика"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 8,
+    "fields": {
+        "code": "08",
+        "name": "Республика Калмыкия"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 9,
+    "fields": {
+        "code": "09",
+        "name": "Карачаево-Черкесская Республика"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 10,
+    "fields": {
+        "code": "10",
+        "name": "Республика Карелия"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 11,
+    "fields": {
+        "code": "11",
+        "name": "Республика Коми"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 12,
+    "fields": {
+        "code": "12",
+        "name": "Республика Марий Эл"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 13,
+    "fields": {
+        "code": "13",
+        "name": "Республика Мордовия"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 14,
+    "fields": {
+        "code": "14",
+        "name": "Республика Саха (Якутия)"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 15,
+    "fields": {
+        "code": "15",
+        "name": "Республика Северная Осетия - Алания"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 16,
+    "fields": {
+        "code": "16",
+        "name": "Республика Татарстан"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 17,
+    "fields": {
+        "code": "17",
+        "name": "Республика Тыва"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 18,
+    "fields": {
+        "code": "18",
+        "name": "Удмуртская Республика"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 19,
+    "fields": {
+        "code": "19",
+        "name": "Республика Хакасия"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 20,
+    "fields": {
+        "code": "20",
+        "name": "Чеченская Республика"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 21,
+    "fields": {
+        "code": "21",
+        "name": "Чувашская Республика"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 22,
+    "fields": {
+        "code": "22",
+        "name": "Алтайский край"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 23,
+    "fields": {
+        "code": "23",
+        "name": "Краснодарский край"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 24,
+    "fields": {
+        "code": "24",
+        "name": "Красноярский край"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 25,
+    "fields": {
+        "code": "25",
+        "name": "Приморский край"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 26,
+    "fields": {
+        "code": "26",
+        "name": "Ставропольский край"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 27,
+    "fields": {
+        "code": "27",
+        "name": "Хабаровский край"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 28,
+    "fields": {
+        "code": "28",
+        "name": "Амурская область"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 29,
+    "fields": {
+        "code": "29",
+        "name": "Архангельская область"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 30,
+    "fields": {
+        "code": "30",
+        "name": "Астраханская область"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 31,
+    "fields": {
+        "code": "31",
+        "name": "Белгородская область"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 32,
+    "fields": {
+        "code": "32",
+        "name": "Брянская область"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 33,
+    "fields": {
+        "code": "33",
+        "name": "Владимирская область"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 34,
+    "fields": {
+        "code": "34",
+        "name": "Волгоградская область"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 35,
+    "fields": {
+        "code": "35",
+        "name": "Вологодская область"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 36,
+    "fields": {
+        "code": "36",
+        "name": "Воронежская область"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 37,
+    "fields": {
+        "code": "37",
+        "name": "Ивановская область"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 38,
+    "fields": {
+        "code": "38",
+        "name": "Иркутская область"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 39,
+    "fields": {
+        "code": "39",
+        "name": "Калининградская область"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 40,
+    "fields": {
+        "code": "40",
+        "name": "Калужская область"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 41,
+    "fields": {
+        "code": "41",
+        "name": "Камчатский край"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 42,
+    "fields": {
+        "code": "42",
+        "name": "Кемеровская область - Кузбасс"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 43,
+    "fields": {
+        "code": "43",
+        "name": "Кировская область"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 44,
+    "fields": {
+        "code": "44",
+        "name": "Костромская область"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 45,
+    "fields": {
+        "code": "45",
+        "name": "Курганская область"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 46,
+    "fields": {
+        "code": "46",
+        "name": "Курская область"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 47,
+    "fields": {
+        "code": "47",
+        "name": "Ленинградская область"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 48,
+    "fields": {
+        "code": "48",
+        "name": "Липецкая область"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 49,
+    "fields": {
+        "code": "49",
+        "name": "Магаданская область"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 50,
+    "fields": {
+        "code": "50",
+        "name": "Московская область"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 51,
+    "fields": {
+        "code": "51",
+        "name": "Мурманская область"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 52,
+    "fields": {
+        "code": "52",
+        "name": "Нижегородская область"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 53,
+    "fields": {
+        "code": "53",
+        "name": "Новгородская область"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 54,
+    "fields": {
+        "code": "54",
+        "name": "Новосибирская область"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 55,
+    "fields": {
+        "code": "55",
+        "name": "Омская область"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 56,
+    "fields": {
+        "code": "56",
+        "name": "Оренбургская область"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 57,
+    "fields": {
+        "code": "57",
+        "name": "Орловская область"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 58,
+    "fields": {
+        "code": "58",
+        "name": "Пензенская область"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 59,
+    "fields": {
+        "code": "59",
+        "name": "Пермский край"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 60,
+    "fields": {
+        "code": "60",
+        "name": "Псковская область"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 61,
+    "fields": {
+        "code": "61",
+        "name": "Ростовская область"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 62,
+    "fields": {
+        "code": "62",
+        "name": "Рязанская область"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 63,
+    "fields": {
+        "code": "63",
+        "name": "Самарская область"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 64,
+    "fields": {
+        "code": "64",
+        "name": "Саратовская область"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 65,
+    "fields": {
+        "code": "65",
+        "name": "Сахалинская область"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 66,
+    "fields": {
+        "code": "66",
+        "name": "Свердловская область"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 67,
+    "fields": {
+        "code": "67",
+        "name": "Смоленская область"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 68,
+    "fields": {
+        "code": "68",
+        "name": "Тамбовская область"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 69,
+    "fields": {
+        "code": "69",
+        "name": "Тверская область"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 70,
+    "fields": {
+        "code": "70",
+        "name": "Томская область"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 71,
+    "fields": {
+        "code": "71",
+        "name": "Тульская область"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 72,
+    "fields": {
+        "code": "72",
+        "name": "Тюменская область"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 73,
+    "fields": {
+        "code": "73",
+        "name": "Ульяновская область"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 74,
+    "fields": {
+        "code": "74",
+        "name": "Челябинская область"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 75,
+    "fields": {
+        "code": "75",
+        "name": "Забайкальский край"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 76,
+    "fields": {
+        "code": "76",
+        "name": "Ярославская область"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 77,
+    "fields": {
+        "code": "77",
+        "name": "Москва"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 78,
+    "fields": {
+        "code": "78",
+        "name": "Санкт-Петербург"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 79,
+    "fields": {
+        "code": "79",
+        "name": "Еврейская автономная область"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 80,
+    "fields": {
+        "code": "80",
+        "name": "Донецкая Народная Республика"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 81,
+    "fields": {
+        "code": "81",
+        "name": "Луганская Народная Республика"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 82,
+    "fields": {
+        "code": "82",
+        "name": "Крым"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 83,
+    "fields": {
+        "code": "83",
+        "name": "Ненецкий автономный округ"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 84,
+    "fields": {
+        "code": "84",
+        "name": "Херсонская область"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 85,
+    "fields": {
+        "code": "85",
+        "name": "Запорожская область"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 86,
+    "fields": {
+        "code": "86",
+        "name": "Ханты-Мансийский автономный округ - Югра"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 87,
+    "fields": {
+        "code": "87",
+        "name": "Чукотский автономный округ"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 88,
+    "fields": {
+        "code": "89",
+        "name": "Ямало-Ненецкий автономный округ"
+    }
+},
+{
+    "model": "regions.region",
+    "pk": 89,
+    "fields": {
+        "code": "92",
+        "name": "Севастополь"
+    }
+}
+]
