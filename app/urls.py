@@ -32,6 +32,7 @@ urlpatterns = [
     path("foragencies/", include("app.services.foragencies.urls")),
     path('parser/', include('app.services.parser.urls')),
     path('regions/', include('app.services.regions.urls'), name='regions'),
+    path("vacancies/", include("app.services.vacancies.urls")),
 ]
 
 handler500 = views.custom_server_error

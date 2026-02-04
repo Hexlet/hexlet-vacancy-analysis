@@ -9,72 +9,75 @@ from .models import AgencyPlanFeature, AgencyPricingPlan, CompanyInquiry
 class ForAgenciesTest(InertiaTestCase):
     def setUp(self):
         super().setUp()
-        self.plan = AgencyPricingPlan.objects.create(
-            name='Стартовый_test',
-            price=14990
-        )
-        self.feature = AgencyPlanFeature.objects.create(name='До 5 пользователей_test')
+        self.plan = AgencyPricingPlan.objects.create(name="Стартовый_test", price=14990)
+        self.feature = AgencyPlanFeature.objects.create(name="До 5 пользователей_test")
         self.plan.features.add(self.feature)
 
     def test_agency_view(self):
-        self.client.get(reverse('foragencies_page'))
-        self.assertComponentUsed('AgencyPricingPage')
+        self.client.get(reverse("foragencies_page"))
+        self.assertComponentUsed("AgencyPricingPage")
         props = self.props()
-        self.assertIn('plans', props)
-        self.assertEqual(len(props['plans']), 1)
-        plan_props = props['plans'][0]
-        self.assertEqual(plan_props['name'], 'Стартовый_test')
-        self.assertEqual(len(plan_props['features']), 1)
-        self.assertEqual(plan_props['features'][0]['name'], 'До 5 пользователей_test')
+        self.assertIn("plans", props)
+        self.assertEqual(len(props["plans"]), 1)
+        plan_props = props["plans"][0]
+        self.assertEqual(plan_props["name"], "Стартовый_test")
+        self.assertEqual(len(plan_props["features"]), 1)
+        self.assertEqual(plan_props["features"][0]["name"], "До 5 пользователей_test")
 
     def test_agency_view_no_active_plans(self):
         AgencyPricingPlan.objects.all().update(is_active=False)
-        self.client.get(reverse('foragencies_page'))
-        self.assertComponentUsed('AgencyPricingPage')
+        self.client.get(reverse("foragencies_page"))
+        self.assertComponentUsed("AgencyPricingPage")
         props = self.props()
-        self.assertEqual(len(props['plans']), 0)
+        self.assertEqual(len(props["plans"]), 0)
 
     def test_company_inquiry_creation(self):
         inquiry = CompanyInquiry.objects.create(
-            company_name='Company_test',
-            name='Konstantin',
-            email='test@email.com',
-            phone='123456',
+            company_name="Company_test",
+            name="Konstantin",
+            email="test@email.com",
+            phone="123456",
         )
-        self.assertEqual(inquiry.company_name, 'Company_test')
+        self.assertEqual(inquiry.company_name, "Company_test")
         self.assertFalse(inquiry.is_processed)
-        self.assertEqual(str(inquiry), 'Заявка от Company_test (test@email.com)')
+        self.assertEqual(str(inquiry), "Заявка от Company_test (test@email.com)")
 
     def test_agency_view_post_inquiry(self):
         data = {
-            'company_name': 'Post Co',
-            'name': 'Kostya',
-            'email': 'post@email.com',
-            'phone': '789',
+            "company_name": "Post Co",
+            "name": "Kostya",
+            "email": "post@email.com",
+            "phone": "789",
         }
-        response = self.client.post(reverse('foragencies_page'), data)
+        response = self.client.post(reverse("foragencies_page"), data)
         self.assertEqual(response.status_code, HTTPStatus.OK.value)
-        self.assertTrue(CompanyInquiry.objects.filter(company_name='Post Co').exists())
+        self.assertTrue(CompanyInquiry.objects.filter(company_name="Post Co").exists())
 
     def test_agency_view_post_error(self):
         data = {}
-        response = self.client.post(reverse('foragencies_page'), data)
+        response = self.client.post(reverse("foragencies_page"), data)
         self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST.value)
         self.assertJSONEqual(
             response.content,
-            {'success': False, 'error': 'Обязательные поля: Название компании и email', }
+            {
+                "success": False,
+                "error": "Обязательные поля: Название компании и email",
+            },
         )
 
     def test_agency_view_post_wrong_email(self):
         data = {
-            'company_name': 'Post Co',
-            'name': 'Kostya',
-            'email': 'postemail.com',
-            'phone': '789',
+            "company_name": "Post Co",
+            "name": "Kostya",
+            "email": "postemail.com",
+            "phone": "789",
         }
-        response = self.client.post(reverse('foragencies_page'), data)
+        response = self.client.post(reverse("foragencies_page"), data)
         self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST.value)
         self.assertJSONEqual(
             response.content,
-            {'success': False, 'error': 'Некорректный email', }
+            {
+                "success": False,
+                "error": "Некорректный email",
+            },
         )

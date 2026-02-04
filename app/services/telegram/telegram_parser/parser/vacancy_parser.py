@@ -1,4 +1,4 @@
-from app.services.hh.hh_parser.models import Vacancy
+from app.services.vacancies.models import Vacancy
 
 from .keyword_extractor import KeywordExtractor
 from .line_parser import LineParser

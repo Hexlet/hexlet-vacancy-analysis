@@ -5,7 +5,7 @@ from .models import AgencyPlanFeature, AgencyPricingPlan, CompanyInquiry
 
 @admin.register(AgencyPricingPlan)
 class AgencyPricingPlanAdmin(admin.ModelAdmin):
-    list_display = ("name", "price", "currency", 'period', "is_active", "order")
+    list_display = ("name", "price", "currency", "period", "is_active", "order")
     list_editable = ("price", "is_active", "order")
     filter_horizontal = ("features",)
 
@@ -23,7 +23,7 @@ class CompanyInquiryAdmin(admin.ModelAdmin):
         "email",
         "phone",
         "created_at",
-        "is_processed"
+        "is_processed",
     )
     list_filter = ("is_processed", "created_at")
     list_editable = ("is_processed",)

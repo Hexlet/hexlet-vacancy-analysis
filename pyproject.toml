@@ -23,6 +23,8 @@ dependencies = [
     "django-stubs>=5.2.8",
     "types-requests>=2.32.4.20260107",
     "pre-commit>=4.3.0",
+    "aiohttp>=3.13.2",
+    "dj-database-url>=3.0.0",
 ]
 
 [dependency-groups]
@@ -32,3 +34,7 @@ dev = [
     "pytest-django>=4.11.1",
     "ruff>=0.12.1",
 ]
+
+[tool.pylint.main]
+  source-roots = "app/services"
+
