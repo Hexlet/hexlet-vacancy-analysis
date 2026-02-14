@@ -3,6 +3,21 @@ from django.db import models
 from .validators import VALIDATORS
 
 
+class HomePageBlockQuerySet(models.QuerySet):
+    def active(self):
+        return self.filter(is_active=True)
+
+    def ordered(self):
+        return self.order_by("order")
+
+    def for_homepage(self):
+        return (
+            self.active()
+            .ordered()
+            .values("id", "title", "block_type", "content", "order")
+        )
+
+
 class HomePageBlock(models.Model):
     """
     Модель блока для главной страницы сайта.
@@ -30,6 +45,8 @@ class HomePageBlock(models.Model):
     )
     order = models.IntegerField(default=0, verbose_name="Порядок")
     is_active = models.BooleanField(default=True, verbose_name="Активен")
+
+    objects = HomePageBlockQuerySet.as_manager()
 
     class Meta:
         verbose_name = "Блок на главной странице"
