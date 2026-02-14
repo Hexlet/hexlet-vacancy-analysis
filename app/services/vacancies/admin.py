@@ -1,6 +1,5 @@
 from django.contrib import admin
 
-from ...utils.main import custom_title_filter_factory
 from .models import Vacancy
 
 
@@ -8,26 +7,45 @@ from .models import Vacancy
 class VacancyAdmin(admin.ModelAdmin):
     list_display = (
         "title",
-        "company__name",
+        "company",
         "city",
         "salary",
         "experience",
-        "platform__name",
+        "platform",
         "published_at",
     )
-    search_fields = ("title", "company__name", "city__name", "platform__name", "skills")
+    search_fields = (
+        "title",
+        "company__name",
+        "city__name",
+        "platform",
+        "skills",
+    )
     list_filter = (
-        (
-            "platform",
-            custom_title_filter_factory(admin.RelatedFieldListFilter, "Platform"),
-        ),
+        "platform",
         "city",
         "experience",
         "schedule",
         "employment",
     )
     ordering = ("-published_at",)
-    readonly_fields = ("created_at", "platform")
+    readonly_fields = (
+        "platform",
+        "title",
+        "company",
+        "city",
+        "address",
+        "url",
+        "salary",
+        "experience",
+        "employment",
+        "work_format",
+        "schedule",
+        "skills",
+        "description",
+        "created_at",
+        "published_at",
+    )
 
     fieldsets = (
         (

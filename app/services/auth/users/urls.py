@@ -19,5 +19,6 @@ urlpatterns = [
     path("github/unlink/", views.unlink_github, name="unlink_github"),
     path("github/", include("app.services.auth.github.urls")),
     path("yandex/", include("app.services.auth.yandex_id.urls")),
+    path("password/", include("app.services.auth.password_reset.urls")),
     path("tinkoff_id/", include("app.services.auth.tinkoff_id.urls")),
 ]

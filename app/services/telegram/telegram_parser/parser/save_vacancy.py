@@ -4,7 +4,7 @@ import uuid
 
 from asgiref.sync import sync_to_async
 
-from app.services.hh.hh_parser.models import City, Company, Platform, Vacancy
+from app.services.vacancies.models import City, Company, Platform, Vacancy
 
 logger = logging.getLogger(__name__)
 

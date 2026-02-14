@@ -56,7 +56,7 @@ class TinkoffCallbackTest(TestCase):
 
         self.introspect_response = {
             "active": True,
-            "scope": settings.TINKOFF_ID_SCOPE,
+            "scope": " ".join(settings.TINKOFF_ID_SCOPE),
         }
 
         self.user_info_response = {
@@ -135,7 +135,7 @@ class TinkoffCallbackTest(TestCase):
 
     @patch("app.services.auth.tinkoff_id.views.requests.post")
     def test_token_request_failure(self, mock_post):
-        mock_post.return_value = MagicMock(status_code=400)
+        mock_post.return_value = MagicMock(status_code=400, json=lambda: {})
 
         request = self.factory.get(
             self.url,
@@ -155,7 +155,7 @@ class TinkoffCallbackTest(TestCase):
     def test_introspect_request_failure(self, mock_post):
         mock_post.side_effect = [
             MagicMock(status_code=200, json=lambda: self.token_response),
-            MagicMock(status_code=400),
+            MagicMock(status_code=400, json=lambda: {}),
         ]
 
         request = self.factory.get(
@@ -170,13 +170,13 @@ class TinkoffCallbackTest(TestCase):
         response = TinkoffCallback.as_view()(request)
 
         self.assertEqual(response.props["status_code"], 403)
-        self.assertIn("Failed to get introspect token", str(response.content))
+        self.assertIn("Missing required scope", str(response.content))
 
     @patch("app.services.auth.tinkoff_id.views.requests.post")
     def test_missing_scope(self, mock_post):
         # Меняем ответ introspection, убирая нужные scope
         invalid_introspect = self.introspect_response.copy()
-        invalid_introspect["scope"] = []
+        invalid_introspect["scope"] = ""
 
         mock_post.side_effect = [
             MagicMock(status_code=200, json=lambda: self.token_response),
@@ -195,7 +195,7 @@ class TinkoffCallbackTest(TestCase):
         response = TinkoffCallback.as_view()(request)
 
         self.assertEqual(response.props["status_code"], 403)
-        self.assertIn("Missing scope", str(response.content))
+        self.assertIn("Missing required scope", str(response.content))
 
     @patch("app.services.auth.tinkoff_id.views.requests.post")
     def test_missing_email(self, mock_post):

@@ -1,6 +1,6 @@
 # hexlet-vacancy-analysis
 
-..
+.
 
 ## Requirements:
 
@@ -40,6 +40,8 @@ GITHUB_REDIRECT_URI=http://localhost:8000/auth/github/callback/
 TINKOFF_ID_CLIENT_ID="clien_id"
 TINKOFF_ID_CLIENT_SECRET="secret_key"
 TINKOFF_ID_REDIRECT_URI="https://localhost/callback"
+
+SUPERJOB_API_KEY=your_key_here
 ```
 Create a PostgreSQL user (or reuse an existing one) and a database using the parameters from DATABASE_URL.
 
@@ -90,5 +92,14 @@ make docker-up
 - проект становится доступен по ссылке - http://localhost:8000/
 
 .
+
+## Parser:
+To parse hh.ru or superjob.ru you need to create a local database and go to /parser/hh 
+or /parser/superjob
+
+To get your SUPERJOB_API_KEY, follow the link https://api.superjob.ru/ and look in the "Getting Started" section
+
+
 ## Comments
 .
+ 

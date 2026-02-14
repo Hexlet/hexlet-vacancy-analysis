@@ -1,0 +1,2 @@
+class OpenAIError(Exception):
+    pass
