@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     "app.services.superjob.superjob_parser",
     "app.services.auth.password_reset",
     "app.services.account",
+    "app.homepage",
     "app.services.auth.tinkoff_id",
     "app.services.parser",
     "app.services.ai",

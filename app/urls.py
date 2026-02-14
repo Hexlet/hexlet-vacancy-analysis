@@ -1,7 +1,5 @@
 """
 URL configuration for app project.
-URL configuration for app project.
-URL configuration for app project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/5.1/topics/http/urls/
@@ -24,7 +22,7 @@ from app import views
 from app.services.auth.password_reset.views import redirect_mail_link
 
 urlpatterns = [
-    path("", views.index, name="index"),
+    path("", include("app.homepage.urls")),
     path("admin/", admin.site.urls),
     path("hh/", include("app.services.hh.hh_parser.urls")),
     path("superjob/", include("app.services.superjob.superjob_parser.urls")),
